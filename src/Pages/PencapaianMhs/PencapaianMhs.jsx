@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { loggedInNama } from '../DashboardMhs/DashboardMhs'
+import { loggedInNama,loggedInNIM } from '../DashboardMhs/DashboardMhs'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -29,7 +29,7 @@ const PencapaianMhs = () => {
         setSelectedSemester(selectedValue);
 
         // Mengambil data berdasarkan semester yang dipilih dari API
-        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?semester_mk=${selectedValue}`)
+        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${loggedInNIM}&semester_mk=${selectedValue}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend

@@ -1,15 +1,15 @@
 import React from 'react'
-import { FooterComponent, NavbarComponent, NavbarDosenComponent } from '../../Components'
+import { FooterComponent, NavbarDosenComponent } from '../../Components'
 import './dashboarddosen.css'
 import { NavLink } from 'react-router-dom'
-
+export const loggedInNama = localStorage.getItem('loggedInNama');
 
 const DashboardDosen = () => {
     return (
         <>
             <NavbarDosenComponent />
             <div className="container">
-                <h1>Helo, Guys!</h1>
+                <h1>Helo, {loggedInNama}</h1>
 
                 <div className="content-dosen-wrapper">
                     <div className="content-dosen-1">
