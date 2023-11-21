@@ -10,7 +10,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-
+const loggedInNama = localStorage.getItem('loggedInNama'); // Ambil email dari localStorage
+console.log(loggedInNama);
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -58,7 +59,7 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloo Pelaku KS</h1>
+                <h1>Haloooo {loggedInNama}</h1>
 
                 <div className="content-dosen-data-mhs">
                     <form action="">

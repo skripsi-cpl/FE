@@ -15,6 +15,7 @@ const Login = () => {
       email: email,
       password: password,
     };
+    console.log(payload);
 
     // Panggil API menggunakan fetch
     fetch('http://localhost:8000/api/login', {
@@ -34,15 +35,10 @@ const Login = () => {
       console.log(data);
       console.log('Response:', data);
       
-      if (data.redirectTo === 'dashboardmhs') {
-        navigateTo('/dashboardmhs');
-      } else if (data.redirectTo === 'dashboarddosen') {
-        navigateTo('/dashboarddosen');
-      } else if (data.redirectTo === 'dashboarddepartment') {
-        navigateTo('/dashboarddepartment');
-      } else if (data.redirectTo === 'dashboard') {
-        navigateTo('/dashboard');
-      }else {
+      if (data.redirectTo === 'dashboardmhs' || data.redirectTo === 'dashboarddosen' || data.redirectTo === 'dashboarddepartment' || data.redirectTo === 'dashboard') {
+        localStorage.setItem('loggedInNama', data.name); // Simpan email ke localStorage
+        navigateTo(`/${data.redirectTo}`);
+      } else {
         setErrorMessage("Format email tidak sesuai");
         setemail("");
         setPassword("");
