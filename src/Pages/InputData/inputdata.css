@@ -1,0 +1,30 @@
+.container-input-pl{
+    width: 80%;
+    margin: 40px auto 0;
+}
+
+.content-input-pl{
+    width: 100%;
+    background-color: aliceblue;
+    margin-top: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    
+}
+
+.content-input-pl form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 40%;
+}
+
+.content-input-pl form input{
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

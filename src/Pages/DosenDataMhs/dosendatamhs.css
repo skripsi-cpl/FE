@@ -1,0 +1,15 @@
+.container-dosen-data-mhs {
+    width: 80%;
+    margin: 40px auto 0;
+}
+
+.content-dosen-data-mhs {
+    width: 100%;
+    background-color: aliceblue;
+    margin-top: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}

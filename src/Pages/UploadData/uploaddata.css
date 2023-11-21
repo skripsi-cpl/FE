@@ -1,0 +1,43 @@
+.container-upload-mhs {
+    width: 80%;
+    margin: 40px auto 0;
+}
+
+.content-upload-mhs {
+    width: 100%;
+    background-color: aliceblue;
+    margin-top: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content-upload-mhs form {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-upload-mhs form select {
+    padding: 10px;
+}
+
+.upload-excel-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.container-upload-excel {
+    width: 600px;
+    height: 400px;
+    background-color: beige;
+}
+
+.button-excel-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-excel button {
+    margin-right: 10px;
+}
