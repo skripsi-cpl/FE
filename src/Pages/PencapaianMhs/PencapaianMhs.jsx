@@ -59,7 +59,7 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloo {loggedInNama}</h1>
+                <h1>Haloooo {loggedInNama}</h1>
 
                 <div className="content-dosen-data-mhs">
                     <form action="">
