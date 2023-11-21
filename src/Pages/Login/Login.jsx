@@ -37,6 +37,8 @@ const Login = () => {
        if (data.redirectTo === 'dashboardmhs') {
         navigateTo('/dashboardmhs');
         localStorage.setItem('loggedInNama', data.name);
+        localStorage.setItem('loggedInNIM', data.nim);
+        console.log(data.nim)
       } else if (data.redirectTo === 'dashboarddosen') {
         navigateTo('/dashboarddosen');
         localStorage.setItem('loggedInNama', data.name);
