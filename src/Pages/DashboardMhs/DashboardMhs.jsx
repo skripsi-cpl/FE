@@ -1,6 +1,6 @@
 import { NavbarMhsComponent, FooterComponent } from "../../Components";
 import "./Dashboardmhs.css";
-const loggedInNama = localStorage.getItem('loggedInNama'); // Ambil email dari localStorage
+export const loggedInNama = localStorage.getItem('loggedInNama'); // Ambil email dari localStorage
 const DashboardMhs = () => {
     return (
         <>
