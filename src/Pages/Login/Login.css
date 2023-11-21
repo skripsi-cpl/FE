@@ -1,54 +1,66 @@
-.login-wrapper{
+.login-wrapper {
   display: flex;
   height: 100vh;
 }
 
+.login-description {
+  background-color: #f5f5f5;
+  flex: 1.5;
+  background-image: url('../../assets/images/ap.jpg');
+  background-size: cover;
+}
+
 .login {
-  background-color: #3876bf;
-  border-radius: 20px;
-  padding: 40px;
+  flex: 1;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 30px;
   display: flex;
-  margin: 100px;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
-  margin: auto auto;
 }
 
-.input-group {
-  width: 100%;
+.login h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-input {
+.login img {
+  width: 50%;
+  height: auto;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.login .input-group {
+  margin-bottom: 20px;
+}
+
+.login .input-group label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.login .input-group input {
+  height: 30px;
   width: 100%;
-  padding: 10px 5px;
-  margin-top: 5px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
-button {
-  background-color: #4caf50;
-  color: white;
+.login button {
+  padding: 10px;
+  font-size: 15px;
+  color: #fff;
+  background: #397adb;
   border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
 }
 
-button:hover {
-  background-color: #45a049;
-}
-
-.description {
-  background-color: #181c20;
-  height: 40%;
-  width: 30%;
-  border-radius: 0 20px 20px 0;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+.login button:hover {
+  background: #3672bb;
 }
