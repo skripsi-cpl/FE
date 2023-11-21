@@ -34,11 +34,19 @@ const Login = () => {
     .then(data => {
       console.log(data);
       console.log('Response:', data);
-      
-      if (data.redirectTo === 'dashboardmhs' || data.redirectTo === 'dashboarddosen' || data.redirectTo === 'dashboarddepartment' || data.redirectTo === 'dashboard') {
-        localStorage.setItem('loggedInNama', data.name); // Simpan email ke localStorage
-        navigateTo(`/${data.redirectTo}`);
-      } else {
+       if (data.redirectTo === 'dashboardmhs') {
+        navigateTo('/dashboardmhs');
+        localStorage.setItem('loggedInNama', data.name);
+      } else if (data.redirectTo === 'dashboarddosen') {
+        navigateTo('/dashboarddosen');
+        localStorage.setItem('loggedInNama', data.name);
+      } else if (data.redirectTo === 'dashboarddepartment') {
+        navigateTo('/dashboarddepartment');
+        localStorage.setItem('loggedInNama', data.name);
+      } else if (data.redirectTo === 'dashboard') {
+        navigateTo('/dashboard');
+        localStorage.setItem('loggedInNama', data.name);
+      }else {
         setErrorMessage("Format email tidak sesuai");
         setemail("");
         setPassword("");
