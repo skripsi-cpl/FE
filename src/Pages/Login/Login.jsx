@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import logoundip from "../../assets/images/logo/logo-undip.png";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./Login.css";
 
 const Login = () => {
@@ -33,45 +34,23 @@ const Login = () => {
         throw new Error('Network response was not ok.');
       })
       .then(data => {
-        console.log(data);
-        console.log('Response:', data);
         if (data.redirectTo === 'dashboardmhs') {
           navigateTo('/dashboardmhs');
           localStorage.setItem('loggedInNama', data.name);
           localStorage.setItem('loggedInNIM', data.nim);
-          console.log(data.nim)
         } else if (data.redirectTo === 'dashboarddosen') {
           navigateTo('/dashboarddosen');
-          toast.success("Login Berhasil" + data.name,
-            {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
           localStorage.setItem('loggedInNama', data.name);
         } else if (data.redirectTo === 'dashboarddepartment') {
           navigateTo('/dashboarddepartment');
-          localStorage.setItem('loggedInNama', data.name);
-          toast.success("Login Berhasil" + data.name,
-            {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+          localStorage.setItem('loggedInNama', email);
         } else if (data.redirectTo === 'dashboard') {
           navigateTo('/dashboard');
           localStorage.setItem('loggedInNama', data.name);
-          toast.success("Login Berhasil" + data.name,
+        } else {
+          toast.error("Login Gagal",
             {
-              position: "top-center",
+              position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -79,23 +58,22 @@ const Login = () => {
               draggable: true,
               progress: undefined,
             });
-        } else {
           setErrorMessage("Format email tidak sesuai");
           setemail("");
           setPassword("");
-          toast.error("Login Gagal",
-            {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
         }
       })
       .catch(error => {
+        toast.error("Login Gagal",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         console.error('There was an error!', error);
         setErrorMessage("Maaf, terjadi kesalahan. Silakan coba lagi.");
         setemail("");
@@ -112,7 +90,6 @@ const Login = () => {
           <img src={logoundip} alt="Logo-Universitas-Indonesia" border="0" width="100" height="100" />
           <h2>Silahkan Login</h2>
           <div className="input-group">
-
             <label>Email:</label>
             <input
               type="text"
@@ -133,8 +110,9 @@ const Login = () => {
           )}
           <button onClick={handleLogin}>Login</button>
         </div>
+        <ToastContainer />
+
       </div>
-      <ToastContainer />
     </>
   );
 };

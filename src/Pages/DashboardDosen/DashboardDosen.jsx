@@ -1,10 +1,33 @@
-import React from 'react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useRef } from 'react';
 import { FooterComponent, NavbarDosenComponent } from '../../Components'
 import './dashboarddosen.css'
 import { NavLink } from 'react-router-dom'
 export const loggedInNama = localStorage.getItem('loggedInNama');
 
 const DashboardDosen = () => {
+    const toastShownRef = useRef(false);
+
+    //trigger toast
+    useEffect(() => {
+        const loggedInNama = localStorage.getItem('loggedInNama');
+
+        if (loggedInNama && !toastShownRef.current) {
+            toast.success("Login Berhasil ", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+            // ngasih tau klo toast nya udh ke trigger
+            toastShownRef.current = true;
+        }
+    }, []);
     return (
         <>
             <NavbarDosenComponent />
@@ -26,6 +49,7 @@ const DashboardDosen = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
             <FooterComponent />
         </>
     )

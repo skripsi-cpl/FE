@@ -1,4 +1,6 @@
 import { NavbarComponent, FooterComponent } from "../../Components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
 import "./inputdata.css";
 
@@ -51,6 +53,16 @@ const InputData = () => {
       .then(response => {
         if (response.ok) {
           return response.json();
+          toast.success("Data Berhasil Ditambahkan",
+            {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
         }
         throw new Error('Network response was not ok.');
       })
@@ -60,6 +72,16 @@ const InputData = () => {
       })
       .catch(error => {
         console.error('There was an error!', error);
+        toast.error("Data Gagal Ditambahkan",
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
       });
     console.log(formData); // Contoh: Log nilai formData
     // Lakukan pengiriman data ke backend atau tindakan lainnya
@@ -172,12 +194,11 @@ const InputData = () => {
               </label>
               <button type="submit">Submit</button>
             </div>
-
           </div>
         </form>
 
       </div>
-
+      <ToastContainer />
       <FooterComponent />
     </>
   );
