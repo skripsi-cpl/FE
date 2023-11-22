@@ -38,13 +38,13 @@ const DashboardDosen = () => {
                     <div className="content-dosen-1">
                         <h1>Sebagai Dosen Pengampu</h1>
                         <NavLink to="/dashboarddosen/uploaddatamhs">
-                            <button>Upload {'>'}</button>
+                            <button>Upload</button>
                         </NavLink>
                     </div>
                     <div className="content-dosen-2">
                         <h1>Sebagai Dosen Wali</h1>
                         <NavLink to="/dashboarddosen/dosendatamhs">
-                            <button>Masuk  {'>'}</button>
+                            <button>Masuk </button>
                         </NavLink>
                     </div>
                 </div>
