@@ -11,6 +11,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigateTo = useNavigate();
+  
+  
 
   const handleLogin = () => {
     const payload = {
@@ -34,35 +36,27 @@ const Login = () => {
         throw new Error('Network response was not ok.');
       })
       .then(data => {
-        if (data.redirectTo === 'dashboardmhs') {
-          navigateTo('/dashboardmhs');
-          localStorage.setItem('loggedInNama', data.name);
-          localStorage.setItem('loggedInNIM', data.nim);
-        } else if (data.redirectTo === 'dashboarddosen') {
-          navigateTo('/dashboarddosen');
-          localStorage.setItem('loggedInNama', data.name);
-        } else if (data.redirectTo === 'dashboarddepartment') {
-          navigateTo('/dashboarddepartment');
-          localStorage.setItem('loggedInNama', email);
-        } else if (data.redirectTo === 'dashboard') {
-          navigateTo('/dashboard');
-          localStorage.setItem('loggedInNama', data.name);
+        if (data.redirectTo === 'dashboardmhs' || data.redirectTo === 'dashboarddosen' || data.redirectTo === 'dashboarddepartment' || data.redirectTo === 'dashboard') {
+            navigateTo(`/${data.redirectTo}`);
+            localStorage.setItem('loggedInNama', data.name);
+            localStorage.setItem('loggedInNIM', data.nim || '');
         } else {
           toast.error("Login Gagal",
-            {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          setErrorMessage("Format email tidak sesuai");
-          setemail("");
-          setPassword("");
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+            setErrorMessage("Format email tidak sesuai");
+            setemail("");
+            setPassword("");
         }
-      })
+    })
+    
       .catch(error => {
         toast.error("Login Gagal",
           {

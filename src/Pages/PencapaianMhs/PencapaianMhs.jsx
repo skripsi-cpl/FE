@@ -9,7 +9,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { loggedInNama,loggedInNIM } from '../DashboardMhs/DashboardMhs'
+
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -23,13 +25,18 @@ const PencapaianMhs = () => {
     const [semesters, setSemesters] = useState([]);
     const [selectedSemester, setSelectedSemester] = useState('');
     const [filteredData, setFilteredData] = useState([]);
- 
+    // localStorage.setItem('loggedInNama', loggedInNama);
+    // localStorage.setItem('loggedInNIM', loggedInNIM);
+    const nama = localStorage.getItem('loggedInNama');
+    const nim = localStorage.getItem('loggedInNIM');
+    console.log(nama)
+    console.log(nim)
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
 
         // Mengambil data berdasarkan semester yang dipilih dari API
-        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${loggedInNIM}&semester_mk=${selectedValue}`)
+        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
@@ -57,7 +64,7 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloooo {loggedInNama}</h1>
+                <h1>Haloooo {nama}</h1>
 
                 <div className="content-dosen-data-mhs">
                     <form action="">
