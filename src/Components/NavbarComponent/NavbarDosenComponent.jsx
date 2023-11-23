@@ -1,5 +1,5 @@
 import "./NavbarComponent.css";
-import logo from "../../assets/images/logo-departemen1.png";
+import logo from "../../assets/images/logo/logo-departemen1.png";
 import { NavLink } from "react-router-dom";
 const NavbarDosenComponent = () => {
     return (

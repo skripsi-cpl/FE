@@ -1,30 +1,61 @@
-.container-input-pl{
+.container-input-pl {
     width: 80%;
     margin: 40px auto 0;
 }
 
-.content-input-pl{
+.content-input-pl {
+    margin-top: 10px;
     width: 100%;
     background-color: aliceblue;
     margin-top: 30px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 50px;
     box-sizing: border-box;
-    overflow: hidden;
-    
-}
-
-.content-input-pl form{
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 40%;
 }
 
-.content-input-pl form input{
-    margin: 10px 0;
+.input-kode-pl-1,
+.input-kode-pl-2 {
+    flex: 1;
+    margin-right: 20px;
+    padding: 20px;
+}
+
+.input-kode-pl-1 label,
+.input-kode-pl-2 label {
+    font-size: 20px;
+    font-weight: 600;
+
+}
+
+.input-kode-pl-2 button {
+    width: 30%;
+    margin-top: 30px;
     padding: 10px;
+    font-size: 15px;
+    color: #fff;
+    background: #397adb;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-kode-pl-2 button:hover {
+    background-color: #397adba1;
+}
+
+.content-input-pl h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content-input-pl input {
+    height: 30px;
+    width: 100%;
+    margin: 10px 0;
+    padding: 5px 10px;
+    font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }

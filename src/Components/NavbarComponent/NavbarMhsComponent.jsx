@@ -1,7 +1,10 @@
 import "./NavbarComponent.css";
-import logo from "../../assets/images/logo-departemen1.png";
+import logo from "../../assets/images/logo/logo-departemen1.png";
 import { NavLink } from "react-router-dom";
+
 const NavbarMhsComponent = () => {
+    
+    
     return (
         <nav className="navbar">
             <div className="logo">
@@ -14,6 +17,7 @@ const NavbarMhsComponent = () => {
                     </li>
                     <li>
                         <NavLink to={"/dashboardmhs/pencapaian"} >Lihat Pencapaian</NavLink>
+                        
                     </li>
                     <li>
                         <NavLink to={"/"} >Sign out</NavLink>
