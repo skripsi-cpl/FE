@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const DosenDataMhs = () => {
   const [selectedTahunMasuk, setSelectedTahunMasuk] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredMahasiswa, setFilteredMahasiswa] = useState([]);
   const [mahasiswaData, setMahasiswaData] = useState([]);
@@ -44,6 +45,11 @@ const DosenDataMhs = () => {
     setSearchKeyword(event.target.value);
   };
 
+  const handleSemesterChange = (event) => {
+    setSelectedSemester(event.target.value);
+  };
+
+
   return (
     <>
       <NavbarDosenComponent />
@@ -54,7 +60,7 @@ const DosenDataMhs = () => {
             <h3>Cari Mahasiswa Perwalian</h3>
             <input type="text" value={searchKeyword} onChange={handleSearchChange} />
           </form>
-          <h3>Filters</h3>
+          <h3>Angkatan</h3>
           <select
             value={selectedTahunMasuk}
             onChange={handleTahunMasukChange}
@@ -66,8 +72,20 @@ const DosenDataMhs = () => {
               </option>
             ))}
           </select>
-          <TableDosen filteredMahasiswa={filteredMahasiswa} />
-        </div>
+          <h3>Semester</h3>
+        <select
+          value={selectedSemester}
+          onChange={handleSemesterChange}
+        >
+          <option value="">Pilih Semester</option>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
+            <option key={semester} value={semester}>
+              {semester}
+            </option>
+          ))}
+        </select>
+        <TableDosen filteredMahasiswa={filteredMahasiswa} selectedSemester={selectedSemester} />
+      </div>
       </div>
       <FooterComponent />
     </>
