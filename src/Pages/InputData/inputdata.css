@@ -1,61 +1,63 @@
-.container-input-pl {
+.container-input-data {
     width: 80%;
     margin: 40px auto 0;
 }
 
-.content-input-pl {
-    margin-top: 10px;
-    width: 100%;
+.content-input-data {
+    margin-top: 20px;
     background-color: aliceblue;
-    margin-top: 30px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 50px;
-    box-sizing: border-box;
+    padding: 40px;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.input-kode-pl-1,
-.input-kode-pl-2 {
-    flex: 1;
-    margin-right: 20px;
+
+.card-data {
+    max-width: 400px;
+    height: auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     padding: 20px;
 }
 
-.input-kode-pl-1 label,
-.input-kode-pl-2 label {
-    font-size: 20px;
+.card-data h2 {
+    font-size: 30px;
     font-weight: 600;
-
 }
 
-.input-kode-pl-2 button {
-    width: 30%;
-    margin-top: 30px;
-    padding: 10px;
-    font-size: 15px;
-    color: #fff;
-    background: #397adb;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.input-kode-pl-2 button:hover {
-    background-color: #397adba1;
-}
-
-.content-input-pl h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.content-input-pl input {
-    height: 30px;
-    width: 100%;
-    margin: 10px 0;
-    padding: 5px 10px;
+.card-data-desc {
+    margin-top: 20px;
     font-size: 16px;
-    border-radius: 5px;
+    text-align: justify;
+    margin-bottom: 30px;
+}
+
+.card-data button {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
     border: 1px solid #ccc;
+}
+
+.card-data button :hover {
+    background-color: #ccc;
+}
+
+@media screen and (max-width: 768px) {
+    .content-input-data {
+        flex-direction: column;
+    }
+
+    .card-data {
+        width: 100%;
+    }
+
 }
