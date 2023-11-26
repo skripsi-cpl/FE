@@ -47,3 +47,28 @@
   margin-right: 20px;
   top: 0;
 }
+
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 30px 20px;
+  }
+
+  .menu ul {
+    padding: 0;
+  }
+
+  .menu ul li {
+    padding: 0 10px;
+  }
+
+  .menu ul li button {
+    width: 100px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .logo img {
+    height: 80px;
+  }
+}
