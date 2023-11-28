@@ -25,27 +25,56 @@ const PencapaianMhs = () => {
     const [semesters, setSemesters] = useState([]);
     const [selectedSemester, setSelectedSemester] = useState('');
     const [filteredData, setFilteredData] = useState([]);
+    const [idCplData, setIdCplData] = useState([]);
+    const [idBobotData, setIdBobotData] = useState([]);
+    const [totalBobotCpl, setTotalBobotCpl] = useState({});
+    const [totalAllSemesters, setTotalAllSemesters] = useState(0);
+    
+    // const [totalsBySemester, setTotalsBySemester] = useState({});
     // localStorage.setItem('loggedInNama', loggedInNama);
     // localStorage.setItem('loggedInNIM', loggedInNIM);
     const nama = localStorage.getItem('loggedInNama');
     const nim = localStorage.getItem('loggedInNIM');
-    console.log(nama)
-    console.log(nim)
+    // console.log(nama)
+    // console.log(nim)
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
-
+    
+        // Reset nilai totalsBySemester dan totalBobotCpl
+        // setTotalsBySemester({});
+        setTotalBobotCpl({});
+    
         // Mengambil data berdasarkan semester yang dipilih dari API
         fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
+                // console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
                 setFilteredData(data.data);
             })
             .catch(error => console.error('There was an error!', error));
-            
-            
     };
+    // Mengambil semua data id_cpl dari API
+    
+    
+    useEffect(() => {
+        fetch('http://localhost:8000/api/dashboardmhs/getIdCpl')
+        .then(response => response.json())
+        .then(data => {
+            setIdCplData(data);
+            
+        })
+        .catch(error => console.error('There was an error!', error));
+    }, []);
+    useEffect(() => {
+        fetch('http://localhost:8000/api/dashboardmhs/getBobotCpl')
+        .then(response => response.json())
+        .then(data => {
+            setIdBobotData(data);
+            
+        })
+        .catch(error => console.error('There was an error!', error));
+    }, []);
 
     useEffect(() => {
         // Mengambil data semua semester dari API
@@ -60,6 +89,41 @@ const PencapaianMhs = () => {
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
+    
+    useEffect(() => {
+        const calculateTotalBobotCpl = () => {
+            const totals = { ...totalBobotCpl }; 
+            
+            // Membuat objek untuk memetakan id_cpl ke bobot_cpl dari idBobotData
+            const idCplToBobot = {};
+            idBobotData.forEach((item) => {
+                idCplToBobot[item.id_cpl] = parseFloat(item.bobot_cpl || 0);
+            });
+            if (filteredData && filteredData.length > 0) {
+            filteredData.forEach((row) => {
+                const bobotCpl = idCplToBobot[row.id_cpl];
+                if (bobotCpl !== undefined) {
+                    totals[row.id_cpl] = (totals[row.id_cpl] || 0) + bobotCpl;
+                }
+            });
+            }else {
+                console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
+            }
+            const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
+            setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
+            console.log('Total All Semesters:', totalAllSemesters); // Cek total akumulasi dari semua semester
+
+            setTotalBobotCpl(totals);
+            console.log(totals);
+        };
+        
+        
+        calculateTotalBobotCpl();
+    }, [filteredData, idBobotData]);
+      
+    
+     
+      
     return (
         <>
             <NavbarMhsComponent />
@@ -81,33 +145,80 @@ const PencapaianMhs = () => {
                     <h3>Filters</h3>
                     <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                        <TableHead>
+                        <TableHead> 
                         <TableRow>
-                            <StyledTableCell>Kode MK</StyledTableCell>
-                            <StyledTableCell align="right">Mata Kuliah</StyledTableCell>
-                            <StyledTableCell align="right">sks</StyledTableCell>
-                            <StyledTableCell align="right">CPL</StyledTableCell>
-                            <StyledTableCell align="right">Bobot CPL</StyledTableCell>
+                            <StyledTableCell>Mata Kuliah</StyledTableCell>
+                            {idCplData.length > 0 &&
+                            idCplData.map((item, index) => (
+                                <StyledTableCell align="center" key={index}>
+                                ID CPL-{item.id_cpl}
+                                </StyledTableCell>
+                            ))
+                            }
+                            <StyledTableCell>Total</StyledTableCell>
+                        </TableRow>                                                       
+                        <TableRow>
+                                <StyledTableCell align="center" ></StyledTableCell>
+                                <StyledTableCell align="center" >1</StyledTableCell>
+                                <StyledTableCell align="center">1</StyledTableCell>
+                                <StyledTableCell align="center">1</StyledTableCell>
+                                <StyledTableCell align="center">2</StyledTableCell>
+                                <StyledTableCell align="center">20</StyledTableCell>
+                                <StyledTableCell align="center">10</StyledTableCell>
+                                <StyledTableCell align="center">15</StyledTableCell>
+                                <StyledTableCell align="center">7</StyledTableCell>
+                                <StyledTableCell align="center">3</StyledTableCell>
+                                <StyledTableCell align="center">20</StyledTableCell>
+                                <StyledTableCell align="center">10</StyledTableCell>
+                                <StyledTableCell align="center">10</StyledTableCell>
+                                <StyledTableCell align="center">100</StyledTableCell>
+                                
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        
                             {Array.isArray(filteredData) && filteredData?.length > 0 ? (
-                            filteredData.map((row, index) => (
-                                <TableRow key={index}>
-                                <TableCell>{row.kode_mk}</TableCell>
-                                <TableCell align="right">{row.nama_mk}</TableCell>
-                                <TableCell align="right">{row.sks}</TableCell>
-                                <TableCell align="right">{row.id_cpl}</TableCell>
-                                <TableCell align="right">{row.bobot_cpl}</TableCell>
-                                </TableRow>
-                            ))
+                                filteredData.map((row, index) => {
+                                // Temukan bobot_cpl yang sesuai dengan mata kuliah pada setiap semester
+                                const bobotCplFiltered = idBobotData.filter(item => item.id_cpl === row.id_cpl);
+
+                                return (
+                                    <TableRow key={index}>
+                                    <TableCell>{row.nama_mk}</TableCell>
+                                    {/* Menampilkan nilai bobot_cpl yang sesuai */}
+                                    {idCplData.map((cpl, idx) => {
+                                        const matchedBobotCpl = bobotCplFiltered.find(bobot => bobot.id_cpl === cpl.id_cpl);
+                                        return (
+                                        <StyledTableCell align="center" key={idx}>
+                                            {matchedBobotCpl ? matchedBobotCpl.bobot_cpl : '-'}
+                                        </StyledTableCell>
+                                        );
+                                    })}
+                                    </TableRow>
+                                );
+                                })
                             ) : (
-                            <TableRow>
-                                <TableCell colSpan={5}>No data available</TableCell>
-                            </TableRow>
+                                <TableRow>
+                                <TableCell colSpan={idCplData.length + 2}>No data available</TableCell>
+                                </TableRow>
                             )}
-                        </TableBody>
+                            
+                            </TableBody>
+                            {/* Baris "Jumlah" */}
+                            <TableRow>
+                                    <TableCell>Jumlah</TableCell>
+                                    {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => (
+                                        <StyledTableCell align="center" key={idx}>
+                                            {totalBobotCpl[cpl.id_cpl] || 0}
+                                        </StyledTableCell>
+                                    ))}
+                                    {/* Menampilkan total bobot_cpl dari semua semester */}
+                                    {Array.isArray(filteredData) && filteredData.length > 0 && (
+                                        <StyledTableCell align="center">
+                                        {Object.values(totalBobotCpl).reduce(( curr) => curr, 0) + totalAllSemesters}
+                                    </StyledTableCell>
+                                    )}
+                                </TableRow>
+
                     </Table>
                     </TableContainer>
 
