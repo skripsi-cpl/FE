@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import { NavbarComponent, FooterComponent } from "../../Components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,10 +6,12 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const toastShownRef = useRef(false);
+  const [loggedInNama, setLoggedInNama] = useState('');
   //trigger toast
   useEffect(() => {
     const loggedInNama = localStorage.getItem('loggedInNama');
-
+    
+    const nama = localStorage.getItem('loggedInNama');
     if (loggedInNama && !toastShownRef.current) {
       toast.success("Login Berhasil", {
         position: "top-center",
@@ -20,7 +22,7 @@ const Dashboard = () => {
         draggable: true,
         progress: undefined,
       });
-
+      setLoggedInNama(nama);
       // ngasih tau klo toast nya udh ke trigger
       toastShownRef.current = true;
     }
@@ -30,7 +32,7 @@ const Dashboard = () => {
     <>
       <NavbarComponent />
       <div className="container">
-        <h1>Hello, Guys!</h1>
+        <h1>Hello,{loggedInNama}</h1>
 
         <div className="content">
           <p>This is content</p>

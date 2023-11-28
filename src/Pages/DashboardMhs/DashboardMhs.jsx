@@ -8,7 +8,6 @@ import "./Dashboardmhs.css";
 const DashboardMhs = () => {
     const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
-    const [loggedInNIM, setLoggedInNIM] = useState('');
     //trigger toast
     useEffect(() => {
         const loggedInNama = localStorage.getItem('loggedInNama');
@@ -40,7 +39,7 @@ const DashboardMhs = () => {
             <NavbarMhsComponent />
             <div className="container">
                 <h1>Hello {loggedInNama}</h1>
-                <h1>NIM {loggedInNIM}</h1>
+                
                 <div className="content">
                     <p>ini content</p>
                 </div>
