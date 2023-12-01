@@ -1,6 +1,6 @@
-import { NavbarMhsComponent, FooterComponent} from "../../Components";
+import { NavbarMhsComponent, FooterComponent } from "../../Components";
 import "./PencapaianMhs.css"
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,13 +14,13 @@ import Paper from '@mui/material/Paper';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
+        fontSize: 14,
     },
-  }));
+}));
 const PencapaianMhs = () => {
     const [semesters, setSemesters] = useState([]);
     const [selectedSemester, setSelectedSemester] = useState('');
@@ -29,7 +29,7 @@ const PencapaianMhs = () => {
     const [idBobotData, setIdBobotData] = useState([]);
     const [totalBobotCpl, setTotalBobotCpl] = useState({});
     const [totalAllSemesters, setTotalAllSemesters] = useState(0);
-    
+
     // const [totalsBySemester, setTotalsBySemester] = useState({});
     // localStorage.setItem('loggedInNama', loggedInNama);
     // localStorage.setItem('loggedInNIM', loggedInNIM);
@@ -40,11 +40,11 @@ const PencapaianMhs = () => {
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
-    
+
         // Reset nilai totalsBySemester dan totalBobotCpl
         // setTotalsBySemester({});
         setTotalBobotCpl({});
-    
+
         // Mengambil data berdasarkan semester yang dipilih dari API
         fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
             .then(response => response.json())
@@ -55,25 +55,25 @@ const PencapaianMhs = () => {
             .catch(error => console.error('There was an error!', error));
     };
     // Mengambil semua data id_cpl dari API
-    
-    
+
+
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getIdCpl')
-        .then(response => response.json())
-        .then(data => {
-            setIdCplData(data);
-            
-        })
-        .catch(error => console.error('There was an error!', error));
+            .then(response => response.json())
+            .then(data => {
+                setIdCplData(data);
+
+            })
+            .catch(error => console.error('There was an error!', error));
     }, []);
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getBobotCpl')
-        .then(response => response.json())
-        .then(data => {
-            setIdBobotData(data);
-            
-        })
-        .catch(error => console.error('There was an error!', error));
+            .then(response => response.json())
+            .then(data => {
+                setIdBobotData(data);
+
+            })
+            .catch(error => console.error('There was an error!', error));
     }, []);
 
     useEffect(() => {
@@ -84,29 +84,29 @@ const PencapaianMhs = () => {
                 setSemesters(data);
                 if (data.length > 0) {
                     setSelectedSemester(data[0].semester_TA);
-                   
+
                 }
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
-    
+
     useEffect(() => {
         const calculateTotalBobotCpl = () => {
-            const totals = { ...totalBobotCpl }; 
-            
+            const totals = { ...totalBobotCpl };
+
             // Membuat objek untuk memetakan id_cpl ke bobot_cpl dari idBobotData
             const idCplToBobot = {};
             idBobotData.forEach((item) => {
                 idCplToBobot[item.id_cpl] = parseFloat(item.bobot_cpl || 0);
             });
             if (filteredData && filteredData.length > 0) {
-            filteredData.forEach((row) => {
-                const bobotCpl = idCplToBobot[row.id_cpl];
-                if (bobotCpl !== undefined) {
-                    totals[row.id_cpl] = (totals[row.id_cpl] || 0) + bobotCpl;
-                }
-            });
-            }else {
+                filteredData.forEach((row) => {
+                    const bobotCpl = idCplToBobot[row.id_cpl];
+                    if (bobotCpl !== undefined) {
+                        totals[row.id_cpl] = (totals[row.id_cpl] || 0) + bobotCpl;
+                    }
+                });
+            } else {
                 console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
             }
             const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
@@ -116,14 +116,14 @@ const PencapaianMhs = () => {
             setTotalBobotCpl(totals);
             console.log(totals);
         };
-        
-        
+
+
         calculateTotalBobotCpl();
     }, [filteredData, idBobotData]);
-      
-    
-     
-      
+
+
+
+
     return (
         <>
             <NavbarMhsComponent />
@@ -132,7 +132,7 @@ const PencapaianMhs = () => {
 
                 <div className="content-dosen-data-mhs">
                     <form action="">
-                    <h3>Pilih Semester</h3>
+                        <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
                             {semesters.map((semester, index) => (
                                 <option key={index} value={semester.semester_TA}>
@@ -144,82 +144,82 @@ const PencapaianMhs = () => {
 
                     <h3>Filters</h3>
                     <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                        <TableHead> 
-                        <TableRow>
-                            <StyledTableCell>Mata Kuliah</StyledTableCell>
-                            {idCplData.length > 0 &&
-                            idCplData.map((item, index) => (
-                                <StyledTableCell align="center" key={index}>
-                                ID CPL-{item.id_cpl}
-                                </StyledTableCell>
-                            ))
-                            }
-                            <StyledTableCell>Total</StyledTableCell>
-                        </TableRow>                                                       
-                        <TableRow>
-                                <StyledTableCell align="center" ></StyledTableCell>
-                                <StyledTableCell align="center" >1</StyledTableCell>
-                                <StyledTableCell align="center">1</StyledTableCell>
-                                <StyledTableCell align="center">1</StyledTableCell>
-                                <StyledTableCell align="center">2</StyledTableCell>
-                                <StyledTableCell align="center">20</StyledTableCell>
-                                <StyledTableCell align="center">10</StyledTableCell>
-                                <StyledTableCell align="center">15</StyledTableCell>
-                                <StyledTableCell align="center">7</StyledTableCell>
-                                <StyledTableCell align="center">3</StyledTableCell>
-                                <StyledTableCell align="center">20</StyledTableCell>
-                                <StyledTableCell align="center">10</StyledTableCell>
-                                <StyledTableCell align="center">10</StyledTableCell>
-                                <StyledTableCell align="center">100</StyledTableCell>
-                                
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {Array.isArray(filteredData) && filteredData?.length > 0 ? (
-                                filteredData.map((row, index) => {
-                                // Temukan bobot_cpl yang sesuai dengan mata kuliah pada setiap semester
-                                const bobotCplFiltered = idBobotData.filter(item => item.id_cpl === row.id_cpl);
-
-                                return (
-                                    <TableRow key={index}>
-                                    <TableCell>{row.nama_mk}</TableCell>
-                                    {/* Menampilkan nilai bobot_cpl yang sesuai */}
-                                    {idCplData.map((cpl, idx) => {
-                                        const matchedBobotCpl = bobotCplFiltered.find(bobot => bobot.id_cpl === cpl.id_cpl);
-                                        return (
-                                        <StyledTableCell align="center" key={idx}>
-                                            {matchedBobotCpl ? matchedBobotCpl.bobot_cpl : '-'}
-                                        </StyledTableCell>
-                                        );
-                                    })}
-                                    </TableRow>
-                                );
-                                })
-                            ) : (
+                        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                            <TableHead>
                                 <TableRow>
-                                <TableCell colSpan={idCplData.length + 2}>No data available</TableCell>
+                                    <StyledTableCell>Mata Kuliah</StyledTableCell>
+                                    {idCplData.length > 0 &&
+                                        idCplData.map((item, index) => (
+                                            <StyledTableCell align="center" key={index}>
+                                                ID CPL-{item.id_cpl}
+                                            </StyledTableCell>
+                                        ))
+                                    }
+                                    <StyledTableCell>Total</StyledTableCell>
                                 </TableRow>
-                            )}
-                            
+                                <TableRow>
+                                    <StyledTableCell align="center" ></StyledTableCell>
+                                    <StyledTableCell align="center" >1</StyledTableCell>
+                                    <StyledTableCell align="center">1</StyledTableCell>
+                                    <StyledTableCell align="center">1</StyledTableCell>
+                                    <StyledTableCell align="center">2</StyledTableCell>
+                                    <StyledTableCell align="center">20</StyledTableCell>
+                                    <StyledTableCell align="center">10</StyledTableCell>
+                                    <StyledTableCell align="center">15</StyledTableCell>
+                                    <StyledTableCell align="center">7</StyledTableCell>
+                                    <StyledTableCell align="center">3</StyledTableCell>
+                                    <StyledTableCell align="center">20</StyledTableCell>
+                                    <StyledTableCell align="center">10</StyledTableCell>
+                                    <StyledTableCell align="center">10</StyledTableCell>
+                                    <StyledTableCell align="center">100</StyledTableCell>
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {Array.isArray(filteredData) && filteredData?.length > 0 ? (
+                                    filteredData.map((row, index) => {
+                                        // Temukan bobot_cpl yang sesuai dengan mata kuliah pada setiap semester
+                                        const bobotCplFiltered = idBobotData.filter(item => item.id_cpl === row.id_cpl);
+
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell>{row.nama_mk}</TableCell>
+                                                {/* Menampilkan nilai bobot_cpl yang sesuai */}
+                                                {idCplData.map((cpl, idx) => {
+                                                    const matchedBobotCpl = bobotCplFiltered.find(bobot => bobot.id_cpl === cpl.id_cpl);
+                                                    return (
+                                                        <StyledTableCell align="center" key={idx}>
+                                                            {matchedBobotCpl ? matchedBobotCpl.bobot_cpl : '-'}
+                                                        </StyledTableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={idCplData.length + 2}>No data available</TableCell>
+                                    </TableRow>
+                                )}
+
                             </TableBody>
                             {/* Baris "Jumlah" */}
                             <TableRow>
-                                    <TableCell>Jumlah</TableCell>
-                                    {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => (
-                                        <StyledTableCell align="center" key={idx}>
-                                            {totalBobotCpl[cpl.id_cpl] || 0}
-                                        </StyledTableCell>
-                                    ))}
-                                    {/* Menampilkan total bobot_cpl dari semua semester */}
-                                    {Array.isArray(filteredData) && filteredData.length > 0 && (
-                                        <StyledTableCell align="center">
-                                        {Object.values(totalBobotCpl).reduce(( curr) => curr, 0) + totalAllSemesters}
+                                <TableCell>Jumlah</TableCell>
+                                {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => (
+                                    <StyledTableCell align="center" key={idx}>
+                                        {totalBobotCpl[cpl.id_cpl] || 0}
                                     </StyledTableCell>
-                                    )}
-                                </TableRow>
+                                ))}
+                                {/* Menampilkan total bobot_cpl dari semua semester */}
+                                {Array.isArray(filteredData) && filteredData.length > 0 && (
+                                    <StyledTableCell align="center">
+                                        {Object.values(totalBobotCpl).reduce((curr) => curr, 0) + totalAllSemesters}
+                                    </StyledTableCell>
+                                )}
+                            </TableRow>
 
-                    </Table>
+                        </Table>
                     </TableContainer>
 
                 </div>

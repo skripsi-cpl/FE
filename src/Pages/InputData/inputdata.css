@@ -4,20 +4,14 @@
 }
 
 .content-input-data {
-    margin-top: 20px;
     background-color: aliceblue;
-    padding: 40px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     flex-wrap: wrap;
     gap: 20px;
 }
 
 
 .card-data {
-    max-width: 400px;
-    height: auto;
     background: #fff;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -49,6 +43,20 @@
 
 .card-data button :hover {
     background-color: #ccc;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
