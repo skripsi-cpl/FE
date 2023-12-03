@@ -7,11 +7,11 @@ import "./Dashboard.css";
 const Dashboard = () => {
   const toastShownRef = useRef(false);
   const [loggedInNama, setLoggedInNama] = useState('');
+  
   //trigger toast
   useEffect(() => {
     const loggedInNama = localStorage.getItem('loggedInNama');
-    
-    const nama = localStorage.getItem('loggedInNama');
+
     if (loggedInNama && !toastShownRef.current) {
       toast.success("Login Berhasil", {
         position: "top-center",
@@ -22,7 +22,7 @@ const Dashboard = () => {
         draggable: true,
         progress: undefined,
       });
-      setLoggedInNama(nama);
+      setLoggedInNama(loggedInNama);
       // ngasih tau klo toast nya udh ke trigger
       toastShownRef.current = true;
     }

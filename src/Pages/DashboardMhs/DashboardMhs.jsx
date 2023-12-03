@@ -27,7 +27,6 @@ const DashboardMhs = () => {
                 progress: undefined,
             });
             setLoggedInNama(nama);
-            setLoggedInNIM(nim);
 
             // ngasih tau klo toast nya udh ke trigger
             toastShownRef.current = true;
