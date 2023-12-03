@@ -9,7 +9,6 @@ const DashboardMhs = () => {
     const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
     const [loggedInNIM, setLoggedInNIM] = useState('');
-
     //trigger toast
     useEffect(() => {
         const loggedInNama = localStorage.getItem('loggedInNama');
