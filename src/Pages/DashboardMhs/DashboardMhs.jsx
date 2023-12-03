@@ -8,7 +8,7 @@ import "./Dashboardmhs.css";
 const DashboardMhs = () => {
     const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
-    
+    const [loggedInNIM, setLoggedInNIM] = useState('');
 
     //trigger toast
     useEffect(() => {
