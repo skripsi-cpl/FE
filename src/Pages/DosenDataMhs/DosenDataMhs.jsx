@@ -9,12 +9,20 @@ const DosenDataMhs = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredMahasiswa, setFilteredMahasiswa] = useState([]);
   const [mahasiswaData, setMahasiswaData] = useState([]);
-
+  const [periodeData, setPeriodeData] = useState([]); // State untuk menyimpan data periode
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/mahasiswa');
+        const response = await axios.get('http://localhost:8000/api/mahasiswa/indexTa');
         console.log('Response from API:', response.data);
+        const extractedPeriodes = response.data.map((item) => item.periode);
+        console.log(extractedPeriodes)
+        setPeriodeData(extractedPeriodes);
+        // Mengambil data periode dari respons API dan menyimpannya dalam state periodeData
+        if (response.data.periode) {
+          setPeriodeData(response.data);
+          
+        }
         setMahasiswaData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -72,17 +80,17 @@ const DosenDataMhs = () => {
               </option>
             ))}
           </select>
-          <h3>Semester</h3>
+          <h3>Tahun Ajaran</h3>
         <select
           value={selectedSemester}
           onChange={handleSemesterChange}
         >
-          <option value="">Pilih Semester</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
-            <option key={semester} value={semester}>
-              {semester}
-            </option>
-          ))}
+          <option value="">Pilih Tahun Ajaran</option>
+          {periodeData.map((periode) => (
+              <option key={periode} value={periode}>
+                {periode}
+              </option>
+            ))}
         </select>
         <TableDosen filteredMahasiswa={filteredMahasiswa} selectedSemester={selectedSemester} />
       </div>

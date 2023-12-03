@@ -43,9 +43,9 @@ export default function CustomizedTables({
       );
 
       const mataKuliahResponse = await axios.get(
-        `http://localhost:8000/api/mata_kuliah?semester=${selectedSemester}`
+        `http://localhost:8000/api/mahasiswa/indexTa?periode=${selectedSemester}`
       );
-
+      
       console.log("Response from Mahasiswa API:", mahasiswaResponse.data);
       console.log("Response from Mata Kuliah API:", mataKuliahResponse.data);
 
@@ -67,11 +67,6 @@ export default function CustomizedTables({
           <TableRow>
             <StyledTableCell>No</StyledTableCell>
             <StyledTableCell align="center">Nama</StyledTableCell>
-            {mataKuliahData.map((mataKuliah) => (
-              <StyledTableCell align="center" key={mataKuliah.kode_mk}>
-                {mataKuliah.kode_mk}
-              </StyledTableCell>
-            ))}
             <StyledTableCell align="center">CPL (%)</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -82,12 +77,7 @@ export default function CustomizedTables({
               <StyledTableCell align="center">
                 {mahasiswa.nama_mhs}
               </StyledTableCell>
-              {mataKuliahData.map((mataKuliah) => (
-                <StyledTableCell align="center" key={mataKuliah.kode_mk}>
-                  {/* Tampilkan data mata kuliah sesuai dengan mahasiswa dan semester */}
-                  {"" /* Gantilah ini dengan data yang sesuai */}
-                </StyledTableCell>
-              ))}
+              
               <StyledTableCell align="center">{""}</StyledTableCell>
             </StyledTableRow>
           ))}

@@ -1,6 +1,6 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import { FooterComponent, NavbarDosenComponent } from '../../Components'
 import './dashboarddosen.css'
 import { NavLink } from 'react-router-dom'
@@ -8,7 +8,7 @@ export const loggedInNama = localStorage.getItem('loggedInNama');
 
 const DashboardDosen = () => {
     const toastShownRef = useRef(false);
-
+    const [loggedInNama, setLoggedInNama] = useState('');
     //trigger toast
     useEffect(() => {
         const loggedInNama = localStorage.getItem('loggedInNama');
@@ -23,7 +23,7 @@ const DashboardDosen = () => {
                 draggable: true,
                 progress: undefined,
             });
-
+            setLoggedInNama(loggedInNama)
             // ngasih tau klo toast nya udh ke trigger
             toastShownRef.current = true;
         }

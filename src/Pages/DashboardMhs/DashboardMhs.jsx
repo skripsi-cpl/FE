@@ -8,6 +8,8 @@ import "./Dashboardmhs.css";
 const DashboardMhs = () => {
     const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
+    
+
     //trigger toast
     useEffect(() => {
         const loggedInNama = localStorage.getItem('loggedInNama');
@@ -27,7 +29,6 @@ const DashboardMhs = () => {
                 progress: undefined,
             });
             setLoggedInNama(nama);
-            setLoggedInNIM(nim);
 
             // ngasih tau klo toast nya udh ke trigger
             toastShownRef.current = true;
