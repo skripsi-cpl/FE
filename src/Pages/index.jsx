@@ -3,7 +3,6 @@ import Login from "./Login/Login";
 // dashboard admin
 import Dashboard from "./Dashboard/Dashboard";
 import InputData from "./InputData/InputData";
-import Matakuliah from "./Matakuliah/Matakuliah";
 
 // dashboard dosen
 import DashboardDosen from "./DashboardDosen/DashboardDosen";
@@ -18,4 +17,4 @@ import DashboardMhs from "./DashboardMhs/DashboardMhs";
 import DashboardDepartment from "./DashboardDepartment/DashboardDepartment";
 import PencapaianDepartment from "./PencapaianDepartment/PencapaianDepartment";
 
-export { Login, Dashboard, DashboardDosen, DashboardMhs, DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs, PencapaianMhs, PencapaianDepartment, Matakuliah };
+export { Login, Dashboard, DashboardDosen, DashboardMhs, DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs, PencapaianMhs, PencapaianDepartment };

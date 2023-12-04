@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment } from "./Pages";
-import MataKuliah from "./Pages/Matakuliah/Matakuliah";
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
           {/* Page operator */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/inputdata" element={<InputData />} />
-          <Route path="/dashboard/matakuliah" element={<MataKuliah />} />
           {/* Page dosen */}
           <Route path="/dashboarddosen" element={<DashboardDosen />} />
           <Route path="/dashboarddosen/uploaddatamhs" element={<UploadDataMhs />} />

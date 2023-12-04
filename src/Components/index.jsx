@@ -11,5 +11,6 @@ import TableDosen from "./TableDosen/TableDosen";
 import ModalInputPL from "./ModalnputObe/ModalInputPL";
 import ModalInputCPL from "./ModalnputObe/ModalInputCPL";
 import ModalInputCPMK from "./ModalnputObe/ModalInputCPMK";
+import ModalMataKuliah from "./ModalnputObe/ModalMataKuliah";
 
-export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK };
+export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah };

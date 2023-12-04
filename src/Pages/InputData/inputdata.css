@@ -5,59 +5,36 @@
 
 .content-input-data {
     background-color: aliceblue;
+    padding: 20px;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-
-.card-data {
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    padding: 20px;
+.input-data {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
-.card-data h2 {
-    font-size: 30px;
-    font-weight: 600;
-}
-
-.card-data-desc {
-    margin-top: 20px;
+.button-input {
+    background-color: #c5e0e5;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
     font-size: 16px;
-    text-align: justify;
-    margin-bottom: 30px;
+    border-radius: 15px;
 }
 
-.card-data button {
-    width: 100%;
-    background-color: #fff;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    border: 1px solid #ccc;
+.button-input:hover {
+    background-color: #a3c1c6;
 }
 
-.card-data button :hover {
-    background-color: #ccc;
-}
 
-.tabs {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.tabs button {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 @media screen and (max-width: 768px) {
     .content-input-data {

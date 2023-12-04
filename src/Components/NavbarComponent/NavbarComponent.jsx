@@ -16,9 +16,6 @@ const NavbarComponent = () => {
             <NavLink to={"/dashboard/inputdata"} >Input Data</NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/matakuliah"} >Mata Kuliah</NavLink>
-          </li>
-          <li>
             <NavLink to={"/"} >Sign out</NavLink>
           </li>
         </ul>
