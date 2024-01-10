@@ -1,4 +1,4 @@
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavbarComponent, FooterComponent } from "../../Components";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +7,7 @@ import "./Dashboard.css";
 const Dashboard = () => {
   const toastShownRef = useRef(false);
   const [loggedInNama, setLoggedInNama] = useState('');
-  
+
   //trigger toast
   useEffect(() => {
     const loggedInNama = localStorage.getItem('loggedInNama');
@@ -36,6 +36,7 @@ const Dashboard = () => {
 
         <div className="content">
           <p>This is content</p>
+
         </div>
         <ToastContainer />
       </div>

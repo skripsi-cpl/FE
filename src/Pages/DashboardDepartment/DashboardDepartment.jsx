@@ -28,7 +28,7 @@ const DashboardDepartment = () => {
         <>
             <NavbarComponent />
             <div className="container">
-                <h1>Helo, Guys! ini dashboard Department hasiswa</h1>
+                <h1>Dashboard Department Mahasiswa</h1>
 
                 <div className="content">
                     <p>ini content</p>
