@@ -17,4 +17,7 @@ import DashboardMhs from "./DashboardMhs/DashboardMhs";
 import DashboardDepartment from "./DashboardDepartment/DashboardDepartment";
 import PencapaianDepartment from "./PencapaianDepartment/PencapaianDepartment";
 
-export { Login, Dashboard, DashboardDosen, DashboardMhs, DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs, PencapaianMhs, PencapaianDepartment };
+//Not Found
+import NotFound from "./NotFoundPage"
+
+export { Login, Dashboard, DashboardDosen, DashboardMhs, DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs, PencapaianMhs, PencapaianDepartment, NotFound };

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment } from "./Pages";
+import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment, NotFound } from "./Pages";
 
 function App() {
   return (
@@ -20,6 +20,8 @@ function App() {
           {/* Page department */}
           <Route path="/dashboarddepartment" element={<DashboardDepartment />} />
           <Route path="/dashboarddepartment/pencapaian" element={<PencapaianDepartment />} />
+          {/* Not Found */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>
