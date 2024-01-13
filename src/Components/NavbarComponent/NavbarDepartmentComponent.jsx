@@ -13,7 +13,7 @@ const NavbarDepartmentComponent = () => {
                         <NavLink to={"/dashboard"}>Beranda</NavLink>
                     </li>
                     <li>
-                        <NavLink to={"/dashboarddepartment/pencapaian"} >Lihat Pencapaian</NavLink>
+                        <NavLink to={"/dashboarddepartment/permahasiswaan"} >Permahasiswaan</NavLink>
                     </li>
                     <li>
                         <NavLink to={"/"} >Sign out</NavLink>

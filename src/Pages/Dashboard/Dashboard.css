@@ -8,7 +8,7 @@
   margin: 40px auto 0;
 }
 
-.content {
+.content-operator {
   width: 100%;
   background-color: aliceblue;
   margin-top: 30px;
@@ -17,4 +17,8 @@
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
+  margin-bottom: 100px;
+
+  display: flex;
+  justify-content: space-between;
 }

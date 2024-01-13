@@ -5,7 +5,7 @@
 
 .content-upload-mhs {
     width: 100%;
-    background-color: aliceblue;
+    background-color: #f0f8ff;
     margin-top: 30px;
     margin-bottom: 100px;
     border-radius: 5px;
@@ -21,24 +21,80 @@
 
 .content-upload-mhs form select {
     padding: 10px;
+    margin-bottom: 15px;
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
 }
+
+.content-upload-mhs form select option {
+    padding: 10px;
+    font-size: 15px;
+    background-color: #fff;
+    color: #333;
+}
+
+.content-upload-mhs form select option:checked {
+    background-color: #3498db;
+    color: #fff;
+}
+
 
 .upload-excel-wrapper {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
+
 }
 
 .container-upload-excel {
     width: 600px;
     height: 400px;
-    background-color: beige;
+    background-color: #f5f5dc;
+    border: 2px dashed #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-upload-excel img {
+    width: 64px;
+    margin-bottom: 10px;
 }
 
 .button-excel-wrapper {
     display: flex;
     justify-content: flex-end;
+    margin-top: 15px;
+
 }
 
 .button-excel button {
-    margin-right: 10px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button-excel button:hover {
+    background-color: #45a049;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }

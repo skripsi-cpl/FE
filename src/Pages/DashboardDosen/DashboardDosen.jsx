@@ -1,20 +1,22 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FooterComponent, NavbarDosenComponent } from '../../Components'
 import './dashboarddosen.css'
 import { NavLink } from 'react-router-dom'
 export const loggedInNama = localStorage.getItem('loggedInNama');
 
 const DashboardDosen = () => {
-    const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
-    //trigger toast
-    useEffect(() => {
-        const loggedInNama = localStorage.getItem('loggedInNama');
+    const [redirect, setredirect] = useState('');
 
-        if (loggedInNama && !toastShownRef.current) {
-            toast.success("Login Berhasil ", {
+    useEffect(() => {
+        const redirect = localStorage.getItem('redirect');
+        const nama = localStorage.getItem('loggedInNama');
+        setLoggedInNama(nama);
+
+        if (redirect) {
+            toast.success("Login Berhasil", {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -23,11 +25,11 @@ const DashboardDosen = () => {
                 draggable: true,
                 progress: undefined,
             });
-            setLoggedInNama(loggedInNama)
-            // ngasih tau klo toast nya udh ke trigger
-            toastShownRef.current = true;
+            setredirect(redirect);
+            localStorage.removeItem('redirect'); // Remove the item after displaying the toast
         }
     }, []);
+
     return (
         <>
             <NavbarDosenComponent />

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import "./uploaddata.css";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadDataMhs = () => {
   const [mataKuliahOptions, setMataKuliahOptions] = useState([]);
@@ -37,7 +39,18 @@ const UploadDataMhs = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
+
+    if (file) {
+      const allowedFileTypes = ['.xlsx', '.csv'];
+      const fileType = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+
+      if (allowedFileTypes.indexOf(`.${fileType}`) === -1) {
+        toast.error('Invalid file type. Please upload a valid Excel (.xlsx) or CSV (.csv) file.');
+        return;
+      }
+
+      setSelectedFile(file);
+    }
   };
 
   const handleMataKuliahChange = (event) => {
@@ -60,19 +73,20 @@ const UploadDataMhs = () => {
     formData.append('file', selectedFile);
     formData.append('semester', selectedSemester);
     formData.append('mata_kuliah', selectedMataKuliah);
-  
+
     try {
       const response = await axios.post('http://localhost:8000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
-      alert('File uploaded successfully'); // You can replace this with your preferred notification method
-  
+
+      toast.success('Berhasil mengupload file');
+
       // Auto-refresh after a successful upload
       window.location.reload();
     } catch (error) {
+      toast.error('Gagal mengupload file');
       console.error('Error uploading file:', error);
     }
   };
@@ -81,7 +95,7 @@ const UploadDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
-        <h1>Dosen Pengampu!</h1>
+        <h1>Dosen Pengampu</h1>
         <div className="content-upload-mhs">
           <form action="" onDrop={handleDrop} onDragOver={handleDragOver}>
             <h3>Pilih Semester</h3>
@@ -130,6 +144,7 @@ const UploadDataMhs = () => {
             </div>
           </form>
         </div>
+        <ToastContainer />
       </div>
       <FooterComponent />
     </>

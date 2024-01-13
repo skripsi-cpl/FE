@@ -1,25 +1,25 @@
-import { NavbarMhsComponent, FooterComponent } from "../../Components";
+import { NavbarMhsComponent, FooterComponent, DataComponent } from "../../Components";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useRef, useState } from 'react';
-import { Radar } from "react-chartjs-2";
+import { useEffect, useState } from 'react';
 import 'chart.js/auto';
 import "./Dashboardmhs.css";
 
 // Ambil email dari localStorage
 const DashboardMhs = () => {
-    const toastShownRef = useRef(false);
     const [loggedInNama, setLoggedInNama] = useState('');
-    const [loggedInNIM, setLoggedInNIM] = useState('');
-    //trigger toast
+    const [loggedInNim, setLoggedInNim] = useState('');
+    const [redirect, setredirect] = useState('');
+
     useEffect(() => {
-        const loggedInNama = localStorage.getItem('loggedInNama');
+        const redirect = localStorage.getItem('redirect');
         const nama = localStorage.getItem('loggedInNama');
         const nim = localStorage.getItem('loggedInNIM');
+        setLoggedInNama(nama);
+        setLoggedInNim(nim);
 
-
-        if (loggedInNama && !toastShownRef.current) {
-            toast.success("Login Berhasil ", {
+        if (redirect) {
+            toast.success("Login Berhasil", {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -28,10 +28,8 @@ const DashboardMhs = () => {
                 draggable: true,
                 progress: undefined,
             });
-            setLoggedInNama(nama);
-
-            // ngasih tau klo toast nya udh ke trigger
-            toastShownRef.current = true;
+            setredirect(redirect);
+            localStorage.removeItem('redirect'); // Remove the item after displaying the toast
         }
     }, []);
 
@@ -39,48 +37,26 @@ const DashboardMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container">
-                <h1>Hello {loggedInNama}</h1>
-
-                <div className="content">
-                    <Radar
-                        data={{
-                            labels: [
-                                "Kehadiran",
-                                "Tugas",
-                                "Ujian",
-                                "Kuis",
-                                "Praktikum",
-                                "Responsi",
-                            ],
-                            datasets: [
-                                {
-                                    label: "Nilai",
-                                    data: [90, 80, 70, 60, 50, 40],
-                                    backgroundColor: [
-                                        "rgba(255, 99, 132, 0.2)",
-                                    ],
-                                    borderColor: [
-                                        "rgba(255, 99, 132, 1)",
-                                    ],
-                                    borderWidth: 1,
-                                },
-                            ],
-                        }}
-                        height={400}
-                        width={600}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                r: {
-                                    angleLines: {
-                                        display: false,
-                                    },
-                                    suggestedMin: 0,
-                                    suggestedMax: 100,
-                                },
-                            },
-                        }}
-                    />
+                <h1>Hello, {loggedInNama}</h1>
+                <div className="content-mhs">
+                    <div className="content-profil-1">
+                        <h3>Informasi Mahasiswa</h3>
+                        <br />
+                        <div className="detail-profil-1">
+                            <h4>Nama     :   </h4> <p>{loggedInNama}</p>
+                            <h4>NIM      :   </h4> <p>{loggedInNim}</p>
+                            <h4>Prodi    :    </h4> <p>Informatika</p>
+                            <h4>Semester :   </h4> <p>8</p>
+                        </div>
+                    </div>
+                    <div className="content-profil-2">
+                        <h3>Informasi Akademik Mahasiswa</h3>
+                        <br />
+                        <div className="detail-profil-2">
+                            <DataComponent title="SKS Kumulatif" number={100} width={"150px"} />
+                            <DataComponent title="IP Kumulatif" number={3.64} width={"150px"} />
+                        </div>
+                    </div>
                 </div>
             </div>
             <FooterComponent />
