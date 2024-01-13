@@ -151,28 +151,11 @@ const PencapaianMhs = () => {
                                     {idCplData.length > 0 &&
                                         idCplData.map((item, index) => (
                                             <StyledTableCell align="center" key={index}>
-                                                ID CPL-{item.id_cpl}
+                                                ID CPL-{item.id_cpl.slice(-2)}
                                             </StyledTableCell>
                                         ))
                                     }
                                     <StyledTableCell>Total</StyledTableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <StyledTableCell align="center" ></StyledTableCell>
-                                    <StyledTableCell align="center" >1</StyledTableCell>
-                                    <StyledTableCell align="center">1</StyledTableCell>
-                                    <StyledTableCell align="center">1</StyledTableCell>
-                                    <StyledTableCell align="center">2</StyledTableCell>
-                                    <StyledTableCell align="center">20</StyledTableCell>
-                                    <StyledTableCell align="center">10</StyledTableCell>
-                                    <StyledTableCell align="center">15</StyledTableCell>
-                                    <StyledTableCell align="center">7</StyledTableCell>
-                                    <StyledTableCell align="center">3</StyledTableCell>
-                                    <StyledTableCell align="center">20</StyledTableCell>
-                                    <StyledTableCell align="center">10</StyledTableCell>
-                                    <StyledTableCell align="center">10</StyledTableCell>
-                                    <StyledTableCell align="center">100</StyledTableCell>
-
                                 </TableRow>
                             </TableHead>
                             <TableBody>
