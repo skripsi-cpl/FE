@@ -23,13 +23,15 @@ const style = {
 
 const ModalInputCPMK = () => {
     const [open, setOpen] = React.useState(false);
-    const [dataCPL, setDataCPL, filterData] = useState([]);
+    const [dataCPL, setDataCPL] = useState([]);
+    const [dataCPMK, setDataCPMK ] = useState([]);
     const [error, setError] = useState({});
     const [formData, setFormData] = useState({
         id_cpmk: '',
         nama_cpmk: '',
         bobot_cpmk: '',
         id_cpl: '',
+        bobot_cpl:'',
     });
 
     const handleOpen = () => setOpen(true);
@@ -45,6 +47,18 @@ const ModalInputCPMK = () => {
             }
         };
         fetchDataCPL();
+    }, []);
+
+    useEffect(() => {
+        const fetchDataCPMK = async () => {
+            try {
+                const response = await Axios.get("http://localhost:8000/api/datacpmk");
+                setDataCPMK(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchDataCPMK();
     }, []);
 
     const handleChange = (e) => {
@@ -80,7 +94,31 @@ const ModalInputCPMK = () => {
         setError(validationError);
 
         if (Object.keys(validationError).length > 0) return;
+        const selectedCPL = dataCPL.find((item) => item.id_cpl === formData.id_cpl);
+        const selectedBobotCPL = selectedCPL ? parseFloat(selectedCPL.bobot_cpl || 0) : 0;
 
+        // Hitung total bobot CPMK yang akan ditambahkan
+        const newBobotCPMK = parseFloat(formData.bobot_cpmk || 0);
+
+        if (newBobotCPMK > selectedBobotCPL) {
+            validationError.bobot_cpmk = "Bobot CPMK tidak boleh lebih besar dari bobot CPL yang dipilih";
+            setError(validationError);
+            return;
+        }
+        // Menghitung total bobot_cpmk untuk id_cpl yang dipilih
+        const totalBobotCPMK = dataCPMK.reduce((total, item) => {
+            if (item.id_cpl === formData.id_cpl) {
+                return total + parseFloat(item.bobot_cpmk || 0);
+            }
+            return total;
+        }, 0);
+        console.log(totalBobotCPMK);        
+        if (totalBobotCPMK + newBobotCPMK > selectedBobotCPL) {
+            validationError.bobot_cpmk = "Jumlah bobot CPMK tidak boleh melebihi bobot CPL yang dipilih";
+            setError(validationError);
+            return;
+        }
+        
         try {
             await Axios.post('http://localhost:8000/api/datapostcpmk', formData);
             toast.success("Data CPMK posted successfully", {
@@ -93,6 +131,8 @@ const ModalInputCPMK = () => {
                 progress: undefined,
             });
             handleClose();
+            window.location.reload();
+
         } catch (error) {
             toast.error("Data CPMK failed to post", {
                 position: "top-center",

@@ -39,18 +39,7 @@ const UploadDataMhs = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
-    if (file) {
-      const allowedFileTypes = ['.xlsx', '.csv'];
-      const fileType = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
-
-      if (allowedFileTypes.indexOf(`.${fileType}`) === -1) {
-        toast.error('Invalid file type. Please upload a valid Excel (.xlsx) or CSV (.csv) file.');
-        return;
-      }
-
-      setSelectedFile(file);
-    }
+    setSelectedFile(file);
   };
 
   const handleMataKuliahChange = (event) => {

@@ -24,7 +24,9 @@ const style = {
 const ModalInputCPL = () => {
     const [open, setOpen] = React.useState(false);
     const [dataPL, setDataPL] = useState([])
+    const [dataCPL, setDataCPL] = useState([])
     const [error, setError] = useState({});
+    const [getTotalBobotCPL, setGetTotalBobotCPL] = useState(0);
     const [formData, setFormData] = useState({
         id_cpl: '',
         nama_cpl: '',
@@ -62,10 +64,23 @@ const ModalInputCPL = () => {
         } else if (formData.bobot_cpl > 1) {
             validationError.bobot_cpl = 'Bobot CPL tidak boleh lebih dari 1';
         }
-
+        
         setError(validationError);
-
         if (Object.keys(validationError).length > 0) return;
+        
+        
+        
+    
+        // Hitung total bobot CPL yang akan ditambahkan
+        const newBobotCPL = parseFloat(formData.bobot_cpl || 0);
+        
+        // Jika jumlah total melebihi 1, tampilkan pesan error
+        if (getTotalBobotCPL + newBobotCPL > 1) {
+            validationError.bobot_cpl = 'Jumlah bobot CPL maksimal 1';
+            setError(validationError);
+            return;
+        }
+        
 
         try {
             await Axios.post('http://localhost:8000/api/datapostcpl', formData);
@@ -110,6 +125,23 @@ const ModalInputCPL = () => {
             }
         };
         fetchDataPL();
+    }, []);
+    useEffect(() => {
+        const fetchdataCPL = async () => {
+            try {
+                const response = await Axios.get("http://localhost:8000/api/datacpl");
+                setDataCPL(response.data.bobot_cpl);
+                // Menampilkan nilai bobot_cpl saja
+                
+                const totalBobotCPL = response.data.reduce((total, item) => {
+                    return total + parseFloat(item.bobot_cpl || 0);
+                }, 0);
+                setGetTotalBobotCPL(totalBobotCPL)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchdataCPL();
     }, []);
 
 
