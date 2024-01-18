@@ -7,10 +7,13 @@ import NavbarDepartmentComponent from "./NavbarComponent/NavbarDepartmentCompone
 import FooterComponent from "./FooterComponent/FooterComponent";
 import TableDosen from "./TableDosen/TableDosen";
 
+//data component
+import DataComponent from "./DatacComponent/DataComponent";
+
 //Modal 
 import ModalInputPL from "./ModalnputObe/ModalInputPL";
 import ModalInputCPL from "./ModalnputObe/ModalInputCPL";
 import ModalInputCPMK from "./ModalnputObe/ModalInputCPMK";
 import ModalMataKuliah from "./ModalnputObe/ModalMataKuliah";
 
-export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah };
+export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah, DataComponent };

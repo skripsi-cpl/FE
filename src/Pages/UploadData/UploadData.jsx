@@ -1,85 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import "./uploaddata.css";
-import { Button } from "react-bootstrap";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadDataMhs = () => {
   const [mataKuliahOptions, setMataKuliahOptions] = useState([]);
-  const [selectedTahunAjaran, setSelectedTahunAjaran] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedIdMk, setSelectedIdMk] = useState(""); // Tambahkan state id_mk
   const [selectedKelas, setSelectedKelas] = useState([]);
   const [kelasOptions, setKelasOptions] = useState([]);
   const [selectedMataKuliah, setSelectedMataKuliah] = useState("");
+
   const [tahunAjaranOptions, setTahunAjaranOptions] = useState([]);
   const [selectedSemesterType, setSelectedSemesterType] = useState("");
   const sortedTahunAjaran = tahunAjaranOptions.sort((a, b) => b - a);
   const [statusOptions, setStatusOptions] = useState([]);
-  // const [kelasStatus, setKelasStatus] = useState({
-  //   A: "Belum",
-  //   B: "Belum",
-  //   C: "Belum",
-  //   D: "Belum",
-  // });
-  // const [statusOptions, setStatusOptions] = useState({
-  //   A: "Belum",
-  //   B: "Belum",
-  //   C: "Belum",
-  //   D: "Belum",
-  // });
+
 
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/tahun-ajaran-data"
-        );
-        const sortedData = response.data.sort((a, b) => {
-          // Anggap 'periode' adalah dalam format 'YYYY/YYYY'
-          return b.periode.localeCompare(a.periode);
-        });
-        setTahunAjaranOptions(sortedData);
+        if (selectedSemester) {
+          const response = await axios.get(
+            `http://localhost:8000/api/mata_kuliah?semester=${selectedSemester}`
+          );
+          console.log("Response from API:", response.data);
+
+          const options = response.data.map((mataKuliah) => mataKuliah.nama_mk);
+          setMataKuliahOptions(options);
+        } else {
+          setMataKuliahOptions([]);
+        }
       } catch (error) {
-        console.error("Error fetching tahun ajaran data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
-
-  const fetchMataKuliahData = async () => {
-    try {
-      if (selectedSemesterType) {
-        const response = await axios.get(
-          `http://localhost:8000/api/mata_kuliah?semester_type=${selectedSemesterType}`
-        );
-        console.log(`${selectedSemesterType}`);
-        console.log("Response from mata_kuliah API:", response.data);
-
-        const options = response.data.map((mataKuliah) => ({
-          id_mk: mataKuliah.id_mk,
-          nama_mk: mataKuliah.nama_mk,
-          kode_mk: mataKuliah.kode_mk,
-          semester_mk: mataKuliah.semester_mk,
-        }));
-
-        // Tampilkan semua mata kuliah tanpa filter
-        setMataKuliahOptions(options);
-      } else {
-        setMataKuliahOptions([]);
-      }
-    } catch (error) {
-      console.error("Error fetching mata kuliah data:", error);
-      if (error.response) {
-        console.log("Server response:", error.response.data);
-      }
-    }
-  };
-  useEffect(() => {
-    fetchMataKuliahData();
-  }, [selectedSemesterType]);
+  }, [selectedSemester]);
 
   const fetchKelasData = async () => {
     try {
@@ -150,6 +112,7 @@ const UploadDataMhs = () => {
 
   const handleSemesterTypeChange = (event) => {
     setSelectedSemesterType(event.target.value);
+
   };
 
   const handleFileChange = (event) => {
@@ -219,17 +182,13 @@ const UploadDataMhs = () => {
     formData.append("file", selectedFile);
     formData.append("id_mk", selectedIdMk); 
     formData.append("nama_kelas", selectedKelas); 
-    
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/upload-nilai", // Sesuaikan dengan URL API Laravel Anda
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post('http://localhost:8000/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
 
       if (response.status === 200) {
         alert("File uploaded successfully: " + response.data.message);
@@ -241,7 +200,12 @@ const UploadDataMhs = () => {
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Error uploading file");
+      toast.success('Berhasil mengupload file');
+
       window.location.reload();
+    } catch (error) {
+      toast.error('Gagal mengupload file');
+      console.error('Error uploading file:', error);
     }
   };
 
@@ -249,33 +213,24 @@ const UploadDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
-        <h1>Dosen Pengampu!</h1>
+        <h1>Dosen Pengampu</h1>
         <div className="content-upload-mhs">
           <form action="" onDrop={handleDrop} onDragOver={handleDragOver}>
-            <select
-              value={selectedTahunAjaran}
-              onChange={handleTahunAjaranChange}
-            >
-              <option key="default" value="">
-                Pilih Tahun Ajaran
-              </option>
-              {tahunAjaranOptions.map((tahun, index) => (
-                <option key={index} value={tahun.periode}>
-                  {tahun.periode}
-                </option>
-              ))}
+            <h3>Pilih Semester</h3>
+            <select value={selectedSemester} onChange={handleSemesterChange}>
+              <option value="">Pilih Semester</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
             </select>
 
-            <h3>Pilih Semester</h3>
-            <select
-              value={selectedSemesterType}
-              onChange={handleSemesterTypeChange}
-            >
-              <option value="">Pilih Semester</option>
-              <option value="genap">Semester Genap</option>
-              <option value="ganjil">Semester Ganjil</option>
-            </select>
             <h3>Pilih Mata Kuliah</h3>
+
             <select
               value={selectedMataKuliah}
               onChange={handleMataKuliahChange}
@@ -297,18 +252,12 @@ const UploadDataMhs = () => {
                     </option>
                 ))}
             </select>
-
-
-
             <h3>Upload File Nilai Berbasis OBE:</h3>
-            {/* <h4>
+
+            <h4>
               File template : <a href="">OBE.xlsx</a>
-            </h4> */}
-            <input
-              type="file"
-              accept=".xlsx, .csv"
-              onChange={handleFileChange}
-            />
+            </h4>
+            <input type="file" accept=".xlsx, .csv" onChange={handleFileChange} />
             <div className="upload-excel-wrapper">
               <div
                 className="container-upload-excel"
@@ -319,17 +268,17 @@ const UploadDataMhs = () => {
                 <p>Drag and drop file here</p>
               </div>
             </div>
+
             <div className="button-excel-wrapper">
               <div className="button-excel">
-                <Button variant="primary" type="button" onClick={handleUpload}>
-                  Submit
-                </Button>
+                <button type="button" onClick={handleUpload}>Submit</button>
               </div>
             </div>
           </form>
         </div>
+        <ToastContainer />
       </div>
-      {/* <FooterComponent /> */}
+      <FooterComponent />
     </>
   );
 };

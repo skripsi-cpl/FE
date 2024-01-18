@@ -11,8 +11,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigateTo = useNavigate();
-  
-  
+
+
 
   const handleLogin = () => {
     const payload = {
@@ -37,26 +37,27 @@ const Login = () => {
       })
       .then(data => {
         if (data.redirectTo === 'dashboardmhs' || data.redirectTo === 'dashboarddosen' || data.redirectTo === 'dashboarddepartment' || data.redirectTo === 'dashboard') {
-            navigateTo(`/${data.redirectTo}`);
-            localStorage.setItem('loggedInNama', data.name);
-            localStorage.setItem('loggedInNIM', data.nim || '');
+          navigateTo(`/${data.redirectTo}`);
+          localStorage.setItem('loggedInNama', data.name);
+          localStorage.setItem('loggedInNIM', data.nim || '');
+          localStorage.setItem('redirect', data.redirectTo);
         } else {
           toast.error("Login Gagal",
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-            setErrorMessage("Format email tidak sesuai");
-            setemail("");
-            setPassword("");
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          setErrorMessage("Format email tidak sesuai");
+          setemail("");
+          setPassword("");
         }
-    })
-    
+      })
+
       .catch(error => {
         toast.error("Login Gagal",
           {
