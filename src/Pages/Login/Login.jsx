@@ -41,6 +41,7 @@ const Login = () => {
           localStorage.setItem('loggedInNama', data.name);
           localStorage.setItem('loggedInNIM', data.nim || '');
           localStorage.setItem('redirect', data.redirectTo);
+          localStorage.setItem('loggedRole', data.role);
         } else {
           toast.error("Login Gagal",
             {

@@ -2,6 +2,12 @@ import "./NavbarComponent.css";
 import logo from "../../assets/images/logo/logo-departemen1.png";
 import { NavLink } from "react-router-dom";
 const NavbarDepartmentComponent = () => {
+
+    const logout = () => {
+        localStorage.clear();
+        window.location.href = "/";
+    }
+
     return (
         <nav className="navbar">
             <div className="logo">
@@ -16,7 +22,7 @@ const NavbarDepartmentComponent = () => {
                         <NavLink to={"/dashboarddepartment/permahasiswaan"} >Permahasiswaan</NavLink>
                     </li>
                     <li>
-                        <NavLink to={"/"} >Sign out</NavLink>
+                        <NavLink onClick={logout} >Sign out</NavLink>
                     </li>
                 </ul>
             </div>

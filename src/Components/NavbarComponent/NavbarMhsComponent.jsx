@@ -3,8 +3,12 @@ import logo from "../../assets/images/logo/logo-departemen1.png";
 import { NavLink } from "react-router-dom";
 
 const NavbarMhsComponent = () => {
-    
-    
+
+    const logout = () => {
+        localStorage.clear();
+        window.location.href = "/";
+    }
+
     return (
         <nav className="navbar">
             <div className="logo">
@@ -17,10 +21,10 @@ const NavbarMhsComponent = () => {
                     </li>
                     <li>
                         <NavLink to={"/dashboardmhs/pencapaian"} >Lihat Pencapaian</NavLink>
-                        
+
                     </li>
                     <li>
-                        <NavLink to={"/"} >Sign out</NavLink>
+                        <NavLink onClick={logout} >Sign out</NavLink>
                     </li>
                 </ul>
             </div>

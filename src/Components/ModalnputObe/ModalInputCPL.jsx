@@ -64,23 +64,19 @@ const ModalInputCPL = () => {
         } else if (formData.bobot_cpl > 1) {
             validationError.bobot_cpl = 'Bobot CPL tidak boleh lebih dari 1';
         }
-        
+
         setError(validationError);
         if (Object.keys(validationError).length > 0) return;
-        
-        
-        
-    
+
         // Hitung total bobot CPL yang akan ditambahkan
         const newBobotCPL = parseFloat(formData.bobot_cpl || 0);
-        
+
         // Jika jumlah total melebihi 1, tampilkan pesan error
         if (getTotalBobotCPL + newBobotCPL > 1) {
             validationError.bobot_cpl = 'Jumlah bobot CPL maksimal 1';
             setError(validationError);
             return;
         }
-        
 
         try {
             await Axios.post('http://localhost:8000/api/datapostcpl', formData);
@@ -132,7 +128,7 @@ const ModalInputCPL = () => {
                 const response = await Axios.get("http://localhost:8000/api/datacpl");
                 setDataCPL(response.data.bobot_cpl);
                 // Menampilkan nilai bobot_cpl saja
-                
+
                 const totalBobotCPL = response.data.reduce((total, item) => {
                     return total + parseFloat(item.bobot_cpl || 0);
                 }, 0);
