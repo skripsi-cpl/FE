@@ -37,7 +37,7 @@ const DashboardMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container">
-                <h1>Hello, {loggedInNama}</h1>
+                <h1>Welcome back, {loggedInNama} 👋</h1>
                 <div className="content-mhs">
                     <div className="content-profil-1">
                         <h3>Informasi Mahasiswa</h3>

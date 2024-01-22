@@ -31,7 +31,7 @@ const Dashboard = () => {
     <>
       <NavbarComponent />
       <div className="container">
-        <h1>Hello, Operator</h1>
+        <h1>Welcome back, Operator! 👋</h1>
         <div className="content-operator">
           <div className="operator-1">
             <DataComponent title="Jumlah Mahasiswa Terdaftar" number={100} width={"300px"} />

@@ -1,6 +1,6 @@
 .content-dosen-wrapper {
     width: 100%;
-    background-color: rgb(0, 65, 122);
+    background-color: aliceblue;
     margin-top: 30px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -11,41 +11,56 @@
 }
 
 
-
-.content-dosen-1 {
-    width: 500px;
-    height: 200px;
-    background-color: aliceblue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.content-dosen-1 button,
-.content-dosen-2 button {
-    width: 200px;
-    height: 50px;
-    background-color: rgb(0, 65, 122);
-    color: white;
-    border: none;
+.content-dosen-1,
+.content-dosen-2 {
+    height: 300px;
+    width: 50%;
+    background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin-bottom: 100px;
+    margin-right: 20px;
+}
+
+.detail-dosen-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    font-size: 18px;
+}
+
+.detail-dosen-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.sbg-dosen-pengampu {
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.sbg-dosen-pengampu h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.sbg-dosen-pengampu button {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.content-dosen-1 button:hover,
-.content-dosen-2 button:hover {
-    background-color: rgb(0, 65, 122, 0.8);
-}
-
-.content-dosen-2 {
-    width: 500px;
-    height: 200px;
-    background-color: aliceblue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+.sbg-dosen-pengampu button:hover {
+    background-color: #000;
+    color: #fff;
 }

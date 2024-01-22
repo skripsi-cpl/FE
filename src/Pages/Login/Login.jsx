@@ -19,7 +19,6 @@ const Login = () => {
       email: email,
       password: password,
     };
-    console.log(payload);
 
     // Panggil API menggunakan fetch
     fetch('http://localhost:8000/api/login', {

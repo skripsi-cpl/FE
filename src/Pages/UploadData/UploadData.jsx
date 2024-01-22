@@ -209,6 +209,10 @@ const UploadDataMhs = () => {
     }
   };
 
+  const handleSemesterChange = (event) => {
+    setSelectedSemester(event.target.value);
+  }
+
   return (
     <>
       <NavbarDosenComponent />
