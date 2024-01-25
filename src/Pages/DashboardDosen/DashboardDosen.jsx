@@ -4,16 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 import { FooterComponent, NavbarDosenComponent } from '../../Components'
 import './dashboarddosen.css'
 import { NavLink } from 'react-router-dom'
-export const loggedInNama = localStorage.getItem('loggedInNama');
+
+
 
 const DashboardDosen = () => {
     const [loggedInNama, setLoggedInNama] = useState('');
+    const [loggedInNIP, setLoggedInNIP] = useState('');
+    const [totalMahasiswa, setTotalMahasiswa] = useState('');
     const [redirect, setredirect] = useState('');
 
     useEffect(() => {
-        const redirect = localStorage.getItem('redirect');
+        
         const nama = localStorage.getItem('loggedInNama');
+        const nip = localStorage.getItem('loggedInNIP');
+        const total = localStorage.getItem('totalMahasiswa');
         setLoggedInNama(nama);
+        setLoggedInNIP(nip);
+        setTotalMahasiswa(total);
+     
 
         if (redirect) {
             toast.success("Login Berhasil", {
@@ -40,9 +48,9 @@ const DashboardDosen = () => {
                         <h3>Informasi Perwalian</h3>
                         <br />
                         <div className="detail-dosen-1">
-                            <h4>NIP      :   </h4> <p>12312312312</p>
+                            <h4>NIP      :   </h4> <p>{loggedInNIP}</p>
                             <h4>Prodi    :    </h4> <p>Informatika</p>
-                            <h4>Jumlah Perwalian :   </h4> <p>8</p>
+                            <h4>Jumlah Perwalian :   </h4> <p>{totalMahasiswa}</p>
                         </div>
                     </div>
                     <div className="content-dosen-2">

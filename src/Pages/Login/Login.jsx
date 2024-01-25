@@ -11,9 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigateTo = useNavigate();
-
-
-
   const handleLogin = () => {
     const payload = {
       email: email,
@@ -39,8 +36,15 @@ const Login = () => {
           navigateTo(`/${data.redirectTo}`);
           localStorage.setItem('loggedInNama', data.name);
           localStorage.setItem('loggedInNIM', data.nim || '');
+          localStorage.setItem('loggedInNIP', data.nip);
           localStorage.setItem('redirect', data.redirectTo);
           localStorage.setItem('loggedRole', data.role);
+          localStorage.setItem('totalMahasiswa', data.totalMahasiswa);
+          localStorage.setItem('totalDosen', data.totalDosen);
+          localStorage.setItem('totalCPL', data.totalCPL);
+          localStorage.setItem('totalCPMK', data.totalCPMK);
+          localStorage.setItem('totalMK', data.totalMK);
+          console.log(data.nip);
         } else {
           toast.error("Login Gagal",
             {

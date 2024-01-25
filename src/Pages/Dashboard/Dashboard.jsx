@@ -7,9 +7,22 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const [redirect, setredirect] = useState('');
-
+  const [totalMahasiswa, setTotalMahasiswa] = useState(''); // [1
+  const [totalCPL, setTotalCPL] = useState('');
+  const [totalCPMK, setTotalCPMK] = useState('');
+  const [totalMK, setTotalMK] = useState('');
+  
   useEffect(() => {
-    const redirect = localStorage.getItem('redirect');
+    const mahasiswa = localStorage.getItem('totalMahasiswa');
+    const cpl = localStorage.getItem('totalCPL');
+    const cpmk = localStorage.getItem('totalCPMK');
+    const mk = localStorage.getItem('totalMK');
+    setTotalMahasiswa(mahasiswa);
+    setTotalCPL(cpl);
+    setTotalCPMK(cpmk);
+    setTotalMK(mk);
+
+    
 
     if (redirect) {
       toast.success("Login Berhasil", {
@@ -34,10 +47,10 @@ const Dashboard = () => {
         <h1>Welcome back, Operator! 👋</h1>
         <div className="content-operator">
           <div className="operator-1">
-            <DataComponent title="Jumlah Mahasiswa Terdaftar" number={100} width={"300px"} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={100} width={"300px"} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={100} width={"300px"} />
-            <DataComponent title="Jumlah Mata Kuliah" number={100} width={"300px"} />
+            <DataComponent title="Jumlah Mahasiswa Terdaftar" number={totalMahasiswa} width={"300px"} />
+            <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={totalCPL} width={"300px"} />
+              <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} width={"300px"} />
+            <DataComponent title="Jumlah Mata Kuliah" number={totalMK} width={"300px"} />
           </div>
           <div className="operator-2">
             <Pie

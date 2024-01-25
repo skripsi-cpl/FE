@@ -6,9 +6,17 @@ import { NavbarComponent, FooterComponent, DataComponent } from "../../Component
 import "./Dashboarddepartment.css";
 const DashboardDepartment = () => {
     const [redirect, setredirect] = useState('');
-
+    const [totalMahasiswa, setTotalMahasiswa] = useState('');
+    const [totalDosen, setTotalDosen] = useState('');
+    const [totalMK, setTotalMK] = useState('');
     useEffect(() => {
         const redirect = localStorage.getItem('redirect');
+        const totalMhs = localStorage.getItem('totalMahasiswa');
+        const totalDsn = localStorage.getItem('totalDosen');
+        const totalmk = localStorage.getItem('totalMK');
+        setTotalMahasiswa(totalMhs);
+        setTotalDosen(totalDsn);
+        setTotalMK(totalmk);
 
         if (redirect) {
             toast.success("Login Berhasil", {
@@ -45,9 +53,9 @@ const DashboardDepartment = () => {
                             <h3>Informasi Akademik Departemen</h3>
                             <br />
                             <div className="detail-department-2">
-                                <DataComponent title="Total Mahasiswa" number={100} width={"150px"} />
-                                <DataComponent title="Total Dosen" number={3.64} width={"150px"} />
-                                <DataComponent title="Total Mata Kuliah" number={64} width={"150px"} />
+                                <DataComponent title="Total Mahasiswa" number={totalMahasiswa} width={"150px"} />
+                                <DataComponent title="Total Dosen" number={totalDosen} width={"150px"} />
+                                <DataComponent title="Total Mata Kuliah" number={totalMK} width={"150px"} />
                                 <DataComponent title="Total Kelas" number={98} width={"150px"} />
                             </div>
                         </div>
