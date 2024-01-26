@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Pie } from 'react-chartjs-2';
 
 
 
@@ -29,7 +30,9 @@ const PencapaianMhs = () => {
     const [idBobotData, setIdBobotData] = useState([]);
     const [totalBobotCpl, setTotalBobotCpl] = useState({});
     const [totalAllSemesters, setTotalAllSemesters] = useState(0);
-
+    const [selectedMkData, setSelectedMkData] = useState([]);
+    const [selectedBobotCPL, setSelectedBobotCPL] = useState([]);
+    const [isDataAvailable, setIsDataAvailable] = useState(true);
     // const [totalsBySemester, setTotalsBySemester] = useState({});
     // localStorage.setItem('loggedInNama', loggedInNama);
     // localStorage.setItem('loggedInNIM', loggedInNIM);
@@ -51,6 +54,8 @@ const PencapaianMhs = () => {
             .then(data => {
                 // console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
                 setFilteredData(data.data);
+                
+                // Memperbarui data mata kuliah yang sesuai dengan semester yang dipilih
             })
             .catch(error => console.error('There was an error!', error));
     };
@@ -89,7 +94,9 @@ const PencapaianMhs = () => {
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
-
+    useEffect(() => {
+        setIsDataAvailable(filteredData && filteredData.length > 0);
+    }, [filteredData]);
     useEffect(() => {
         const calculateTotalBobotCpl = () => {
             const totals = { ...totalBobotCpl };
@@ -100,6 +107,11 @@ const PencapaianMhs = () => {
                 idCplToBobot[item.id_cpl] = parseFloat(item.bobot_cpl || 0);
             });
             if (filteredData && filteredData.length > 0) {
+                const namaMataKuliah = filteredData.map(row => row.nama_mk);
+                setSelectedMkData(namaMataKuliah);
+                const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
+                setSelectedBobotCPL(bobotCPLPerMK);
+                
                 filteredData.forEach((row) => {
                     const bobotCpl = idCplToBobot[row.id_cpl];
                     if (bobotCpl !== undefined) {
@@ -109,10 +121,10 @@ const PencapaianMhs = () => {
             } else {
                 console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
             }
+            
             const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
             setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
             console.log('Total All Semesters:', totalAllSemesters); // Cek total akumulasi dari semua semester
-
             setTotalBobotCpl(totals);
             console.log(totals);
         };
@@ -204,8 +216,57 @@ const PencapaianMhs = () => {
 
                         </Table>
                     </TableContainer>
-
+                    <br /><br /><br />
+                    <div>
+                        <h3>Diagram Lingkaran</h3>
+                    </div>
+                    <div className="operator-2">
+                        <Pie
+                            data={{
+                                labels: isDataAvailable ? selectedMkData : ['Not Available'],
+                                datasets: [
+                                    {
+                                        label: 'Bobot CPL',
+                                        data: isDataAvailable ? selectedBobotCPL : [0],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.2)',
+                                            'rgba(54, 162, 235, 0.2)',
+                                            'rgba(255, 206, 86, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                            'rgba(153, 102, 255, 0.2)',
+                                            'rgba(255, 159, 64, 0.2)',
+                                            // Tambahkan warna tambahan jika diperlukan
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 0.2)',
+                                            'rgba(54, 162, 235, 0.2)',
+                                            'rgba(255, 206, 86, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                            'rgba(153, 102, 255, 0.2)',
+                                            'rgba(255, 159, 64, 0.2)',
+                                            // Tambahkan warna garis tambahan jika diperlukan
+                                        ],
+                                        borderWidth: 1,
+                                    },
+                                ],
+                            }}
+                            height={300}
+                            width={500}
+                            options={{
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    datalabels: {
+                                        display: isDataAvailable ? true : false, // Tampilkan label hanya jika data tersedia
+                                        formatter: (value, context) => {
+                                            return isDataAvailable ? selectedBobotCPL[context.dataIndex] : ''; // Kosongkan nilai jika data tidak tersedia
+                                        },
+                                    },
+                                },
+                            }}
+                        />
+                    </div>
                 </div>
+                <br /><br /><br />
             </div>
             <FooterComponent />
         </>
