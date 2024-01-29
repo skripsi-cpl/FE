@@ -1,5 +1,5 @@
 import { NavbarMhsComponent, FooterComponent } from "../../Components";
-import "./PencapaianMhs.css"
+import "../../Pages/PencapaianMhs/PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Pie } from 'react-chartjs-2';
+import { useParams } from 'react-router-dom';
 
 
 
@@ -36,8 +37,11 @@ const PencapaianMhs = () => {
     // const [totalsBySemester, setTotalsBySemester] = useState({});
     // localStorage.setItem('loggedInNama', loggedInNama);
     // localStorage.setItem('loggedInNIM', loggedInNIM);
-    const nama = localStorage.getItem('loggedInNama');
-    const nim = localStorage.getItem('loggedInNIM');
+    const { nim } = useParams();
+
+  // Sekarang Anda dapat menggunakan nim di sini
+    console.log(nim);
+    
     // console.log(nama)
     // console.log(nim)
     const handleSemesterChange = (event) => {
@@ -140,7 +144,7 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloooo {nama}</h1>
+                <h1>Haloooo {nim}</h1>
 
                 <div className="content-dosen-data-mhs">
                     <form action="">

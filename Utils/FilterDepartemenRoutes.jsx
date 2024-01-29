@@ -6,7 +6,7 @@ const FilterDepartemenRoutes = () => {
 
     return (
         <>
-            {isDepartemen ? <Outlet /> : <Navigate to={"/dasdas"} />}
+            {isDepartemen ? <Outlet /> : <Navigate to={"/dashboarddepartment"} />}
         </>
     )
 };
