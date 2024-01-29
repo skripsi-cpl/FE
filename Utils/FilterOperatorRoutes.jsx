@@ -6,7 +6,7 @@ const FilterOperatorRoutes = () => {
 
     return (
         <>
-            {isOperator ? <Outlet /> : <Navigate to={"/dasdas"} />}
+            {isOperator ? <Outlet /> : <Navigate to={"/dashboard"} />}
         </>
     )
 };

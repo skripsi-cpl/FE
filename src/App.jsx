@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment, NotFound } from "./Pages";
+import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, CapaianPembelajaran,DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment, NotFound } from "./Pages";
 import PrivateRoutes from "../Utils/PrivateRoutes";
 import FilterMahasiswaRoutes from "../Utils/FilterMahasiswaRoutes";
 import { FilterDepartemenRoutes, FilterDosenRoutes, FilterOperatorRoutes } from "../Utils";
@@ -22,6 +22,7 @@ function App() {
               <Route path="/dashboarddosen" element={<DashboardDosen />} />
               <Route path="/dashboarddosen/uploaddatamhs" element={<UploadDataMhs />} />
               <Route path="/dashboarddosen/dosendatamhs" element={<DosenDataMhs />} />
+              <Route path="/dashboarddosen/capaianpembelajaran/:nim" element={<CapaianPembelajaran />} />
             </Route>
             {/* Page mahasiswa */}
             <Route element={<FilterMahasiswaRoutes />}>

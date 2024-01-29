@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,6 +36,7 @@ export default function CustomizedTables({
 }) {
   const [mahasiswaData, setMahasiswaData] = useState([]);
   const [mataKuliahData, setMataKuliahData] = useState([]);
+  const navigateTo = useNavigate(); // Using useNavigate hook for navigation
 
   const fetchData = async () => {
     try {
@@ -60,14 +62,30 @@ export default function CustomizedTables({
     fetchData();
   }, [filteredMahasiswa, selectedSemester]);
 
+  // Function to navigate to a specific URL
+  const handleClick = async (nim) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/mahasiswa?tahun_masuk=${filteredMahasiswa}`
+      );
+      console.log("Response from API:", response.data);
+      // Navigate to the PencapaianMhs component after receiving the data
+      navigateTo(`/dashboarddosen/capaianpembelajaran/${nim}`);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">  
         <TableHead>
           <TableRow>
             <StyledTableCell>No</StyledTableCell>
             <StyledTableCell align="center">Nama</StyledTableCell>
             <StyledTableCell align="center">CPL (%)</StyledTableCell>
+            <StyledTableCell align="center">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -78,7 +96,10 @@ export default function CustomizedTables({
                 {mahasiswa.nama_mhs}
               </StyledTableCell>
               
-              <StyledTableCell align="center">{""}</StyledTableCell>
+              <StyledTableCell align="center">{"kaskdasm"}</StyledTableCell>
+              <StyledTableCell align="center">
+                <button onClick={() => handleClick(mahasiswa.NIM)}>Pilih Capaian</button>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

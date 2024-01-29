@@ -6,7 +6,7 @@ const FilterDosenRoutes = () => {
 
     return (
         <>
-            {isDosen ? <Outlet /> : <Navigate to={"/dasdas"} />}
+            {isDosen ? <Outlet /> : <Navigate to={"/dashboarddosen"} />}
         </>
     )
 };
