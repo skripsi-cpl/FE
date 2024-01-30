@@ -1,4 +1,4 @@
-import { NavbarMhsComponent, FooterComponent } from "../../Components";
+import { NavbarDosenComponent, FooterComponent } from "../../Components";
 import "../../Pages/PencapaianMhs/PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
@@ -142,7 +142,7 @@ const PencapaianMhs = () => {
 
     return (
         <>
-            <NavbarMhsComponent />
+            <NavbarDosenComponent />
             <div className="container-dosen-data-mhs">
                 <h1>Haloooo {nim}</h1>
 

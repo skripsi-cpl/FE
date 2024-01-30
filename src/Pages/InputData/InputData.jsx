@@ -1,4 +1,4 @@
-import { NavbarComponent, FooterComponent, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah } from "../../Components";
+import { NavbarComponent, FooterComponent, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah,ModalInputTahunAjaran } from "../../Components";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./inputdata.css";
@@ -37,6 +37,13 @@ const InputData = () => {
             </h3>
             <div className="button-input">
               <ModalMataKuliah />
+            </div>
+          </div>
+          <div className="input-data">
+            <h3> Input Master Data Tahun Ajaran
+            </h3>
+            <div className="button-input">
+              <ModalInputTahunAjaran />
             </div>
           </div>
         </div>
