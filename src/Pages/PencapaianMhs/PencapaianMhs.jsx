@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Pie } from 'react-chartjs-2';
+import { Pie,Radar,Line } from 'react-chartjs-2';
 
 
 
@@ -265,6 +265,81 @@ const PencapaianMhs = () => {
                             }}
                         />
                     </div>
+                    <div>
+                        <h3>Diagram Radar</h3>
+                    </div>
+                    <div className='content'>
+                    <Radar
+                        data={{
+                            labels: [
+                                "Kehadiran",
+                                "Tugas",
+                                "Ujian",
+                                "Kuis",
+                                "Praktikum",
+                                "Responsi",
+                            ],
+                            datasets: [
+                                {
+                                    label: "Nilai",
+                                    data: [90, 80, 70, 60, 50, 40],
+                                    backgroundColor: [
+                                        "rgba(255, 99, 132, 0.2)",
+                                    ],
+                                    borderColor: [
+                                        "rgba(255, 99, 132, 1)",
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        }}
+                        height={400}
+                        width={600}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    angleLines: {
+                                        display: false,
+                                    },
+                                    suggestedMin: 0,
+                                    suggestedMax: 100,
+                                },
+                            },
+                        }}
+                    />
+                    </div>
+                    <div>
+                        <h3>Diagram Garis</h3>
+                    </div>
+                    <div className='content'>
+                        <Line
+                            data={{
+                                labels: ["Semester 1", "2", "3", "4", "5", "6", "7"],
+                                datasets: [
+                                    {
+                                        label: "My First Dataset",
+                                        data: [65, 59, 80, 81, 56, 55, 40],
+                                        fill: false,
+                                        borderColor: "rgba(75,192,192,1)",
+                                        tension: 0.1
+                                    }
+                                ]
+                            }}
+                            height={400}
+                            width={600}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+                    
+                    
                 </div>
                 <br /><br /><br />
             </div>

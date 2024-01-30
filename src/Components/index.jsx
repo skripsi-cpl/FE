@@ -15,5 +15,6 @@ import ModalInputPL from "./ModalnputObe/ModalInputPL";
 import ModalInputCPL from "./ModalnputObe/ModalInputCPL";
 import ModalInputCPMK from "./ModalnputObe/ModalInputCPMK";
 import ModalMataKuliah from "./ModalnputObe/ModalMataKuliah";
+import ModalInputTahunAjaran from "./ModalnputObe/ModalInputTahunAjaran";
 
-export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah, DataComponent };
+export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah,ModalInputTahunAjaran, DataComponent };
