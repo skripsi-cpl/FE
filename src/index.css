@@ -13,10 +13,5 @@
 * {
   margin: 0;
   padding: 0;
-  background-color: transparent;
-}
-
-.active-link {
-  font-weight: bold;
-  /* or any other styles you want to apply */
+  /* background-color: transparent; */
 }

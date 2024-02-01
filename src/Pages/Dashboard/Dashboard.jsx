@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [totalCPL, setTotalCPL] = useState('');
   const [totalCPMK, setTotalCPMK] = useState('');
   const [totalMK, setTotalMK] = useState('');
-  
+
   useEffect(() => {
     const mahasiswa = localStorage.getItem('totalMahasiswa');
     const cpl = localStorage.getItem('totalCPL');
@@ -22,7 +22,7 @@ const Dashboard = () => {
     setTotalCPMK(cpmk);
     setTotalMK(mk);
 
-    
+
 
     if (redirect) {
       toast.success("Login Berhasil", {
@@ -49,7 +49,7 @@ const Dashboard = () => {
           <div className="operator-1">
             <DataComponent title="Jumlah Mahasiswa Terdaftar" number={totalMahasiswa} width={"300px"} />
             <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={totalCPL} width={"300px"} />
-              <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} width={"300px"} />
+            <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} width={"300px"} />
             <DataComponent title="Jumlah Mata Kuliah" number={totalMK} width={"300px"} />
           </div>
           <div className="operator-2">
