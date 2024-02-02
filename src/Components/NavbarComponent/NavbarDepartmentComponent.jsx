@@ -16,7 +16,7 @@ const NavbarDepartmentComponent = () => {
             <div className="menu">
                 <ul>
                     <li>
-                        <NavLink to={"/dashboard"}>Beranda</NavLink>
+                        <NavLink to={"/dashboarddepartment"}>Beranda</NavLink>
                     </li>
                     <li>
                         <NavLink to={"/dashboarddepartment/permahasiswaan"} >Permahasiswaan</NavLink>

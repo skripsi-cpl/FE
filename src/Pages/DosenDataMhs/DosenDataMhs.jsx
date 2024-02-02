@@ -62,7 +62,6 @@ const DosenDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-dosen-data-mhs">
-        <h1>Dosen Wali</h1>
         <div className="content-dosen-data-mhs">
           <div className="content-atas-data-mhs merge">
             <form action="">

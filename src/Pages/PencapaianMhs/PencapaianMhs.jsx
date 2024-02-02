@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Pie,Radar,Line } from 'react-chartjs-2';
+import { Pie, Radar, Line } from 'react-chartjs-2';
 
 
 
@@ -54,7 +54,7 @@ const PencapaianMhs = () => {
             .then(data => {
                 console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
                 setFilteredData(data.data);
-                
+
                 // Memperbarui data mata kuliah yang sesuai dengan semester yang dipilih
             })
             .catch(error => console.error('There was an error!', error));
@@ -111,7 +111,7 @@ const PencapaianMhs = () => {
                 setSelectedMkData(namaMataKuliah);
                 const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
                 setSelectedBobotCPL(bobotCPLPerMK);
-                
+
                 filteredData.forEach((row) => {
                     const bobotCpl = idCplToBobot[row.id_cpl];
                     if (bobotCpl !== undefined) {
@@ -121,7 +121,7 @@ const PencapaianMhs = () => {
             } else {
                 console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
             }
-            
+
             const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
             setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
             console.log('Total All Semesters:', totalAllSemesters); // Cek total akumulasi dari semua semester
@@ -140,9 +140,8 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloooo {nama}</h1>
 
-                <div className="content-dosen-data-mhs">
+                <div className="content-pencapaian-mhs">
                     <form action="">
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
@@ -217,129 +216,136 @@ const PencapaianMhs = () => {
                         </Table>
                     </TableContainer>
                     <br /><br /><br />
-                    <div>
-                        <h3>Diagram Lingkaran</h3>
-                    </div>
-                    <div className="operator-2">
-                        <Pie
-                            data={{
-                                labels: isDataAvailable ? selectedMkData : ['Not Available'],
-                                datasets: [
-                                    {
-                                        label: 'Bobot CPL',
-                                        data: isDataAvailable ? selectedBobotCPL : [0],
-                                        backgroundColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)',
-                                            // Tambahkan warna tambahan jika diperlukan
+
+                    <div className="chart-container">
+                        <div className="diagram-lingkaran">
+                            <div>
+                                <h3>Diagram Lingkaran</h3>
+                            </div>
+                            <div className="content">
+                                <Pie
+                                    data={{
+                                        labels: isDataAvailable ? selectedMkData : ['Not Available'],
+                                        datasets: [
+                                            {
+                                                label: 'Bobot CPL',
+                                                data: ['22', '33', '44', '55', '66', '77'],
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)',
+                                                    // Tambahkan warna tambahan jika diperlukan
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)',
+                                                    // Tambahkan warna garis tambahan jika diperlukan
+                                                ],
+                                                borderWidth: 1,
+                                            },
                                         ],
-                                        borderColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)',
-                                            // Tambahkan warna garis tambahan jika diperlukan
-                                        ],
-                                        borderWidth: 1,
-                                    },
-                                ],
-                            }}
-                            height={300}
-                            width={500}
-                            options={{
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    datalabels: {
-                                        display: isDataAvailable ? true : false, // Tampilkan label hanya jika data tersedia
-                                        formatter: (value, context) => {
-                                            return isDataAvailable ? selectedBobotCPL[context.dataIndex] : ''; // Kosongkan nilai jika data tidak tersedia
+                                    }}
+                                    height={300}
+                                    width={500}
+                                    options={{
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            datalabels: {
+                                                display: isDataAvailable ? true : false, // Tampilkan label hanya jika data tersedia
+                                                formatter: (value, context) => {
+                                                    return isDataAvailable ? selectedBobotCPL[context.dataIndex] : ''; // Kosongkan nilai jika data tidak tersedia
+                                                },
+                                            },
                                         },
-                                    },
-                                },
-                            }}
-                        />
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="diagram-radar">
+                            <div>
+                                <h3>Diagram Radar</h3>
+                            </div>
+                            <div className='content'>
+                                <Radar
+                                    data={{
+                                        labels: [
+                                            "Kehadiran",
+                                            "Tugas",
+                                            "Ujian",
+                                            "Kuis",
+                                            "Praktikum",
+                                            "Responsi",
+                                        ],
+                                        datasets: [
+                                            {
+                                                label: "Nilai",
+                                                data: [90, 80, 70, 60, 50, 40],
+                                                backgroundColor: [
+                                                    "rgba(255, 99, 132, 0.2)",
+                                                ],
+                                                borderColor: [
+                                                    "rgba(255, 99, 132, 1)",
+                                                ],
+                                                borderWidth: 1,
+                                            },
+                                        ],
+                                    }}
+                                    height={300}
+                                    width={500}
+                                    options={{
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            r: {
+                                                angleLines: {
+                                                    display: false,
+                                                },
+                                                suggestedMin: 0,
+                                                suggestedMax: 100,
+                                            },
+                                        },
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="diagram-garis">
+                            <div>
+                                <h3>Diagram Garis</h3>
+                            </div>
+                            <div className='content'>
+                                <Line
+                                    data={{
+                                        labels: ["Semester 1", "2", "3", "4", "5", "6", "7"],
+                                        datasets: [
+                                            {
+                                                label: "My First Dataset",
+                                                data: [65, 59, 80, 81, 56, 55, 40],
+                                                fill: false,
+                                                borderColor: "rgba(75,192,192,1)",
+                                                tension: 0.1
+                                            }
+                                        ]
+                                    }}
+                                    height={400}
+                                    width={600}
+                                    options={{
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h3>Diagram Radar</h3>
-                    </div>
-                    <div className='content'>
-                    <Radar
-                        data={{
-                            labels: [
-                                "Kehadiran",
-                                "Tugas",
-                                "Ujian",
-                                "Kuis",
-                                "Praktikum",
-                                "Responsi",
-                            ],
-                            datasets: [
-                                {
-                                    label: "Nilai",
-                                    data: [90, 80, 70, 60, 50, 40],
-                                    backgroundColor: [
-                                        "rgba(255, 99, 132, 0.2)",
-                                    ],
-                                    borderColor: [
-                                        "rgba(255, 99, 132, 1)",
-                                    ],
-                                    borderWidth: 1,
-                                },
-                            ],
-                        }}
-                        height={400}
-                        width={600}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                r: {
-                                    angleLines: {
-                                        display: false,
-                                    },
-                                    suggestedMin: 0,
-                                    suggestedMax: 100,
-                                },
-                            },
-                        }}
-                    />
-                    </div>
-                    <div>
-                        <h3>Diagram Garis</h3>
-                    </div>
-                    <div className='content'>
-                        <Line
-                            data={{
-                                labels: ["Semester 1", "2", "3", "4", "5", "6", "7"],
-                                datasets: [
-                                    {
-                                        label: "My First Dataset",
-                                        data: [65, 59, 80, 81, 56, 55, 40],
-                                        fill: false,
-                                        borderColor: "rgba(75,192,192,1)",
-                                        tension: 0.1
-                                    }
-                                ]
-                            }}
-                            height={400}
-                            width={600}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }}
-                        />
-                    </div>
-                    
-                    
                 </div>
                 <br /><br /><br />
             </div>

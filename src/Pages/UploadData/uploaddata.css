@@ -59,6 +59,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-image: url("./cloud.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .container-upload-excel img {

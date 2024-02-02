@@ -5,14 +5,30 @@
 
 .content-operator {
   width: 100%;
-  background-color: aliceblue;
   margin-top: 30px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
+  gap: 20px;
   display: flex;
   justify-content: space-between;
+}
+
+.operator-1 {
+  height: auto;
+  width: 50%;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.operator-2 {
+  height: 400px;
+  width: 50%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
+  overflow: hidden;
 }

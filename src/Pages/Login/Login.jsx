@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import EmailIcon from '@mui/icons-material/Email';
+import HttpsIcon from '@mui/icons-material/Https';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Login.css";
 
@@ -107,6 +109,7 @@ const Login = () => {
                 type="text"
                 value={email}
                 onChange={(e) => setemail(e.target.value)}
+                style={{ paddingLeft: '10px' }}
               />
             </div>
             <div className="input-group">
@@ -115,6 +118,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                style={{ paddingLeft: '10px' }}
               />
             </div>
             {errorMessage && (
