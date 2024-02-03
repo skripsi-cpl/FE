@@ -20,8 +20,6 @@ const PencapaianDepartment = () => {
                     </form>
                     <h3>Filters</h3>
 
-                    <TableDosen />
-
                 </div>
             </div>
             <FooterComponent />

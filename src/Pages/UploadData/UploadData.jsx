@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
-import "./uploaddata.css";
 import axios from "axios";
 import cloud from "./cloud.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./uploaddata.css";
+
 
 const UploadDataMhs = () => {
   const [mataKuliahOptions, setMataKuliahOptions] = useState([]);
@@ -172,7 +173,6 @@ const UploadDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
-        <h1>Dosen Pengampu</h1>
         <div className="content-upload-mhs">
           <h3>Pilih Tahun Ajaran</h3>
           <form action="" onDrop={handleDrop} onDragOver={handleDragOver}>

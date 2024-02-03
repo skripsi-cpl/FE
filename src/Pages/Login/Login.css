@@ -43,12 +43,16 @@
 }
 
 .login .input-group input {
-  height: 30px;
+  margin: 0;
+}
+
+form input {
   width: 100%;
-  padding: 5px 0;
-  font-size: 16px;
+  padding: 10px;
+  margin: auto;
+  font-size: 15px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
 }
 
 .login button {
@@ -63,4 +67,11 @@
 
 .login button:hover {
   background: #3672bb;
+}
+
+.login-footer {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }

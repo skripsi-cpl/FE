@@ -12,8 +12,8 @@ import Paper from '@mui/material/Paper';
 
 
 import { Pie, Line } from 'react-chartjs-2';
-import { useNavigate } from 'react-router-dom'; 
-import {  Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { useNavigate } from 'react-router-dom';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 
 
@@ -30,25 +30,25 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Styles for PDF
 const styles = StyleSheet.create({
     page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4'
+        flexDirection: 'row',
+        backgroundColor: '#E4E4E4'
     },
     section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
+        margin: 10,
+        padding: 10,
+        flexGrow: 1
     }
-  });
+});
 
 // Generate PDF content
 
 
 const PencapaianMhs = () => {
-    
+
     const handleGeneratePDF = () => {
         // Navigasi ke halaman Generate PDF saat tombol diklik
         navigate('/dashboardmhs/pencapaian/generate-pdf');
-      };
+    };
     const navigate = useNavigate();
 
     const [semesters, setSemesters] = useState([]);
@@ -68,12 +68,12 @@ const PencapaianMhs = () => {
     const yourDataHere = {
         title: "Data Pencapaian Mahasiswa",
         students: [
-          { name: "John Doe", score: 85 },
-          { name: "Jane Smith", score: 90 },
-          { name: "Alice Johnson", score: 78 }
+            { name: "John Doe", score: 85 },
+            { name: "Jane Smith", score: 90 },
+            { name: "Alice Johnson", score: 78 }
         ]
-      };
-      
+    };
+
 
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
@@ -152,7 +152,7 @@ const PencapaianMhs = () => {
 
         calculateTotalBobotCpl();
     }, [filteredData, idBobotData]);
-    
+
     return (
         <>
             <NavbarMhsComponent />
@@ -228,8 +228,9 @@ const PencapaianMhs = () => {
 
                         </Table>
                     </TableContainer>
-                    <br /><br /><br />
-
+                    <div className="generatepdf">
+                        <button onClick={handleGeneratePDF}>Generate PDF</button>
+                    </div>
                     <div>
                         <h3>Diagram Lingkaran</h3>
                     </div>
@@ -276,7 +277,7 @@ const PencapaianMhs = () => {
                             }}
                         />
                     </div>
-                    
+
                     <div>
                         <h3>Diagram Garis</h3>
                     </div>
@@ -306,8 +307,6 @@ const PencapaianMhs = () => {
                             }}
                         />
                     </div>
-                    <button onClick={handleGeneratePDF}>Generate PDF</button>
-
                 </div>
                 <br /><br /><br />
             </div>

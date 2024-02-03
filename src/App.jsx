@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, CapaianPembelajaran,DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment, NotFound } from "./Pages";
+import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMhs, CapaianPembelajaran, DashboardMhs, DashboardDepartment, PencapaianMhs, PencapaianDepartment, NotFound } from "./Pages";
 import PrivateRoutes from "../Utils/PrivateRoutes";
 import FilterMahasiswaRoutes from "../Utils/FilterMahasiswaRoutes";
 import { FilterDepartemenRoutes, FilterDosenRoutes, FilterOperatorRoutes } from "../Utils";

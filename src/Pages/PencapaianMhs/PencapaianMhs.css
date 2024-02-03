@@ -40,3 +40,23 @@
     height: 100%;
     margin-top: 20px;
 }
+
+.generatepdf {
+    margin: 30px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.generatepdf button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.generatepdf button:hover {
+    background-color: #45a049;
+}

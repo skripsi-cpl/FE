@@ -25,6 +25,7 @@ const Login = () => {
       password: password,
     };
 
+
     // Panggil API menggunakan fetch
     fetch('http://localhost:8000/api/login', {
       method: 'POST',
@@ -89,48 +90,64 @@ const Login = () => {
       });
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault(); // Prevents the default form submission behavior
+    handleLogin();
+  };
+
   return (
     <>
-      {loading ? <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-        : <div className="login-wrapper">
-          <div className="login-description">
-          </div>
-          <div className="login">
-            <img src={logoundip} alt="Logo-Universitas-Indonesia" border="0" width="100" height="100" />
-            <h2>Silahkan Login</h2>
-            <div className="input-group">
-              <label>Email:</label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setemail(e.target.value)}
-                style={{ paddingLeft: '10px' }}
+      {loading ? (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <form onSubmit={handleFormSubmit}>
+          <div className="login-wrapper">
+            <div className="login-description"></div>
+            <div className="login">
+              <img
+                src={logoundip}
+                alt="Logo-Universitas-Indonesia"
+                border="0"
+                width="100"
+                height="100"
               />
+              <h2>Silahkan Login</h2>
+              <div className="input-group">
+                <label>Email:</label>
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
+                  style={{ paddingLeft: '10px' }}
+                />
+              </div>
+              <div className="input-group">
+                <label>Password:</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ paddingLeft: '10px' }}
+                />
+              </div>
+              {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+              <button type="submit">Login</button>
+              <div className="login-footer">
+                <p>&copy; Skripsi Artefak!</p>
+              </div>
             </div>
-            <div className="input-group">
-              <label>Password:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingLeft: '10px' }}
-              />
-            </div>
-            {errorMessage && (
-              <p style={{ color: 'red' }}>{errorMessage}</p>
-            )}
-            <button onClick={handleLogin}>Login</button>
+            <ToastContainer />
           </div>
-          <ToastContainer />
-
-        </div>}
+        </form>
+      )}
     </>
   );
+
 };
 
 Login.propTypes = {
