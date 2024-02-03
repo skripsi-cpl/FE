@@ -92,7 +92,7 @@ const PencapaianMhs = () => {
             .then(data => {
                 setSemesters(data);
                 if (data.length > 0) {
-                    setSelectedSemester(data[0].semester_TA);
+                    setSelectedSemester(data[0].id_TA);
 
                 }
             })
@@ -151,8 +151,8 @@ const PencapaianMhs = () => {
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
                             {semesters.map((semester, index) => (
-                                <option key={index} value={semester.semester_TA}>
-                                    {semester.semester_TA}
+                                <option key={index} value={semester.id_TA}>
+                                    {semester.id_TA}
                                 </option>
                             ))}
                         </select>

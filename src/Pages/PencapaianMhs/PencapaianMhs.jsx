@@ -1,5 +1,5 @@
 import { NavbarMhsComponent, FooterComponent } from "../../Components";
-import "./PencapaianMhs.css"
+import "./PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -9,8 +9,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Pie,Radar,Line } from 'react-chartjs-2';
-
+import { Pie, Line } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom'; 
+import {  Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -22,7 +23,30 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
+// Styles for PDF
+const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    }
+  });
+
+// Generate PDF content
+
+
 const PencapaianMhs = () => {
+    
+    const handleGeneratePDF = () => {
+        // Navigasi ke halaman Generate PDF saat tombol diklik
+        navigate('/dashboardmhs/pencapaian/generate-pdf');
+      };
+    const navigate = useNavigate();
+
     const [semesters, setSemesters] = useState([]);
     const [selectedSemester, setSelectedSemester] = useState('');
     const [filteredData, setFilteredData] = useState([]);
@@ -33,75 +57,70 @@ const PencapaianMhs = () => {
     const [selectedMkData, setSelectedMkData] = useState([]);
     const [selectedBobotCPL, setSelectedBobotCPL] = useState([]);
     const [isDataAvailable, setIsDataAvailable] = useState(true);
-    // const [totalsBySemester, setTotalsBySemester] = useState({});
-    // localStorage.setItem('loggedInNama', loggedInNama);
-    // localStorage.setItem('loggedInNIM', loggedInNIM);
+
     const nama = localStorage.getItem('loggedInNama');
     const nim = localStorage.getItem('loggedInNIM');
-    // console.log(nama)
-    // console.log(nim)
+
+    const yourDataHere = {
+        title: "Data Pencapaian Mahasiswa",
+        students: [
+          { name: "John Doe", score: 85 },
+          { name: "Jane Smith", score: 90 },
+          { name: "Alice Johnson", score: 78 }
+        ]
+      };
+      
+
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
-
-        // Reset nilai totalsBySemester dan totalBobotCpl
-        // setTotalsBySemester({});
         setTotalBobotCpl({});
 
-        // Mengambil data berdasarkan semester yang dipilih dari API
         fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
                 setFilteredData(data.data);
-                
-                // Memperbarui data mata kuliah yang sesuai dengan semester yang dipilih
             })
             .catch(error => console.error('There was an error!', error));
     };
-    // Mengambil semua data id_cpl dari API
-
 
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getIdCpl')
             .then(response => response.json())
             .then(data => {
                 setIdCplData(data);
-
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
+
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getBobotCpl')
             .then(response => response.json())
             .then(data => {
                 setIdBobotData(data);
-
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
 
     useEffect(() => {
-        // Mengambil data semua semester dari API
         fetch('http://localhost:8000/api/dashboardmhs/filtersemester')
             .then(response => response.json())
             .then(data => {
                 setSemesters(data);
                 if (data.length > 0) {
-                    setSelectedSemester(data[0].semester_TA);
-
+                    setSelectedSemester(data[0].id_TA);
                 }
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
+
     useEffect(() => {
         setIsDataAvailable(filteredData && filteredData.length > 0);
     }, [filteredData]);
+
     useEffect(() => {
         const calculateTotalBobotCpl = () => {
             const totals = { ...totalBobotCpl };
-
-            // Membuat objek untuk memetakan id_cpl ke bobot_cpl dari idBobotData
             const idCplToBobot = {};
             idBobotData.forEach((item) => {
                 idCplToBobot[item.id_cpl] = parseFloat(item.bobot_cpl || 0);
@@ -111,7 +130,6 @@ const PencapaianMhs = () => {
                 setSelectedMkData(namaMataKuliah);
                 const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
                 setSelectedBobotCPL(bobotCPLPerMK);
-                
                 filteredData.forEach((row) => {
                     const bobotCpl = idCplToBobot[row.id_cpl];
                     if (bobotCpl !== undefined) {
@@ -119,23 +137,16 @@ const PencapaianMhs = () => {
                     }
                 });
             } else {
-                console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
+                console.error('Filtered data is undefined or empty.');
             }
-            
             const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
             setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
-            console.log('Total All Semesters:', totalAllSemesters); // Cek total akumulasi dari semua semester
             setTotalBobotCpl(totals);
-            console.log(totals);
         };
-
 
         calculateTotalBobotCpl();
     }, [filteredData, idBobotData]);
-
-
-
-
+    
     return (
         <>
             <NavbarMhsComponent />
@@ -147,8 +158,8 @@ const PencapaianMhs = () => {
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
                             {semesters.map((semester, index) => (
-                                <option key={index} value={semester.semester_TA}>
-                                    {semester.semester_TA}
+                                <option key={index} value={semester.id_TA}>
+                                    {semester.id_TA}
                                 </option>
                             ))}
                         </select>
@@ -173,13 +184,11 @@ const PencapaianMhs = () => {
                             <TableBody>
                                 {Array.isArray(filteredData) && filteredData?.length > 0 ? (
                                     filteredData.map((row, index) => {
-                                        // Temukan bobot_cpl yang sesuai dengan mata kuliah pada setiap semester
                                         const bobotCplFiltered = idBobotData.filter(item => item.id_cpl === row.id_cpl);
 
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell>{row.nama_mk}</TableCell>
-                                                {/* Menampilkan nilai bobot_cpl yang sesuai */}
                                                 {idCplData.map((cpl, idx) => {
                                                     const matchedBobotCpl = bobotCplFiltered.find(bobot => bobot.id_cpl === cpl.id_cpl);
                                                     return (
@@ -198,7 +207,6 @@ const PencapaianMhs = () => {
                                 )}
 
                             </TableBody>
-                            {/* Baris "Jumlah" */}
                             <TableRow>
                                 <TableCell>Jumlah</TableCell>
                                 {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => (
@@ -206,7 +214,6 @@ const PencapaianMhs = () => {
                                         {totalBobotCpl[cpl.id_cpl] || 0}
                                     </StyledTableCell>
                                 ))}
-                                {/* Menampilkan total bobot_cpl dari semua semester */}
                                 {Array.isArray(filteredData) && filteredData.length > 0 && (
                                     <StyledTableCell align="center">
                                         {Object.values(totalBobotCpl).reduce((curr) => curr, 0) + totalAllSemesters}
@@ -235,7 +242,6 @@ const PencapaianMhs = () => {
                                             'rgba(75, 192, 192, 0.2)',
                                             'rgba(153, 102, 255, 0.2)',
                                             'rgba(255, 159, 64, 0.2)',
-                                            // Tambahkan warna tambahan jika diperlukan
                                         ],
                                         borderColor: [
                                             'rgba(255, 99, 132, 0.2)',
@@ -244,7 +250,6 @@ const PencapaianMhs = () => {
                                             'rgba(75, 192, 192, 0.2)',
                                             'rgba(153, 102, 255, 0.2)',
                                             'rgba(255, 159, 64, 0.2)',
-                                            // Tambahkan warna garis tambahan jika diperlukan
                                         ],
                                         borderWidth: 1,
                                     },
@@ -256,59 +261,16 @@ const PencapaianMhs = () => {
                                 maintainAspectRatio: false,
                                 plugins: {
                                     datalabels: {
-                                        display: isDataAvailable ? true : false, // Tampilkan label hanya jika data tersedia
+                                        display: isDataAvailable ? true : false,
                                         formatter: (value, context) => {
-                                            return isDataAvailable ? selectedBobotCPL[context.dataIndex] : ''; // Kosongkan nilai jika data tidak tersedia
+                                            return isDataAvailable ? selectedBobotCPL[context.dataIndex] : '';
                                         },
                                     },
                                 },
                             }}
                         />
                     </div>
-                    <div>
-                        <h3>Diagram Radar</h3>
-                    </div>
-                    <div className='content'>
-                    <Radar
-                        data={{
-                            labels: [
-                                "Kehadiran",
-                                "Tugas",
-                                "Ujian",
-                                "Kuis",
-                                "Praktikum",
-                                "Responsi",
-                            ],
-                            datasets: [
-                                {
-                                    label: "Nilai",
-                                    data: [90, 80, 70, 60, 50, 40],
-                                    backgroundColor: [
-                                        "rgba(255, 99, 132, 0.2)",
-                                    ],
-                                    borderColor: [
-                                        "rgba(255, 99, 132, 1)",
-                                    ],
-                                    borderWidth: 1,
-                                },
-                            ],
-                        }}
-                        height={400}
-                        width={600}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                r: {
-                                    angleLines: {
-                                        display: false,
-                                    },
-                                    suggestedMin: 0,
-                                    suggestedMax: 100,
-                                },
-                            },
-                        }}
-                    />
-                    </div>
+                    
                     <div>
                         <h3>Diagram Garis</h3>
                     </div>
@@ -338,8 +300,7 @@ const PencapaianMhs = () => {
                             }}
                         />
                     </div>
-                    
-                    
+                    <button onClick={handleGeneratePDF}>Generate PDF</button>
                 </div>
                 <br /><br /><br />
             </div>
