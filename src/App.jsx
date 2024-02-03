@@ -3,6 +3,7 @@ import { Dashboard, Login, InputData, DashboardDosen, UploadDataMhs, DosenDataMh
 import PrivateRoutes from "../Utils/PrivateRoutes";
 import FilterMahasiswaRoutes from "../Utils/FilterMahasiswaRoutes";
 import { FilterDepartemenRoutes, FilterDosenRoutes, FilterOperatorRoutes } from "../Utils";
+import GeneratePDFPage from "./Pages/PencapaianMhs/GeneratePDFPage";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route element={<FilterMahasiswaRoutes />}>
               <Route path="/dashboardmhs" element={<DashboardMhs />} />
               <Route path="/dashboardmhs/pencapaian" element={<PencapaianMhs />} />
+              {/* Tambahkan rute untuk halaman pembuatan PDF di sini */}
+              <Route path="/dashboardmhs/pencapaian/generate-pdf" element={<GeneratePDFPage />} />
             </Route>
             {/* Page department */}
             <Route element={<FilterDepartemenRoutes />}>
