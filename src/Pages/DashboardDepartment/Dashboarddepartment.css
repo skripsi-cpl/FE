@@ -1,8 +1,3 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-
 .container {
     width: 80%;
     margin: 40px auto 0;
@@ -10,11 +5,8 @@
 
 .content-department {
     width: 100%;
-    background-color: aliceblue;
     margin-top: 30px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
     box-sizing: border-box;
     overflow: hidden;
     margin-bottom: 100px;
@@ -23,6 +15,8 @@
 .content-departemen-top {
     display: flex;
     justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 30px;
 }
 
 .content-department-1,
@@ -34,8 +28,6 @@
     padding: 30px;
     box-sizing: border-box;
     overflow: hidden;
-    margin-bottom: 20px;
-    margin-right: 20px;
 }
 
 .content-department-3 {
@@ -45,7 +37,6 @@
     padding: 30px;
     box-sizing: border-box;
     overflow: hidden;
-    margin-right: 20px;
 }
 
 .detail-department-1 {

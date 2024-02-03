@@ -9,9 +9,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+
 import { Pie, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom'; 
 import {  Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -80,6 +84,7 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setFilteredData(data.data);
+
             })
             .catch(error => console.error('There was an error!', error));
     };
@@ -130,6 +135,7 @@ const PencapaianMhs = () => {
                 setSelectedMkData(namaMataKuliah);
                 const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
                 setSelectedBobotCPL(bobotCPLPerMK);
+
                 filteredData.forEach((row) => {
                     const bobotCpl = idCplToBobot[row.id_cpl];
                     if (bobotCpl !== undefined) {
@@ -151,9 +157,8 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloooo {nama}</h1>
 
-                <div className="content-dosen-data-mhs">
+                <div className="content-pencapaian-mhs">
                     <form action="">
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
@@ -224,6 +229,7 @@ const PencapaianMhs = () => {
                         </Table>
                     </TableContainer>
                     <br /><br /><br />
+
                     <div>
                         <h3>Diagram Lingkaran</h3>
                     </div>
@@ -301,6 +307,7 @@ const PencapaianMhs = () => {
                         />
                     </div>
                     <button onClick={handleGeneratePDF}>Generate PDF</button>
+
                 </div>
                 <br /><br /><br />
             </div>

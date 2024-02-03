@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import logoundip from "../../assets/images/logo/logo-undip.png";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import EmailIcon from '@mui/icons-material/Email';
+import HttpsIcon from '@mui/icons-material/Https';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Login.css";
 
@@ -10,8 +14,12 @@ const Login = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigateTo = useNavigate();
+
+
   const handleLogin = () => {
+    setLoading(true);
     const payload = {
       email: email,
       password: password,
@@ -44,7 +52,6 @@ const Login = () => {
           localStorage.setItem('totalCPL', data.totalCPL);
           localStorage.setItem('totalCPMK', data.totalCPMK);
           localStorage.setItem('totalMK', data.totalMK);
-          console.log(data.nip);
         } else {
           toast.error("Login Gagal",
             {
@@ -59,6 +66,7 @@ const Login = () => {
           setErrorMessage("Format email tidak sesuai");
           setemail("");
           setPassword("");
+          setLoading(false);
         }
       })
 
@@ -77,41 +85,50 @@ const Login = () => {
         setErrorMessage("Maaf, terjadi kesalahan. Silakan coba lagi.");
         setemail("");
         setPassword("");
+        setLoading(false);
       });
   };
 
   return (
     <>
-      <div className="login-wrapper">
-        <div className="login-description">
-        </div>
-        <div className="login">
-          <img src={logoundip} alt="Logo-Universitas-Indonesia" border="0" width="100" height="100" />
-          <h2>Silahkan Login</h2>
-          <div className="input-group">
-            <label>Email:</label>
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
-            />
+      {loading ? <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+        : <div className="login-wrapper">
+          <div className="login-description">
           </div>
-          <div className="input-group">
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div className="login">
+            <img src={logoundip} alt="Logo-Universitas-Indonesia" border="0" width="100" height="100" />
+            <h2>Silahkan Login</h2>
+            <div className="input-group">
+              <label>Email:</label>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setemail(e.target.value)}
+                style={{ paddingLeft: '10px' }}
+              />
+            </div>
+            <div className="input-group">
+              <label>Password:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ paddingLeft: '10px' }}
+              />
+            </div>
+            {errorMessage && (
+              <p style={{ color: 'red' }}>{errorMessage}</p>
+            )}
+            <button onClick={handleLogin}>Login</button>
           </div>
-          {errorMessage && (
-            <p style={{ color: 'red' }}>{errorMessage}</p>
-          )}
-          <button onClick={handleLogin}>Login</button>
-        </div>
-        <ToastContainer />
+          <ToastContainer />
 
-      </div>
+        </div>}
     </>
   );
 };

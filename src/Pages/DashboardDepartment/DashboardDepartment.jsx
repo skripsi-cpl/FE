@@ -1,9 +1,13 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import SchoolIcon from '@mui/icons-material/School';
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { NavbarComponent, FooterComponent, DataComponent } from "../../Components";
+import { NavbarComponent, FooterComponent, DataComponent, NavbarDepartmentComponent } from "../../Components";
 import "./Dashboarddepartment.css";
+
+
 const DashboardDepartment = () => {
     const [redirect, setredirect] = useState('');
     const [totalMahasiswa, setTotalMahasiswa] = useState('');
@@ -35,28 +39,30 @@ const DashboardDepartment = () => {
 
     return (
         <>
-            <NavbarComponent />
+            <NavbarDepartmentComponent />
             <div className="container">
                 <h1>Dashboard Department Mahasiswa</h1>
                 <div className="content-department">
                     <div className="content-departemen-top">
                         <div className="content-department-1">
-                            <h3>Informasi Departemen</h3>
+                            <h3><ApartmentIcon /> &nbsp; Informasi Departemen</h3>
+                            <hr />
                             <br />
                             <div className="detail-department-1">
                                 <h4>Departemen     :   </h4><p>Informatika</p>
                                 <h4>Fakultas      :   </h4> <p>Sains dan Matematika</p>
-                                <h4>Ketua Departemen :</h4>  <p>Orang kontol</p>
+                                <h4>Ketua Departemen :</h4>  <p>.....................</p>
                             </div>
                         </div>
                         <div className="content-department-2">
-                            <h3>Informasi Akademik Departemen</h3>
+                            <h3><SchoolIcon /> &nbsp;&nbsp; Informasi Akademik Departemen</h3>
+                            <hr />
                             <br />
                             <div className="detail-department-2">
-                                <DataComponent title="Total Mahasiswa" number={totalMahasiswa} width={"150px"} />
-                                <DataComponent title="Total Dosen" number={totalDosen} width={"150px"} />
-                                <DataComponent title="Total Mata Kuliah" number={totalMK} width={"150px"} />
-                                <DataComponent title="Total Kelas" number={98} width={"150px"} />
+                                <DataComponent title="Total Mahasiswa" number={totalMahasiswa} width={"150px"} borderColor={'black'} />
+                                <DataComponent title="Total Dosen" number={totalDosen} width={"150px"} borderColor={'black'} />
+                                <DataComponent title="Total Mata Kuliah" number={totalMK} width={"150px"} borderColor={'black'} />
+                                <DataComponent title="Total Kelas" number={98} width={"150px"} borderColor={'black'} />
                             </div>
                         </div>
                     </div>

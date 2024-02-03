@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import "./uploaddata.css";
 import axios from "axios";
+import cloud from "./cloud.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -26,7 +27,7 @@ const UploadDataMhs = () => {
         setTahunAjaranOptions(sortedData.reverse());
         sortedData.reverse()
         console.log(sortedData.reverse());
-        
+
       } catch (error) {
         console.error("Error fetching tahun ajaran data:", error);
       }
@@ -73,7 +74,7 @@ const UploadDataMhs = () => {
 
   const handleTahunAjaranChange = (event) => {
     const selectedIdTA = event.target.value;
-    console.log('Selected ID TA:', selectedIdTA); 
+    console.log('Selected ID TA:', selectedIdTA);
     setSelectedTahunAjaran(selectedIdTA);
     fetchMataKuliahData(selectedIdTA);
   };
@@ -111,13 +112,13 @@ const UploadDataMhs = () => {
           response.data.forEach((kelas) => {
             kelasStatusMap.set(kelas.nama_kelas, kelas.status_upload || 'Belum');
           });
-  
+
           // Mengubah map menjadi array untuk digunakan sebagai opsi dropdown
           const uniqueKelasOptions = Array.from(kelasStatusMap, ([nama_kelas, status_upload]) => ({
             nama_kelas,
             status_upload,
           }));
-  
+
           setKelasOptions(uniqueKelasOptions);
         })
         .catch((error) => {
@@ -127,7 +128,7 @@ const UploadDataMhs = () => {
   }, [selectedIdMk, selectedTahunAjaran]);
 
   useEffect(() => {
-    console.log('Selected ID TA:', selectedTahunAjaran); 
+    console.log('Selected ID TA:', selectedTahunAjaran);
   }, [selectedTahunAjaran]);
 
   const handleUpload = async () => {
@@ -230,7 +231,6 @@ const UploadDataMhs = () => {
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
-                <img src="cloud.png" alt="Cloud" />
                 <p>Drag and drop file here</p>
               </div>
             </div>

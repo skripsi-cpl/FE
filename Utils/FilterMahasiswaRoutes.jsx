@@ -6,7 +6,7 @@ const FilterMahasiswaRoutes = () => {
 
     return (
         <>
-            {isMahasiswa ? <Outlet /> : <Navigate to={"/dashboardmhs"} />}
+            {isMahasiswa ? <Outlet /> : <Navigate to={"/"} />}
         </>
     )
 };

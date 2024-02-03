@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DataComponent = ({ title, number, color, borderColor, borderRadius, width, backgroundColor }) => {
+const DataComponent = ({ title, number, color, borderColor, borderRadius, width, height, backgroundColor }) => {
     const cardStyle = {
-        border: `2px solid ${borderColor || color || '#3498db'}`, // Default color: Blue
-        borderRadius: `${borderRadius || '10px'}`,
+        border: `2px solid ${borderColor || color}`,
+        borderRadius: `${borderRadius}`,
         padding: '20px',
         marginBottom: '20px',
         width: `${width || '200px'}`,
+        height: `${height || 'auto'}`,
         textAlign: 'center',
         backgroundColor: `${backgroundColor || '#fff'}`,
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
