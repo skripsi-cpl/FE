@@ -1,7 +1,10 @@
 import "./NavbarComponent.css";
 import logo from "../../assets/images/logo/logo-departemen1.png";
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 const NavbarComponent = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const logout = () => {
     localStorage.clear();
@@ -21,8 +24,13 @@ const NavbarComponent = () => {
           <li>
             <NavLink to={"/dashboard/inputdata"} >Input Data</NavLink>
           </li>
-          <li>
-            <NavLink onClick={logout} >Sign out</NavLink>
+          <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
+            <p className="logo-operator"><CoPresentIcon /> &nbsp; Operator</p>
+            {showDropdown && (
+              <ul className="dropdown-menu">
+                <li className="dropdown-item" onClick={logout} >Sign Out</li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>

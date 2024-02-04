@@ -12,7 +12,7 @@
 
 .menu ul {
   display: flex;
-  padding: 0 50px;
+  padding: 0 10px;
   align-items: center;
 }
 
@@ -46,6 +46,32 @@
   position: absolute;
   margin-right: 20px;
   top: 0;
+}
+
+ul li .dropdown-menu {
+  position: absolute;
+  justify-content: flex-start;
+  background-color: #f1f1f1;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.dropdown-item {
+  padding: 10px 20px !important;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: white;
+}
+
+.logo-operator {
+  display: flex;
+  align-items: center;
 }
 
 

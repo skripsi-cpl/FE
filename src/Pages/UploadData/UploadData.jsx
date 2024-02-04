@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import "./uploaddata.css";
 
@@ -150,12 +150,30 @@ const UploadDataMhs = () => {
         }
       );
       if (response.status === 200) {
-        alert("File uploaded successfully: " + response.data.message);
+        toast.success("File uploaded successfully: " + response.data.message,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         window.location.reload();
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Error uploading file");
+      toast.error("Error Uploading File",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       window.location.reload();
     }
   };
