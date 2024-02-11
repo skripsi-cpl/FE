@@ -1,0 +1,40 @@
+.custom-checkbox input {
+    display: none; /* Sembunyikan checkbox asli */
+}
+
+.custom-checkbox label {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+}
+
+.custom-checkbox label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+.custom-checkbox input:checked + label:after {
+    content: 'X';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    color: #000;
+    font-size: 20px;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+    content: "\2714"; /* Simbol centang unicode */
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: #000;
+    font-size: 16px;
+}
+
