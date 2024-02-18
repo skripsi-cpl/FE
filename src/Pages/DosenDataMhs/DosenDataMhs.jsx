@@ -14,9 +14,7 @@ const DosenDataMhs = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/mahasiswa/indexTa');
-        console.log('Response from API:', response.data);
         const extractedPeriodes = response.data.map((item) => item.periode);
-        console.log(extractedPeriodes)
         setPeriodeData(extractedPeriodes);
         // Mengambil data periode dari respons API dan menyimpannya dalam state periodeData
         if (response.data.periode) {

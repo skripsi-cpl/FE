@@ -55,8 +55,8 @@ const DashboardMhs = () => {
                         <h3><AccountBalanceIcon /> &nbsp;&nbsp;  Informasi Akademik Mahasiswa</h3>
                         <hr />
                         <div className="detail-profil-2">
-                            <DataComponent title="SKS Kumulatif" number={100} width={"150px"} borderColor={'black'} />
-                            <DataComponent title="IP Kumulatif" number={3.64} width={"150px"} borderColor={'black'} />
+                            <DataComponent title="SKS Kumulatif" number={100} />
+                            <DataComponent title="IP Kumulatif" number={3.64} />
                         </div>
                     </div>
                 </div>

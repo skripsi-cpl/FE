@@ -46,10 +46,10 @@ const Dashboard = () => {
         <h1>Welcome back, Operator! 👋</h1>
         <div className="content-operator">
           <div className="operator-1">
-            <DataComponent title="Jumlah Mahasiswa Terdaftar" number={totalMahasiswa} width={"auto"} height={'50px'} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={totalCPL} width={"auto"} height={'50px'} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} width={"auto"} height={'50px'} />
-            <DataComponent title="Jumlah Mata Kuliah" number={totalMK} width={"auto"} height={'50px'} />
+            <DataComponent title="Jumlah Mahasiswa Terdaftar" number={totalMahasiswa} />
+            <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={totalCPL} />
+            <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} />
+            <DataComponent title="Jumlah Mata Kuliah" number={totalMK} />
           </div>
           <div className="operator-2">
             <div>

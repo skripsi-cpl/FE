@@ -59,10 +59,10 @@ const DashboardDepartment = () => {
                             <hr />
                             <br />
                             <div className="detail-department-2">
-                                <DataComponent title="Total Mahasiswa" number={totalMahasiswa} width={"150px"} borderColor={'black'} />
-                                <DataComponent title="Total Dosen" number={totalDosen} width={"150px"} borderColor={'black'} />
-                                <DataComponent title="Total Mata Kuliah" number={totalMK} width={"150px"} borderColor={'black'} />
-                                <DataComponent title="Total Kelas" number={98} width={"150px"} borderColor={'black'} />
+                                <DataComponent title="Total Mahasiswa" number={totalMahasiswa} />
+                                <DataComponent title="Total Dosen" number={totalDosen} />
+                                <DataComponent title="Total Mata Kuliah" number={totalMK} />
+                                <DataComponent title="Total Kelas" number={98} />
                             </div>
                         </div>
                     </div>

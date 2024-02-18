@@ -8,7 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate
+import { useNavigate } from 'react-router-dom';
+import './Table.css';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,7 +48,7 @@ export default function CustomizedTables({
       const mataKuliahResponse = await axios.get(
         `http://localhost:8000/api/mahasiswa/indexTa?periode=${selectedSemester}`
       );
-      
+
       console.log("Response from Mahasiswa API:", mahasiswaResponse.data);
       console.log("Response from Mata Kuliah API:", mataKuliahResponse.data);
 
@@ -75,11 +76,11 @@ export default function CustomizedTables({
       console.error("Error fetching data:", error);
     }
   };
-  
+
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">  
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>No</StyledTableCell>
@@ -95,10 +96,10 @@ export default function CustomizedTables({
               <StyledTableCell align="center">
                 {mahasiswa.nama_mhs}
               </StyledTableCell>
-              
+
               <StyledTableCell align="center">{"kaskdasm"}</StyledTableCell>
               <StyledTableCell align="center">
-                <button onClick={() => handleClick(mahasiswa.NIM)}>Pilih Capaian</button>
+                <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>
               </StyledTableCell>
             </StyledTableRow>
           ))}

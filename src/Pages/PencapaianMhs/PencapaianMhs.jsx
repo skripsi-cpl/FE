@@ -1,5 +1,4 @@
 import { NavbarMhsComponent, FooterComponent } from "../../Components";
-import "./PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -9,14 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-
 import { Pie, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-
-
-
+import "./PencapaianMhs.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -41,7 +36,6 @@ const styles = StyleSheet.create({
 });
 
 // Generate PDF content
-
 
 const PencapaianMhs = () => {
 
@@ -157,7 +151,6 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
-
                 <div className="content-pencapaian-mhs">
                     <form action="">
                         <h3>Pilih Semester</h3>
@@ -233,8 +226,9 @@ const PencapaianMhs = () => {
                     </div>
                     <div>
                         <h3>Diagram Lingkaran</h3>
+                        <br />
                     </div>
-                    <div className="operator-2">
+                    <div className="diagram-lingkaran">
                         <Pie
                             data={{
                                 labels: isDataAvailable ? selectedMkData : ['Not Available'],
@@ -277,11 +271,11 @@ const PencapaianMhs = () => {
                             }}
                         />
                     </div>
-
+                    <br />
                     <div>
                         <h3>Diagram Garis</h3>
                     </div>
-                    <div className='content'>
+                    <div className='diagram-garis'>
                         <Line
                             data={{
                                 labels: ["Semester 1", "2", "3", "4", "5", "6", "7"],

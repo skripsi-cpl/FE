@@ -36,17 +36,16 @@ const PencapaianDepartment = () => {
     } else {
       filteredData = [];
     }
-    
+
     setFilteredMahasiswa(filteredData);
   }, [selectedTahunMasuk, selectedDosenWali, mahasiswa]);
-  
+
 
   return (
     <>
       <NavbarDepartmentComponent />
-      <div className="container-dosen-data-mhs">
-        <h1>Haloo Department</h1>
-        <div className="content-dosen-data-mhs">
+      <div className="container-dosen-pencapaian-mhs">
+        <div className="content-dosen-pencapaian-mhs">
           <h3>Pilih Tahun Angkatan</h3>
           <select value={selectedTahunMasuk} onChange={(e) => setSelectedTahunMasuk(e.target.value)}>
             <option value="">Pilih Angkatan</option>
@@ -64,8 +63,8 @@ const PencapaianDepartment = () => {
               <option key={index} value={dosen}>{dosen}</option>
             ))}
           </select>
+          <TableDepartemen data={filteredMahasiswa} />
         </div>
-        <TableDepartemen data={filteredMahasiswa} />
       </div>
       <FooterComponent />
     </>

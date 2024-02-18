@@ -60,3 +60,7 @@
 .generatepdf button:hover {
     background-color: #45a049;
 }
+
+.diagram-lingkaran {
+    width: 100%;
+}

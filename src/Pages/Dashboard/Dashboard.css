@@ -19,7 +19,9 @@
   width: 50%;
   border-radius: 5px;
   box-sizing: border-box;
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .operator-2 {

@@ -39,9 +39,9 @@ const PencapaianMhs = () => {
     // localStorage.setItem('loggedInNIM', loggedInNIM);
     const { nim } = useParams();
 
-  // Sekarang Anda dapat menggunakan nim di sini
+    // Sekarang Anda dapat menggunakan nim di sini
     console.log(nim);
-    
+
     // console.log(nama)
     // console.log(nim)
     const handleSemesterChange = (event) => {
@@ -58,7 +58,7 @@ const PencapaianMhs = () => {
             .then(data => {
                 console.log(data.data); // Periksa data yang diperoleh dari permintaan ke backend
                 setFilteredData(data.data);
-                
+
                 // Memperbarui data mata kuliah yang sesuai dengan semester yang dipilih
             })
             .catch(error => console.error('There was an error!', error));
@@ -115,7 +115,7 @@ const PencapaianMhs = () => {
                 setSelectedMkData(namaMataKuliah);
                 const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
                 setSelectedBobotCPL(bobotCPLPerMK);
-                
+
                 filteredData.forEach((row) => {
                     const bobotCpl = idCplToBobot[row.id_cpl];
                     if (bobotCpl !== undefined) {
@@ -125,7 +125,7 @@ const PencapaianMhs = () => {
             } else {
                 console.error('Filtered data is undefined or empty.'); // Pesan kesalahan jika filteredData tidak valid
             }
-            
+
             const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
             setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
             console.log('Total All Semesters:', totalAllSemesters); // Cek total akumulasi dari semua semester
@@ -223,8 +223,9 @@ const PencapaianMhs = () => {
                     <br /><br /><br />
                     <div>
                         <h3>Diagram Lingkaran</h3>
+                        <br />
                     </div>
-                    <div className="operator-2">
+                    <div className="diagram-lingkaran">
                         <Pie
                             data={{
                                 labels: isDataAvailable ? selectedMkData : ['Not Available'],

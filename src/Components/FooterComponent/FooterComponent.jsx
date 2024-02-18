@@ -4,7 +4,8 @@ const FooterComponent = () => {
   return (
     <footer>
       <div className="footer-content">
-        <p>&copy; Skripsi Artefak!</p>
+        <p> TIM IT Artefak! &copy; 2024 UNDIP , All rights reserved.</p>
+        <p>Hand-crafted & Made with 💓</p>
       </div>
     </footer>
   );
