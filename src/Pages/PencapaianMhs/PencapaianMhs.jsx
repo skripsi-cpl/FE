@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { Pie, Line } from 'react-chartjs-2';
 import { useNavigate } from 'react-router-dom';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
@@ -152,6 +153,16 @@ const PencapaianMhs = () => {
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
                 <div className="content-pencapaian-mhs">
+                    <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa</h2>
+                    <hr style={
+                        {
+                            color: '#000000',
+                            backgroundColor: '#000000',
+                            height: 1,
+                            borderColor: '#000000',
+                            marginBottom: 20
+                        }
+                    } />
                     <form action="">
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
@@ -162,8 +173,7 @@ const PencapaianMhs = () => {
                             ))}
                         </select>
                     </form>
-
-                    <h3>Filters</h3>
+                    <br />
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
                             <TableHead>

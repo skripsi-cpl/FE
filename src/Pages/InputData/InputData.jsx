@@ -1,4 +1,4 @@
-import { NavbarComponent, FooterComponent, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah,ModalInputTahunAjaran } from "../../Components";
+import { NavbarComponent, FooterComponent, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah, ModalInputTahunAjaran } from "../../Components";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./inputdata.css";

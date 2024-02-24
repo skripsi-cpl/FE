@@ -144,9 +144,18 @@ const PencapaianMhs = () => {
         <>
             <NavbarDosenComponent />
             <div className="container-dosen-data-mhs">
-                <h1>Haloooo {nim}</h1>
-
+                <h1>{nim}</h1>
                 <div className="content-dosen-data-mhs">
+                    <h2>Pencapaian Mahasiswa</h2>
+                    <hr style={
+                        {
+                            color: '#000000',
+                            backgroundColor: '#000000',
+                            height: 1,
+                            borderColor: '#000000',
+                            marginBottom: 20
+                        }
+                    } />
                     <form action="">
                         <h3>Pilih Semester</h3>
                         <select value={selectedSemester} onChange={handleSemesterChange}>
@@ -157,8 +166,7 @@ const PencapaianMhs = () => {
                             ))}
                         </select>
                     </form>
-
-                    <h3>Filters</h3>
+                    <br />
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
                             <TableHead>

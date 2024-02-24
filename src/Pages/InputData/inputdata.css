@@ -5,18 +5,18 @@
 
 .content-input-data {
     background-color: white;
-    padding: 20px;
+    padding: 20px 30px 50px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
+    border-radius: 5px;
 }
 
 .input-data {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid black;
 }
 
 .button-input {

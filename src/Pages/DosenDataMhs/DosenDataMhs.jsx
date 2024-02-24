@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavbarDosenComponent, FooterComponent, TableDosen } from '../../Components';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import './dosendatamhs.css';
 import axios from 'axios';
 
@@ -61,8 +62,19 @@ const DosenDataMhs = () => {
       <NavbarDosenComponent />
       <div className="container-dosen-data-mhs">
         <div className="content-dosen-data-mhs">
+          <h2><DriveFolderUploadIcon />&nbsp; &nbsp;Dosen Wali</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <div className="content-atas-data-mhs merge">
             <form action="">
+
               <h3>Cari Mahasiswa Perwalian</h3>
               <input type="text" value={searchKeyword} onChange={handleSearchChange} />
             </form>
@@ -93,6 +105,16 @@ const DosenDataMhs = () => {
               </select>
             </div>
           </div>
+          <h2>Mahasiswa Perwalian</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <TableDosen filteredMahasiswa={filteredMahasiswa} selectedSemester={selectedSemester} />
         </div>
       </div>

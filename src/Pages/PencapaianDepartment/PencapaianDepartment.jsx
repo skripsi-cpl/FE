@@ -46,6 +46,16 @@ const PencapaianDepartment = () => {
       <NavbarDepartmentComponent />
       <div className="container-dosen-pencapaian-mhs">
         <div className="content-dosen-pencapaian-mhs">
+          <h2>Pencapaian Mahasiswa</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <h3>Pilih Tahun Angkatan</h3>
           <select value={selectedTahunMasuk} onChange={(e) => setSelectedTahunMasuk(e.target.value)}>
             <option value="">Pilih Angkatan</option>
