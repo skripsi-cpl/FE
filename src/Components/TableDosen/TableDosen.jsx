@@ -11,6 +11,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import './Table.css';
 
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -25,7 +26,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
+
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -35,48 +36,47 @@ export default function CustomizedTables({
   filteredMahasiswa,
   selectedSemester,
 }) {
-  const [mahasiswaData, setMahasiswaData] = useState([]);
-  const [mataKuliahData, setMataKuliahData] = useState([]);
-  const navigateTo = useNavigate(); // Using useNavigate hook for navigation
-
-  const fetchData = async () => {
-    try {
-      const mahasiswaResponse = await axios.get(
-        `http://localhost:8000/api/mahasiswa?tahun_masuk=${filteredMahasiswa}`
-      );
-
-      const mataKuliahResponse = await axios.get(
-        `http://localhost:8000/api/mahasiswa/indexTa?periode=${selectedSemester}`
-      );
-
-      console.log("Response from Mahasiswa API:", mahasiswaResponse.data);
-      console.log("Response from Mata Kuliah API:", mataKuliahResponse.data);
-
-      setMahasiswaData(mahasiswaResponse.data);
-      setMataKuliahData(mataKuliahResponse.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const [cplData, setCplData] = useState([]);
+  const navigateTo = useNavigate(); 
 
   useEffect(() => {
     fetchData();
   }, [filteredMahasiswa, selectedSemester]);
 
-  // Function to navigate to a specific URL
+  const fetchData = async () => {
+    try {
+
+      const nims = filteredMahasiswa.map(mahasiswa => mahasiswa.NIM);
+  
+
+      if (nims.length === 0) {
+        return;
+      }
+  
+
+      const cplResponses = await Promise.all(
+        nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
+      );
+  
+
+      const cplData = cplResponses.map(response => response.data.data[0].total_cpl);
+  
+      setCplData(cplData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+console.log(cplData)
+
   const handleClick = async (nim) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/mahasiswa?tahun_masuk=${filteredMahasiswa}`
-      );
-      console.log("Response from API:", response.data);
-      // Navigate to the PencapaianMhs component after receiving the data
+
       navigateTo(`/dashboarddosen/capaianpembelajaran/${nim}`);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
 
   return (
     <TableContainer component={Paper}>
@@ -85,6 +85,7 @@ export default function CustomizedTables({
           <TableRow>
             <StyledTableCell>No</StyledTableCell>
             <StyledTableCell align="center">Nama</StyledTableCell>
+            <StyledTableCell align="center">NIM</StyledTableCell>
             <StyledTableCell align="center">CPL (%)</StyledTableCell>
             <StyledTableCell align="center">Action</StyledTableCell>
           </TableRow>
@@ -96,8 +97,12 @@ export default function CustomizedTables({
               <StyledTableCell align="center">
                 {mahasiswa.nama_mhs}
               </StyledTableCell>
-
-              <StyledTableCell align="center">{"kaskdasm"}</StyledTableCell>
+              <StyledTableCell align="center">
+                {mahasiswa.NIM}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {cplData[index] || "Loading Nilai CPL..."}
+              </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>
               </StyledTableCell>

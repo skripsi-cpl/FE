@@ -10,14 +10,14 @@ const DosenDataMhs = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredMahasiswa, setFilteredMahasiswa] = useState([]);
   const [mahasiswaData, setMahasiswaData] = useState([]);
-  const [periodeData, setPeriodeData] = useState([]); // State untuk menyimpan data periode
+  const [periodeData, setPeriodeData] = useState([]); 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/mahasiswa/indexTa');
         const extractedPeriodes = response.data.map((item) => item.periode);
         setPeriodeData(extractedPeriodes);
-        // Mengambil data periode dari respons API dan menyimpannya dalam state periodeData
+        
         if (response.data.periode) {
           setPeriodeData(response.data);
 
@@ -41,7 +41,8 @@ const DosenDataMhs = () => {
     setFilteredMahasiswa(filteredData);
   }, [selectedTahunMasuk, searchKeyword, mahasiswaData]);
 
-  const tahunMasukOptions = [...new Set(mahasiswaData.map((mhs) => mhs.tahun_masuk))];
+  const tahunMasukOptions = [...new Set(mahasiswaData.map((mhs) => mhs.tahun_masuk))].sort().reverse();
+
 
   const handleTahunMasukChange = (event) => {
     setSelectedTahunMasuk(event.target.value);
@@ -91,7 +92,7 @@ const DosenDataMhs = () => {
                   </option>
                 ))}
               </select>
-              <h3>Tahun Ajaran</h3>
+              {/* <h3>Tahun Ajaran</h3>
               <select
                 value={selectedSemester}
                 onChange={handleSemesterChange}
@@ -102,7 +103,7 @@ const DosenDataMhs = () => {
                     {periode}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
           </div>
           <h2>Mahasiswa Perwalian</h2>
