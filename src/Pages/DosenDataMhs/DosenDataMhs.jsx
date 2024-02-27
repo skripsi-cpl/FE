@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavbarDosenComponent, FooterComponent, TableDosen } from '../../Components';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import './dosendatamhs.css';
 import axios from 'axios';
 
@@ -9,14 +10,14 @@ const DosenDataMhs = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredMahasiswa, setFilteredMahasiswa] = useState([]);
   const [mahasiswaData, setMahasiswaData] = useState([]);
-  const [periodeData, setPeriodeData] = useState([]); // State untuk menyimpan data periode
+  const [periodeData, setPeriodeData] = useState([]); 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/mahasiswa/indexTa');
         const extractedPeriodes = response.data.map((item) => item.periode);
         setPeriodeData(extractedPeriodes);
-        // Mengambil data periode dari respons API dan menyimpannya dalam state periodeData
+        
         if (response.data.periode) {
           setPeriodeData(response.data);
 
@@ -40,7 +41,8 @@ const DosenDataMhs = () => {
     setFilteredMahasiswa(filteredData);
   }, [selectedTahunMasuk, searchKeyword, mahasiswaData]);
 
-  const tahunMasukOptions = [...new Set(mahasiswaData.map((mhs) => mhs.tahun_masuk))];
+  const tahunMasukOptions = [...new Set(mahasiswaData.map((mhs) => mhs.tahun_masuk))].sort().reverse();
+
 
   const handleTahunMasukChange = (event) => {
     setSelectedTahunMasuk(event.target.value);
@@ -61,8 +63,19 @@ const DosenDataMhs = () => {
       <NavbarDosenComponent />
       <div className="container-dosen-data-mhs">
         <div className="content-dosen-data-mhs">
+          <h2><DriveFolderUploadIcon />&nbsp; &nbsp;Dosen Wali</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <div className="content-atas-data-mhs merge">
             <form action="">
+
               <h3>Cari Mahasiswa Perwalian</h3>
               <input type="text" value={searchKeyword} onChange={handleSearchChange} />
             </form>
@@ -79,7 +92,7 @@ const DosenDataMhs = () => {
                   </option>
                 ))}
               </select>
-              <h3>Tahun Ajaran</h3>
+              {/* <h3>Tahun Ajaran</h3>
               <select
                 value={selectedSemester}
                 onChange={handleSemesterChange}
@@ -90,9 +103,19 @@ const DosenDataMhs = () => {
                     {periode}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
           </div>
+          <h2>Mahasiswa Perwalian</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <TableDosen filteredMahasiswa={filteredMahasiswa} selectedSemester={selectedSemester} />
         </div>
       </div>

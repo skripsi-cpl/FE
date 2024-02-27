@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavbarComponent, FooterComponent, DataComponent } from "../../Components";
 import { Pie } from 'react-chartjs-2';
 import PieChartIcon from '@mui/icons-material/PieChart';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Dashboard.css";
@@ -46,10 +47,15 @@ const Dashboard = () => {
         <h1>Welcome back, Operator! 👋</h1>
         <div className="content-operator">
           <div className="operator-1">
-            <DataComponent title="Jumlah Mahasiswa Terdaftar" number={totalMahasiswa} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Lulusan" number={totalCPL} />
-            <DataComponent title="Jumlah Capaian Pembelajaran Mata Kuliah" number={totalCPMK} />
-            <DataComponent title="Jumlah Mata Kuliah" number={totalMK} />
+            <h3><ApartmentIcon /> &nbsp; Informasi</h3>
+            <hr />
+            <br />
+            <div className="detail-operator-1">
+              <h4>Mahasiswa Terdaftar     :   </h4><p>5231</p>
+              <h4>Capaian Pembelajaran Lulusan      :   </h4> <p>12312</p>
+              <h4>Capaian Pembelajaran Mata Kuliah :</h4>  <p>3213</p>
+              <h4>Mata Kuliah :</h4>  <p>3213</p>
+            </div>
           </div>
           <div className="operator-2">
             <div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
+import SchoolIcon from '@mui/icons-material/School';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import "./uploaddata.css";
@@ -192,6 +193,16 @@ const UploadDataMhs = () => {
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
         <div className="content-upload-mhs">
+          <h2><SchoolIcon /> &nbsp; &nbsp;Dosen Pengampu</h2>
+          <hr style={
+            {
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor: '#000000',
+              marginBottom: 20
+            }
+          } />
           <h3>Pilih Tahun Ajaran</h3>
           <form action="" onDrop={handleDrop} onDragOver={handleDragOver}>
             <select
@@ -233,10 +244,19 @@ const UploadDataMhs = () => {
               ))}
             </select>
 
-            <h3>Upload File Nilai Berbasis OBE:</h3>
-            <h4>
-              File template : <a href="">OBE.xlsx</a>
-            </h4>
+            <h2>Upload File Nilai Berbasis OBE:</h2>
+            <hr style={
+              {
+                color: '#000000',
+                backgroundColor: '#000000',
+                height: 1,
+                borderColor: '#000000',
+                marginBottom: 20
+              }
+            } />
+            <h3>
+              File template : <a href=""> &nbsp; OBE.xlsx</a>
+            </h3>
             <input
               type="file"
               accept=".xlsx, .csv"

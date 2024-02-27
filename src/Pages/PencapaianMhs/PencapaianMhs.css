@@ -14,6 +14,11 @@
     overflow: hidden;
 }
 
+.content-pencapaian-mhs h2 {
+    display: flex;
+    align-items: center;
+}
+
 .chart-container {
     width: 100%;
     height: auto;
