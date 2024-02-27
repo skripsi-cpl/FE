@@ -88,8 +88,6 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setFilteredData(data.data);
-                console.log(data.data)
-
             })
             .catch(error => console.error('There was an error!', error));
     };
@@ -99,7 +97,6 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setIdCplData(data);
-                console.log(data);
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
@@ -108,7 +105,6 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setTotalNilaiCPL(data.data);
-                console.log(data);
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
@@ -178,14 +174,12 @@ const PencapaianMhs = () => {
         // const totalNilaiCplArray = idCplData.map(cpl => totalNilaiCplPerIdCpl[cpl.id_cpl] || 0);
         // setTotalNilaiCPL(totalNilaiCplArray);
     }, [filteredData]);
-    
-    console.log(totalNilaiCPL);
+
     
     
     useEffect(() => {
         const uniqueMkData = filteredData ? [...new Map(filteredData.map(item => [item['nama_mk'], item])).values()] : [];
         setUniqueMkData(uniqueMkData); // Set uniqueMkData state
-        console.log(uniqueMkData);
         
     }, [filteredData]);
     

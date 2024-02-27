@@ -1,6 +1,6 @@
-import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'; 
 import { format } from 'date-fns';
+import { useEffect, useState } from "react";
 
 const styles = StyleSheet.create({
     page: {
@@ -71,6 +71,28 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         padding: 2,
     },
+    tableCellCPLID: {
+        borderWidth: 0.5,
+        borderColor: '#000000',
+        fontSize: 8.5,
+        textAlign: 'center',
+        lineHeight: 1.5,
+        fontWeight: 'bold',
+        flex: 0.3,
+        flexDirection: 'column',
+        padding: 2,
+    },
+    tableCellNamaCPL: {
+        borderWidth: 0.5,
+        borderColor: '#000000',
+        fontSize: 8.5,
+        textAlign: 'center',
+        lineHeight: 1.5,
+        fontWeight: 'bold',
+        flex: 1,
+        flexDirection: 'column',
+        padding: 2,
+    },
     tableCellCPL: {
         borderWidth: 0.5,
         borderColor: '#000000',
@@ -121,7 +143,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end', // Meratakan ke kanan
     },
     signatureText: {
-        fontSize: 10,
+        fontSize: 8.5,
         textAlign: 'right',
     },
     printedOut: {
@@ -143,6 +165,9 @@ const styles = StyleSheet.create({
 });
 
 const GeneratePDF = () => {
+    const [dataCPL, setDataCPL] = useState([]);
+    const [totalNilaiCPL, setTotalNilaiCPL] = useState([]);
+    const [namaDosen, setNamaDosen] = useState('');
     const currentDate = format(new Date(), "dd MMMM yyyy"); // Format tanggal saat ini
     const currentDatePrintout = format(new Date(), 'dd/MM/yyyy HH:mm');
     // Array yang berisi 40 elemen dengan nilai sembarang
@@ -152,7 +177,27 @@ const GeneratePDF = () => {
     ];
     const dummyData = Array.from({ length: 40 }, (_, index) => index);
     const totalCpl = cplData.reduce((total, item) => total + item.nilai, 0);
+    const nim = localStorage.getItem('loggedInNIM');
+    const nama = localStorage.getItem('loggedInNama');
 
+    useEffect(() => {
+        fetch(`http://localhost:8000/api/generatepdf/getData?NIM=${nim}`)
+            .then(response => response.json())
+            .then(data => {
+                setDataCPL(data.data);
+                setNamaDosen(data.data[0].nama_dosen);
+            })
+            .catch(error => console.error('There was an error!', error));
+    }, []);
+    useEffect(() => {
+        fetch(`http://localhost:8000/api/dashboardmhs/totalNilaiCplPerIdCpl?NIM=${nim}`)
+            .then(response => response.json())
+            .then(data => {
+                setTotalNilaiCPL(data.data);
+            })
+            .catch(error => console.error('There was an error!', error));
+    }, []);
+   
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -165,13 +210,13 @@ const GeneratePDF = () => {
                             <Text>Nama</Text>
                         </View>
                         <View style={styles.tableCell}>
-                            <Text>: Rizal Zeri</Text>
+                            <Text>: {nama}</Text>
                         </View>
                         <View style={styles.tableCell}>
                             <Text>Prodi</Text>
                         </View>
                         <View style={styles.tableCell}>
-                            <Text>: Informaika</Text>
+                            <Text>: Informatika</Text>
                         </View>
                     </View>
                     <View style={styles.tableRow}>
@@ -179,19 +224,19 @@ const GeneratePDF = () => {
                             <Text>NIM</Text>
                         </View>
                         <View style={styles.tableCell}>
-                            <Text>: 24060120130062</Text>
+                            <Text>: {nim}</Text>
                         </View>
                         <View style={styles.tableCell}>
                             <Text>Dosen Wali</Text>
                         </View>
                         <View style={styles.tableCell}>
-                            <Text>: Aris puji widodo{'\n'}{'\n'}</Text>
+                            <Text>: {namaDosen}{'\n'}{'\n'}</Text>
                         </View>
                     </View>
                     <Text style={[styles.title]}>Rekap Hasil Capaian Pembelajaran{'\n'}</Text>
                     <View style={styles.tableRowCPL}>
-                    <View style={styles.tableCellCPLNo}>
-                        <Text>No</Text>
+                        <View style={styles.tableCellCPLNo}>
+                            <Text>No</Text>
                         </View>
                         <View style={styles.tableCellCPLKodeMk}>
                             <Text>Kode MK</Text>
@@ -206,40 +251,63 @@ const GeneratePDF = () => {
                             <Text>Nilai</Text>
                         </View>
                     </View>
-                    {dummyData.map((item) => (
-                        <View key={item} style={styles.tableRowCPL}>
+                    {dataCPL.map((item, index) => (
+                        <View style={styles.tableRowCPL} key={index}>
                             <View style={styles.tableCellCPLNo}>
-                                <Text>{item + 1}</Text>
+                                <Text>{index + 1}</Text>
                             </View>
                             <View style={styles.tableCellCPLKodeMk}>
-                                <Text>PAIK827</Text>
+                                <Text>{item.kode_mk}</Text>
                             </View>
                             <View style={styles.tableCellMK}>
-                                <Text>Metodologi Penelitian dan Penulisan Ilmiah</Text>
+                                <Text>{item.nama_mk}</Text>
                             </View>
                             <View style={styles.tableCellCPL}>
-                                <Text>CPL-03</Text>
+                                <Text>{item.id_cpl}</Text>
                             </View>
                             <View style={styles.tableCellNilai}>
-                                <Text>0.15</Text>
+                                <Text>{item.nilai_cpl}</Text>
                             </View>
                         </View>
                     ))}
                     <View style={styles.totalRow}>
-                        <View style={styles.tableCellTotals}>
-                            <Text style={styles.totalLabel}>Total</Text>
+                        <View style={styles.tableCellCPLNo}>
+                            <Text>No</Text>
                         </View>
-                        <View style={styles.tableCellTotalNilai}>
-                            <Text>{totalCpl}</Text>
+                        <View style={styles.tableCellNamaCPL}>
+                            <Text>Nama CPL</Text>
+                        </View>
+                        <View style={styles.tableCellCPLID}>
+                            <Text>CPL ID</Text>
+                        </View>
+                        <View style={styles.tableCellCPL}>
+                            <Text>Total</Text>
                         </View>
 
                     </View>
+                    {totalNilaiCPL.map((item, index) => (
+                        <View style={styles.tableRowCPL} key={index}>
+                            <View style={styles.tableCellCPLNo}>
+                                <Text>{index + 1}</Text>
+                            </View>
+                            <View style={styles.tableCellNamaCPL}>
+                                <Text>{item.nama_cpl}</Text>
+                            </View>
+                            <View style={styles.tableCellCPLID}>
+                                <Text>{item.id_cpl}</Text>
+                            </View>
+                            <View style={styles.tableCellCPL}>
+                                <Text>{item.total_nilai_cpl}</Text>
+                            </View>
+                        </View>
+                    ))}
+                    <View style={styles.totalRow}></View>
                     <Text style={styles.printedOut}>Printed out: {currentDatePrintout}</Text>
                     <View style={styles.signatureContainer}>
                         <View>
                             <Text style={styles.signatureText}>Semarang, {currentDate}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}</Text>
-                            <Text style={styles.signatureText}>Prof. Kusworo</Text>
-                            <Text style={styles.signatureText}>NIP. 194547329323732</Text>
+                            <Text style={styles.signatureText}>{namaDosen}</Text>
+                            <Text style={styles.signatureText}>NIP. 197404011999031002</Text>
                         </View>
                     </View>
                 </View>
