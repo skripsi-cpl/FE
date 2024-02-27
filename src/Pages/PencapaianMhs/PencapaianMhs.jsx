@@ -8,10 +8,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { Pie, Line } from 'react-chartjs-2';
+
 import { useNavigate } from 'react-router-dom';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import {  StyleSheet } from '@react-pdf/renderer';
 import "./PencapaianMhs.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -50,12 +52,19 @@ const PencapaianMhs = () => {
     const [selectedSemester, setSelectedSemester] = useState('');
     const [filteredData, setFilteredData] = useState([]);
     const [idCplData, setIdCplData] = useState([]);
+    const [totalNilaiCPL, setTotalNilaiCPL] = useState([]);
     const [idBobotData, setIdBobotData] = useState([]);
     const [totalBobotCpl, setTotalBobotCpl] = useState({});
     const [totalAllSemesters, setTotalAllSemesters] = useState(0);
-    const [selectedMkData, setSelectedMkData] = useState([]);
+    const [selectedMkData, setSelectedMkData] = useState("");
     const [selectedBobotCPL, setSelectedBobotCPL] = useState([]);
+    const [totalNilaiCplPerMataKuliah, setTotalNilaiCplPerMataKuliah] = useState({});
+    const [totalAllNilaiCpl, setTotalAllNilaiCpl] = useState(0);
     const [isDataAvailable, setIsDataAvailable] = useState(true);
+    const [isDataCPLAvailable, setIsDataCPLAvailable] = useState(true);
+
+    const [uniqueMkData, setUniqueMkData] = useState([]); 
+    
 
     const nama = localStorage.getItem('loggedInNama');
     const nim = localStorage.getItem('loggedInNIM');
@@ -79,6 +88,7 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setFilteredData(data.data);
+                console.log(data.data)
 
             })
             .catch(error => console.error('There was an error!', error));
@@ -89,6 +99,16 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setIdCplData(data);
+                console.log(data);
+            })
+            .catch(error => console.error('There was an error!', error));
+    }, []);
+    useEffect(() => {
+        fetch(`http://localhost:8000/api/dashboardmhs/totalNilaiCplPerIdCpl?NIM=${nim}`)
+            .then(response => response.json())
+            .then(data => {
+                setTotalNilaiCPL(data.data);
+                console.log(data);
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
@@ -101,7 +121,6 @@ const PencapaianMhs = () => {
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
-
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/filtersemester')
             .then(response => response.json())
@@ -117,37 +136,59 @@ const PencapaianMhs = () => {
     useEffect(() => {
         setIsDataAvailable(filteredData && filteredData.length > 0);
     }, [filteredData]);
+    useEffect(() => {
+        setIsDataCPLAvailable(idCplData && idCplData.length > 0);
+    }, [idCplData]);
 
     useEffect(() => {
-        const calculateTotalBobotCpl = () => {
-            const totals = { ...totalBobotCpl };
-            const idCplToBobot = {};
-            idBobotData.forEach((item) => {
-                idCplToBobot[item.id_cpl] = parseFloat(item.bobot_cpl || 0);
-            });
+        const calculateTotalNilaiCplPerIdCpl = () => {
+            const totalNilaiCplPerIdCpl = {};
+    
             if (filteredData && filteredData.length > 0) {
-                const namaMataKuliah = filteredData.map(row => row.nama_mk);
-                setSelectedMkData(namaMataKuliah);
-                const bobotCPLPerMK = filteredData.map(row => row.bobot_cpl);
-                setSelectedBobotCPL(bobotCPLPerMK);
-
-                filteredData.forEach((row) => {
-                    const bobotCpl = idCplToBobot[row.id_cpl];
-                    if (bobotCpl !== undefined) {
-                        totals[row.id_cpl] = (totals[row.id_cpl] || 0) + bobotCpl;
+                // Inisialisasi total nilai CPL per id_cpl menjadi 0
+                idCplData.forEach(cpl => {
+                    totalNilaiCplPerIdCpl[cpl.id_cpl] = 0;
+                });
+    
+                // Hitung total nilai CPL per id_cpl
+                filteredData.forEach(row => {
+                    const bobotCpl = parseFloat(row.nilai_cpl || 0);
+                    if (!isNaN(bobotCpl)) {
+                        totalNilaiCplPerIdCpl[row.id_cpl] += bobotCpl;
                     }
                 });
             } else {
                 console.error('Filtered data is undefined or empty.');
             }
-            const totalThisSemester = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
-            setTotalAllSemesters(prevTotal => prevTotal + totalThisSemester);
-            setTotalBobotCpl(totals);
+    
+            return totalNilaiCplPerIdCpl;
         };
-
-        calculateTotalBobotCpl();
-    }, [filteredData, idBobotData]);
-
+    
+        // Panggil fungsi untuk menghitung total nilai CPL per id_cpl
+        const totalNilaiCplPerIdCpl = calculateTotalNilaiCplPerIdCpl();
+    
+        // Hitung total nilai CPL semua mata kuliah pada semester tertentu
+        const totalAllNilaiCpl = Object.values(totalNilaiCplPerIdCpl).reduce((acc, curr) => acc + curr, 0).toFixed(2);
+    
+        // Update state total nilai CPL per id_cpl dan total nilai CPL semua mata kuliah
+        setTotalNilaiCplPerMataKuliah(totalNilaiCplPerIdCpl);
+        setTotalAllNilaiCpl(totalAllNilaiCpl);
+    
+        // Set total nilai CPL per id_cpl sebagai array
+        // const totalNilaiCplArray = idCplData.map(cpl => totalNilaiCplPerIdCpl[cpl.id_cpl] || 0);
+        // setTotalNilaiCPL(totalNilaiCplArray);
+    }, [filteredData]);
+    
+    console.log(totalNilaiCPL);
+    
+    
+    useEffect(() => {
+        const uniqueMkData = filteredData ? [...new Map(filteredData.map(item => [item['nama_mk'], item])).values()] : [];
+        setUniqueMkData(uniqueMkData); // Set uniqueMkData state
+        console.log(uniqueMkData);
+        
+    }, [filteredData]);
+    
     return (
         <>
             <NavbarMhsComponent />
@@ -186,22 +227,20 @@ const PencapaianMhs = () => {
                                             </StyledTableCell>
                                         ))
                                     }
-                                    <StyledTableCell>Total</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {Array.isArray(filteredData) && filteredData?.length > 0 ? (
-                                    filteredData.map((row, index) => {
-                                        const bobotCplFiltered = idBobotData.filter(item => item.id_cpl === row.id_cpl);
-
+                                {Array.isArray(uniqueMkData) && uniqueMkData?.length > 0 ? (
+                                    uniqueMkData.map((row, index) => {
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell>{row.nama_mk}</TableCell>
-                                                {idCplData.map((cpl, idx) => {
-                                                    const matchedBobotCpl = bobotCplFiltered.find(bobot => bobot.id_cpl === cpl.id_cpl);
+                                                {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => {
+                                                    const filteredRow = filteredData.find(item => item && item.nama_mk === row.nama_mk && item.id_cpl === cpl.id_cpl);
+                                                    const nilaiCpl = filteredRow ? filteredRow.nilai_cpl : '-';
                                                     return (
                                                         <StyledTableCell align="center" key={idx}>
-                                                            {matchedBobotCpl ? matchedBobotCpl.bobot_cpl : '-'}
+                                                            {nilaiCpl}
                                                         </StyledTableCell>
                                                     );
                                                 })}
@@ -213,104 +252,61 @@ const PencapaianMhs = () => {
                                         <TableCell colSpan={idCplData.length + 2}>No data available</TableCell>
                                     </TableRow>
                                 )}
-
                             </TableBody>
                             <TableRow>
                                 <TableCell>Jumlah</TableCell>
-                                {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => (
+                                {Array.isArray(idCplData) && idCplData.map((cpl, idx) => (
                                     <StyledTableCell align="center" key={idx}>
-                                        {totalBobotCpl[cpl.id_cpl] || 0}
+                                        {totalNilaiCplPerMataKuliah[cpl.id_cpl] || 0}
                                     </StyledTableCell>
                                 ))}
-                                {Array.isArray(filteredData) && filteredData.length > 0 && (
-                                    <StyledTableCell align="center">
-                                        {Object.values(totalBobotCpl).reduce((curr) => curr, 0) + totalAllSemesters}
-                                    </StyledTableCell>
-                                )}
                             </TableRow>
+
 
                         </Table>
                     </TableContainer>
                     <div className="generatepdf">
                         <button onClick={handleGeneratePDF}>Generate PDF</button>
                     </div>
-                    <div>
-                        <h3>Diagram Lingkaran</h3>
-                        <br />
-                    </div>
-                    <div className="diagram-lingkaran">
-                        <Pie
-                            data={{
-                                labels: isDataAvailable ? selectedMkData : ['Not Available'],
-                                datasets: [
-                                    {
-                                        label: 'Bobot CPL',
-                                        data: isDataAvailable ? selectedBobotCPL : [0],
-                                        backgroundColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)',
+                    <div className="diagram-radar">
+                            <div>
+                                <h3>Diagram Radar</h3>
+                            </div>
+                            <div className='content'>
+                                <Radar 
+                                    data={{
+                                        labels:isDataCPLAvailable ? idCplData.map(item => 'ID-CPL'+item.id_cpl) : ['Not available'],
+                                        datasets: [
+                                            {
+                                                label: "Nilai CPL",
+                                                data: isDataCPLAvailable ? totalNilaiCPL.map(item => item.total_nilai_cpl) : [0],
+                                                backgroundColor: [
+                                                    "rgba(255, 99, 132, 0.2)",
+                                                ],
+                                                borderColor: [
+                                                    "rgba(255, 99, 132, 1)",
+                                                ],
+                                                borderWidth: 1,
+                                            },
                                         ],
-                                        borderColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)',
-                                        ],
-                                        borderWidth: 1,
-                                    },
-                                ],
-                            }}
-                            height={300}
-                            width={500}
-                            options={{
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    datalabels: {
-                                        display: isDataAvailable ? true : false,
-                                        formatter: (value, context) => {
-                                            return isDataAvailable ? selectedBobotCPL[context.dataIndex] : '';
+                                    }}
+                                    height={300}
+                                    width={500}
+                                    options={{
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            r: {
+                                                angleLines: {
+                                                    display: false,
+                                                },
+                                                suggestedMin: 0,
+                                                suggestedMax: 100,
+                                            },
                                         },
-                                    },
-                                },
-                            }}
-                        />
-                    </div>
-                    <br />
-                    <div>
-                        <h3>Diagram Garis</h3>
-                    </div>
-                    <div className='diagram-garis'>
-                        <Line
-                            data={{
-                                labels: ["Semester 1", "2", "3", "4", "5", "6", "7"],
-                                datasets: [
-                                    {
-                                        label: "My First Dataset",
-                                        data: [65, 59, 80, 81, 56, 55, 40],
-                                        fill: false,
-                                        borderColor: "rgba(75,192,192,1)",
-                                        tension: 0.1
-                                    }
-                                ]
-                            }}
-                            height={400}
-                            width={600}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }}
-                        />
-                    </div>
+                                    }}
+                                />
+                            </div>
+                        </div>
                 </div>
                 <br /><br /><br />
             </div>
