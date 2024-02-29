@@ -55,9 +55,10 @@ const ModalInputPL = () => {
         }
         if (!formData.bobot_pl) {
             validationError.bobot_pl = 'Bobot PL harus diisi';
-        } else if (formData.bobot_pl > 1) {
-            validationError.bobot_pl = 'Bobot PL tidak boleh lebih dari 1';
-        }
+        } 
+        // else if (formData.bobot_pl > 100) {
+        //     validationError.bobot_pl = 'Bobot PL tidak boleh lebih dari 1';
+        // }
 
         setError(validationError);
 

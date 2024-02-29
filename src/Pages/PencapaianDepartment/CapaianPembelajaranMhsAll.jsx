@@ -1,4 +1,4 @@
-import { NavbarDosenComponent, FooterComponent } from "../../Components";
+import { NavbarDosenComponent, FooterComponent, NavbarDepartmentComponent } from "../../Components";
 import "../../Pages/PencapaianMhs/PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
@@ -25,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
-const PencapaianMhs = () => {
+const CapaianPembelajaranMhsAll = () => {
     const [semesters, setSemesters] = useState([]);
     const [selectedSemester, setSelectedSemester] = useState('');
     const [filteredData, setFilteredData] = useState([]);
@@ -163,7 +163,7 @@ const PencapaianMhs = () => {
 
     return (
         <>
-            <NavbarDosenComponent />
+            <NavbarDepartmentComponent />
             <div className="container-dosen-data-mhs">
                 <div className="content-pencapaian-mhs">
                     <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa</h2>
@@ -284,4 +284,4 @@ const PencapaianMhs = () => {
     );
 };
 
-export default PencapaianMhs;
+export default CapaianPembelajaranMhsAll;

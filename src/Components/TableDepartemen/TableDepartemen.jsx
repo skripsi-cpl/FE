@@ -8,6 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
+import { useNavigate } from 'react-router-dom';
+
 
 const TableDepartemen = ({ data }) => {
 
@@ -20,7 +22,15 @@ const TableDepartemen = ({ data }) => {
       fontSize: 14,
     },
   }));
-
+  const navigateTo = useNavigate();
+  const handleClick = async (nim) => {
+    try {
+      
+      navigateTo(`/dashboarddepartment/capaianpembelajaran/${nim}`);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -47,7 +57,9 @@ const TableDepartemen = ({ data }) => {
               <TableCell>{mahasiswa.tahun_masuk}</TableCell>
               <TableCell>{mahasiswa.nama_wali}</TableCell>
               <TableCell>{"kaskdasm"}</TableCell>
-              <TableCell><button onClick={() => handleClick(mahasiswa.NIM)}>Pilih Capaian</button></TableCell>
+              <StyledTableCell align="center">
+                <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>
+              </StyledTableCell>
             </TableRow>
           ))}
         </TableBody>

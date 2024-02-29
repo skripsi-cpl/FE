@@ -99,38 +99,39 @@ const ModalMataKuliah = () => {
         }
         if (!formData.bobot_mk) {
             validationError.bobot_mk = 'Bobot MK harus diisi';
-        } else if (formData.bobot_mk > 1) {
-            validationError.bobot_mk = 'Bobot CPMK tidak boleh lebih dari 1';
         }
+        //else if (formData.bobot_mk > 100) {
+        //     validationError.bobot_mk = 'Bobot CPMK tidak boleh lebih dari 1';
+        // }
 
         setError(validationError);
 
-        if (Object.keys(validationError).length > 0) return;
-        const selectedCPMK = dataCPMK.find((item) => item.id_cpmk === formData.id_cpmk);
-        const selectedBobotCPMK = selectedCPMK ? parseFloat(selectedCPMK.bobot_cpmk || 0) : 0;
-        // // Hitung total bobot CPMK yang akan ditambahkan
-        const newBobotMK = parseFloat(formData.bobot_mk || 0);
+        // if (Object.keys(validationError).length > 0) return;
+        // const selectedCPMK = dataCPMK.find((item) => item.id_cpmk === formData.id_cpmk);
+        // const selectedBobotCPMK = selectedCPMK ? parseFloat(selectedCPMK.bobot_cpmk || 0) : 0;
+        // // // Hitung total bobot CPMK yang akan ditambahkan
+        // const newBobotMK = parseFloat(formData.bobot_mk || 0);
         
         
-        if (newBobotMK > selectedBobotCPMK) {
-            validationError.bobot_mk = "Bobot MK tidak boleh lebih besar dari bobot CPMK yang dipilih";
-            setError(validationError);
-            return;
-        }
-        const totalBobotMKForCPMK = dataMK.reduce((total, item) => {
-            if (item.id_cpmk === formData.id_cpmk) {
-                return total + parseFloat(item.bobot_mk || 0);
-            }
-            return total;
-        }, 0);
+        // if (newBobotMK > selectedBobotCPMK) {
+        //     validationError.bobot_mk = "Bobot MK tidak boleh lebih besar dari bobot CPMK yang dipilih";
+        //     setError(validationError);
+        //     return;
+        // }
+        // const totalBobotMKForCPMK = dataMK.reduce((total, item) => {
+        //     if (item.id_cpmk === formData.id_cpmk) {
+        //         return total + parseFloat(item.bobot_mk || 0);
+        //     }
+        //     return total;
+        // }, 0);
         
-        const totalAllBobot = totalBobotMKForCPMK + newBobotMK
-        console.log(totalAllBobot)
-        if (totalAllBobot > selectedBobotCPMK) {
-            validationError.bobot_mk = "Jumlah bobot MK tidak boleh melebihi bobot CPL yang dipilih";
-            setError(validationError);
-            return;
-        }
+        // const totalAllBobot = totalBobotMKForCPMK + newBobotMK
+        // console.log(totalAllBobot)
+        // if (totalAllBobot > selectedBobotCPMK) {
+        //     validationError.bobot_mk = "Jumlah bobot MK tidak boleh melebihi bobot CPL yang dipilih";
+        //     setError(validationError);
+        //     return;
+        // }
        
         
 

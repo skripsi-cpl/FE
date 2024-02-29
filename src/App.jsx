@@ -4,6 +4,7 @@ import PrivateRoutes from "../Utils/PrivateRoutes";
 import FilterMahasiswaRoutes from "../Utils/FilterMahasiswaRoutes";
 import { FilterDepartemenRoutes, FilterDosenRoutes, FilterOperatorRoutes } from "../Utils";
 import GeneratePDFPage from "./Pages/PencapaianMhs/GeneratePDFPage";
+import CapaianPembelajaranMhsAll from "./Pages/PencapaianDepartment/CapaianPembelajaranMhsAll";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route element={<FilterDepartemenRoutes />}>
               <Route path="/dashboarddepartment" element={<DashboardDepartment />} />
               <Route path="/dashboarddepartment/permahasiswaan" element={<PencapaianDepartment />} />
+              <Route path="/dashboarddepartment/capaianpembelajaran/:nim" element={<CapaianPembelajaranMhsAll />} />
             </Route>
           </Route>
           {/* Not Found */}

@@ -66,7 +66,7 @@ const DashboardDepartment = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="content-department-3">
+                    {/* <div className="content-department-3">
                         <Line
                             data={{
                                 labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'],
@@ -123,7 +123,7 @@ const DashboardDepartment = () => {
                                 maintainAspectRatio: false,
                             }}
                         />
-                    </div>
+                    </div> */}
                 </div>
 
             </div>
