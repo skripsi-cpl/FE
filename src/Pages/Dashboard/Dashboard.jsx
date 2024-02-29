@@ -51,10 +51,10 @@ const Dashboard = () => {
             <hr />
             <br />
             <div className="detail-operator-1">
-              <h4>Mahasiswa Terdaftar     :   </h4><p>5231</p>
-              <h4>Capaian Pembelajaran Lulusan      :   </h4> <p>12312</p>
-              <h4>Capaian Pembelajaran Mata Kuliah :</h4>  <p>3213</p>
-              <h4>Mata Kuliah :</h4>  <p>3213</p>
+              <h4>Mahasiswa Terdaftar     :   </h4><p>{totalMahasiswa}</p>
+              <h4>Capaian Pembelajaran Lulusan      :   </h4> <p>{totalCPL}</p>
+              <h4>Capaian Pembelajaran Mata Kuliah :</h4>  <p>{totalCPMK}</p>
+              <h4>Mata Kuliah :</h4>  <p>{totalMK}</p>
             </div>
           </div>
           <div className="operator-2">

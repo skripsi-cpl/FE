@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { Pie, Line } from 'react-chartjs-2';
+import { Pie, Line,Radar } from 'react-chartjs-2';
 
 import { useNavigate } from 'react-router-dom';
 import {  StyleSheet } from '@react-pdf/renderer';
