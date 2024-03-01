@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FooterComponent, NavbarDosenComponent } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
-import SchoolIcon from '@mui/icons-material/School';
-import { ToastContainer, toast } from 'react-toastify';
+import SchoolIcon from "@mui/icons-material/School";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./uploaddata.css";
-
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const UploadDataMhs = () => {
   const [mataKuliahOptions, setMataKuliahOptions] = useState([]);
@@ -18,6 +19,8 @@ const UploadDataMhs = () => {
   const [selectedMataKuliah, setSelectedMataKuliah] = useState("");
   const [tahunAjaranOptions, setTahunAjaranOptions] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
+  const [isTahunAjaranMataKuliahSelected, setIsTahunAjaranMataKuliahSelected] =
+    useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,9 +30,8 @@ const UploadDataMhs = () => {
         );
         const sortedData = response.data.sort((a, b) => a.id_TA - b.id_TA);
         setTahunAjaranOptions(sortedData.reverse());
-        sortedData.reverse()
+        sortedData.reverse();
         console.log(sortedData.reverse());
-
       } catch (error) {
         console.error("Error fetching tahun ajaran data:", error);
       }
@@ -76,7 +78,7 @@ const UploadDataMhs = () => {
 
   const handleTahunAjaranChange = (event) => {
     const selectedIdTA = event.target.value;
-    console.log('Selected ID TA:', selectedIdTA);
+    console.log("Selected ID TA:", selectedIdTA);
     setSelectedTahunAjaran(selectedIdTA);
     fetchMataKuliahData(selectedIdTA);
   };
@@ -112,14 +114,20 @@ const UploadDataMhs = () => {
           // Menggunakan Map untuk mendapatkan status terakhir dari setiap kelas
           const kelasStatusMap = new Map();
           response.data.forEach((kelas) => {
-            kelasStatusMap.set(kelas.nama_kelas, kelas.status_upload || 'Belum');
+            kelasStatusMap.set(
+              kelas.nama_kelas,
+              kelas.status_upload || "Belum"
+            );
           });
 
           // Mengubah map menjadi array untuk digunakan sebagai opsi dropdown
-          const uniqueKelasOptions = Array.from(kelasStatusMap, ([nama_kelas, status_upload]) => ({
-            nama_kelas,
-            status_upload,
-          }));
+          const uniqueKelasOptions = Array.from(
+            kelasStatusMap,
+            ([nama_kelas, status_upload]) => ({
+              nama_kelas,
+              status_upload,
+            })
+          );
 
           setKelasOptions(uniqueKelasOptions);
         })
@@ -130,7 +138,7 @@ const UploadDataMhs = () => {
   }, [selectedIdMk, selectedTahunAjaran]);
 
   useEffect(() => {
-    console.log('Selected ID TA:', selectedTahunAjaran);
+    console.log("Selected ID TA:", selectedTahunAjaran);
   }, [selectedTahunAjaran]);
 
   const handleUpload = async () => {
@@ -151,22 +159,7 @@ const UploadDataMhs = () => {
         }
       );
       if (response.status === 200) {
-        toast.success("File uploaded successfully: " + response.data.message,
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Error Uploading File",
-        {
+        toast.success("File uploaded successfully: " + response.data.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -175,6 +168,19 @@ const UploadDataMhs = () => {
           draggable: true,
           progress: undefined,
         });
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Error Uploading File", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       window.location.reload();
     }
   };
@@ -193,16 +199,28 @@ const UploadDataMhs = () => {
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
         <div className="content-upload-mhs">
-          <h2><SchoolIcon /> &nbsp; &nbsp;Dosen Pengampu</h2>
-          <hr style={
-            {
-              color: '#000000',
-              backgroundColor: '#000000',
+          <h2>
+            <SchoolIcon /> &nbsp; &nbsp;Dosen Pengampu
+          </h2>
+          <hr
+            style={{
+              color: "#000000",
+              backgroundColor: "#000000",
               height: 1,
-              borderColor: '#000000',
-              marginBottom: 20
-            }
-          } />
+              borderColor: "#000000",
+              marginBottom: 20,
+            }}
+          />
+          <Button
+            component={Link}
+            to="/dashboarddosen"
+            color="inherit"
+            style={{ marginBottom: "1rem" }}
+            sx={{ backgroundColor: "black", color: "white" }}
+          >
+            Back
+          </Button>
+
           <h3>Pilih Tahun Ajaran</h3>
           <form action="" onDrop={handleDrop} onDragOver={handleDragOver}>
             <select
@@ -235,25 +253,28 @@ const UploadDataMhs = () => {
             </select>
 
             <h3>Kelas</h3>
-            <select value={selectedKelas} onChange={handleKelasChange}>
-              <option value="">Pilih Kelas</option>
-              {kelasOptions.map((kelas) => (
-                <option key={kelas.id_kelas} value={kelas.nama_kelas}>
-                  {`${kelas.nama_kelas} - ${kelas.status_upload}`}
-                </option>
-              ))}
-            </select>
-
+            {!selectedTahunAjaran || !selectedMataKuliah ? (
+              <p>Pilih tahun ajaran dan Mata Kuliah Terlebih dahulu!</p>
+            ) : (
+              <select value={selectedKelas} onChange={handleKelasChange}>
+                <option value="">Pilih Kelas</option>
+                {kelasOptions.map((kelas) => (
+                  <option key={kelas.id_kelas} value={kelas.nama_kelas}>
+                    {`${kelas.nama_kelas} - ${kelas.status_upload}`}
+                  </option>
+                ))}
+              </select>
+            )}
             <h2>Upload File Nilai Berbasis OBE:</h2>
-            <hr style={
-              {
-                color: '#000000',
-                backgroundColor: '#000000',
+            <hr
+              style={{
+                color: "#000000",
+                backgroundColor: "#000000",
                 height: 1,
-                borderColor: '#000000',
-                marginBottom: 20
-              }
-            } />
+                borderColor: "#000000",
+                marginBottom: 20,
+              }}
+            />
             <h3>
               File template : <a href=""> &nbsp; OBE.xlsx</a>
             </h3>

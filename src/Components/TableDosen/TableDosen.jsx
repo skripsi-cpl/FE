@@ -59,7 +59,7 @@ export default function CustomizedTables({
       );
   
 
-      const cplData = cplResponses.map(response => response.data.data[0].total_cpl);
+      const cplData = cplResponses.map(response => response.data.data.total_cpl);
   
       setCplData(cplData);
     } catch (error) {
