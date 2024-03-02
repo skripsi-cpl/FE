@@ -46,6 +46,7 @@ const Login = () => {
           localStorage.setItem('loggedInNama', data.name);
           localStorage.setItem('loggedInNIM', data.nim || '');
           localStorage.setItem('loggedInNIP', data.nip);
+          localStorage.setItem('loggedInkodeWali', data.kode)
           localStorage.setItem('redirect', data.redirectTo);
           localStorage.setItem('loggedRole', data.role);
           localStorage.setItem('totalMahasiswa', data.totalMahasiswa);
@@ -53,6 +54,7 @@ const Login = () => {
           localStorage.setItem('totalCPL', data.totalCPL);
           localStorage.setItem('totalCPMK', data.totalCPMK);
           localStorage.setItem('totalMK', data.totalMK);
+          console.log(data.kode);
         } else {
           toast.error("Login Gagal",
             {
