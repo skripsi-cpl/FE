@@ -10,10 +10,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { Pie, Line,Radar } from 'react-chartjs-2';
+import { Pie, Line, Radar } from 'react-chartjs-2';
 
 import { useNavigate } from 'react-router-dom';
-import {  StyleSheet } from '@react-pdf/renderer';
+import { StyleSheet } from '@react-pdf/renderer';
 import "./PencapaianMhs.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -63,8 +63,8 @@ const PencapaianMhs = () => {
     const [isDataAvailable, setIsDataAvailable] = useState(true);
     const [isDataCPLAvailable, setIsDataCPLAvailable] = useState(true);
 
-    const [uniqueMkData, setUniqueMkData] = useState([]); 
-    
+    const [uniqueMkData, setUniqueMkData] = useState([]);
+
 
     const nama = localStorage.getItem('loggedInNama');
     const nim = localStorage.getItem('loggedInNIM');
@@ -77,20 +77,23 @@ const PencapaianMhs = () => {
             { name: "Alice Johnson", score: 78 }
         ]
     };
-
-
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
-        setTotalBobotCpl({});
-
-        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
-            .then(response => response.json())
-            .then(data => {
-                setFilteredData(data.data);
-            })
-            .catch(error => console.error('There was an error!', error));
+        // Anda mungkin juga perlu untuk memuat ulang data yang sesuai dengan semester yang baru dipilih di sini
     };
+
+    useEffect(() => {
+        if (selectedSemester) {
+            fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedSemester}`)
+                .then(response => response.json())
+                .then(data => {
+                    setFilteredData(data.data);
+                    console.log(data.data);
+                })
+                .catch(error => console.error('There was an error!', error));
+        }
+    }, [selectedSemester]);
 
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getIdCpl')
@@ -139,16 +142,16 @@ const PencapaianMhs = () => {
     useEffect(() => {
         const calculateTotalNilaiCplPerIdCpl = () => {
             const totalNilaiCplPerIdCpl = {};
-    
+
             if (filteredData && filteredData.length > 0) {
                 // Inisialisasi total nilai CPL per id_cpl menjadi 0
                 idCplData.forEach(cpl => {
                     totalNilaiCplPerIdCpl[cpl.id_cpl] = 0;
                 });
-    
+
                 // Hitung total nilai CPL per id_cpl
                 filteredData.forEach(row => {
-                    const bobotCpl = parseFloat(row.nilai_cpl || 0);
+                    const bobotCpl = parseFloat(row.nilai_cpl_skalar || 0);
                     if (!isNaN(bobotCpl)) {
                         totalNilaiCplPerIdCpl[row.id_cpl] += bobotCpl;
                     }
@@ -156,33 +159,33 @@ const PencapaianMhs = () => {
             } else {
                 console.error('Filtered data is undefined or empty.');
             }
-    
+
             return totalNilaiCplPerIdCpl;
         };
-    
+
         // Panggil fungsi untuk menghitung total nilai CPL per id_cpl
         const totalNilaiCplPerIdCpl = calculateTotalNilaiCplPerIdCpl();
-    
+
         // Hitung total nilai CPL semua mata kuliah pada semester tertentu
         const totalAllNilaiCpl = Object.values(totalNilaiCplPerIdCpl).reduce((acc, curr) => acc + curr, 0).toFixed(2);
-    
+
         // Update state total nilai CPL per id_cpl dan total nilai CPL semua mata kuliah
         setTotalNilaiCplPerMataKuliah(totalNilaiCplPerIdCpl);
         setTotalAllNilaiCpl(totalAllNilaiCpl);
-    
+
         // Set total nilai CPL per id_cpl sebagai array
         // const totalNilaiCplArray = idCplData.map(cpl => totalNilaiCplPerIdCpl[cpl.id_cpl] || 0);
         // setTotalNilaiCPL(totalNilaiCplArray);
     }, [filteredData]);
 
-    
-    
+
+
     useEffect(() => {
         const uniqueMkData = filteredData ? [...new Map(filteredData.map(item => [item['nama_mk'], item])).values()] : [];
         setUniqueMkData(uniqueMkData); // Set uniqueMkData state
-        
+
     }, [filteredData]);
-    
+
     return (
         <>
             <NavbarMhsComponent />
@@ -217,7 +220,7 @@ const PencapaianMhs = () => {
                                     {idCplData.length > 0 &&
                                         idCplData.map((item, index) => (
                                             <StyledTableCell align="center" key={index}>
-                                                ID CPL-{item.id_cpl.slice(-2)}
+                                                ID CPL-{item.id_cpl}
                                             </StyledTableCell>
                                         ))
                                     }
@@ -231,7 +234,7 @@ const PencapaianMhs = () => {
                                                 <TableCell>{row.nama_mk}</TableCell>
                                                 {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => {
                                                     const filteredRow = filteredData.find(item => item && item.nama_mk === row.nama_mk && item.id_cpl === cpl.id_cpl);
-                                                    const nilaiCpl = filteredRow ? filteredRow.nilai_cpl : '-';
+                                                    const nilaiCpl = filteredRow ? filteredRow.nilai_cpl_skalar : '-';
                                                     return (
                                                         <StyledTableCell align="center" key={idx}>
                                                             {nilaiCpl}
@@ -263,44 +266,44 @@ const PencapaianMhs = () => {
                         <button onClick={handleGeneratePDF}>Generate PDF</button>
                     </div>
                     <div className="diagram-radar">
-                            <div>
-                                <h3>Diagram Radar</h3>
-                            </div>
-                            <div className='content'>
-                                <Radar 
-                                    data={{
-                                        labels:isDataCPLAvailable ? idCplData.map(item => 'ID-CPL'+item.id_cpl) : ['Not available'],
-                                        datasets: [
-                                            {
-                                                label: "Nilai CPL",
-                                                data: isDataCPLAvailable ? totalNilaiCPL.map(item => item.total_nilai_cpl) : [0],
-                                                backgroundColor: [
-                                                    "rgba(255, 99, 132, 0.2)",
-                                                ],
-                                                borderColor: [
-                                                    "rgba(255, 99, 132, 1)",
-                                                ],
-                                                borderWidth: 1,
-                                            },
-                                        ],
-                                    }}
-                                    height={300}
-                                    width={500}
-                                    options={{
-                                        maintainAspectRatio: false,
-                                        scales: {
-                                            r: {
-                                                angleLines: {
-                                                    display: false,
-                                                },
-                                                suggestedMin: 0,
-                                                suggestedMax: 100,
-                                            },
-                                        },
-                                    }}
-                                />
-                            </div>
+                        <div>
+                            <h3>Diagram Radar</h3>
                         </div>
+                        <div className='content'>
+                            <Radar
+                                data={{
+                                    labels: isDataCPLAvailable ? idCplData.map(item => 'ID-CPL' + item.id_cpl) : ['Not available'],
+                                    datasets: [
+                                        {
+                                            label: "Nilai CPL",
+                                            data: isDataCPLAvailable ? totalNilaiCPL.map(item => item.total_nilai_cpl) : [0],
+                                            backgroundColor: [
+                                                "rgba(255, 99, 132, 0.2)",
+                                            ],
+                                            borderColor: [
+                                                "rgba(255, 99, 132, 1)",
+                                            ],
+                                            borderWidth: 1,
+                                        },
+                                    ],
+                                }}
+                                height={300}
+                                width={500}
+                                options={{
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        r: {
+                                            angleLines: {
+                                                display: false,
+                                            },
+                                            suggestedMin: 0,
+                                            suggestedMax: 100,
+                                        },
+                                    },
+                                }}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <br /><br /><br />
             </div>

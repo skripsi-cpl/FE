@@ -51,7 +51,7 @@ const DashboardDepartment = () => {
                             <div className="detail-department-1">
                                 <h4>Departemen     :   </h4><p>Informatika</p>
                                 <h4>Fakultas      :   </h4> <p>Sains dan Matematika</p>
-                                <h4>Ketua Departemen :</h4>  <p>.....................</p>
+                                <h4>Ketua Departemen :</h4>  <p>Dr. Aris Puji Widodo, S.Si, M.T.</p>
                             </div>
                         </div>
                         <div className="content-department-2">
@@ -62,7 +62,7 @@ const DashboardDepartment = () => {
                                 <DataComponent title="Total Mahasiswa" number={totalMahasiswa} />
                                 <DataComponent title="Total Dosen" number={totalDosen} />
                                 <DataComponent title="Total Mata Kuliah" number={totalMK} />
-                                <DataComponent title="Total Kelas" number={98} />
+                                <DataComponent title="Total Kelas" number={4} />
                             </div>
                         </div>
                     </div>

@@ -36,8 +36,8 @@ export default function CustomizedTables({
   filteredMahasiswa,
   selectedSemester,
 }) {
-  const [cplData, setCplData] = useState([]);
-  const navigateTo = useNavigate(); 
+  const [cplData, setCplData] = useState({});
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -45,33 +45,35 @@ export default function CustomizedTables({
 
   const fetchData = async () => {
     try {
-
       const nims = filteredMahasiswa.map(mahasiswa => mahasiswa.NIM);
-  
 
       if (nims.length === 0) {
         return;
       }
-  
 
       const cplResponses = await Promise.all(
         nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
       );
-  
 
-      const cplData = cplResponses.map(response => response.data.data[0].total_cpl);
-  
+      const cplData = {};
+      cplResponses.forEach((response, index) => {
+        const nim = nims[index];
+        const data = response.data.data[0];
+        if (data) {
+          cplData[nim] = data.total_cpl;
+        } else {
+          cplData[nim] = "-";
+        }
+      });
+
       setCplData(cplData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
-console.log(cplData)
 
   const handleClick = async (nim) => {
     try {
-
       navigateTo(`/dashboarddosen/capaianpembelajaran/${nim}`);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -101,7 +103,7 @@ console.log(cplData)
                 {mahasiswa.NIM}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {cplData[index] || "Loading Nilai CPL..."}
+                {cplData[mahasiswa.NIM]}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>

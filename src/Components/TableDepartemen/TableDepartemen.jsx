@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 
 const TableDepartemen = ({ data }) => {
 
@@ -22,7 +22,39 @@ const TableDepartemen = ({ data }) => {
       fontSize: 14,
     },
   }));
+  const [cplData, setCplData] = useState({});
+  useEffect(() => {
+    fetchData();
+  }, [data]);
   const navigateTo = useNavigate();
+  const fetchData = async () => {
+    try {
+      const nims = data.map(mahasiswa => mahasiswa.NIM);
+
+      if (nims.length === 0) {
+        return;
+      }
+
+      const cplResponses = await Promise.all(
+        nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
+      );
+
+      const cplData = {};
+      cplResponses.forEach((response, index) => {
+        const nim = nims[index];
+        const data = response.data.data[0];
+        if (data) {
+          cplData[nim] = data.total_cpl;
+        } else {
+          cplData[nim] = "-";
+        }
+      });
+
+      setCplData(cplData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const handleClick = async (nim) => {
     try {
       
@@ -56,7 +88,9 @@ const TableDepartemen = ({ data }) => {
               <TableCell>{mahasiswa.nama_mhs}</TableCell>
               <TableCell>{mahasiswa.tahun_masuk}</TableCell>
               <TableCell>{mahasiswa.nama_wali}</TableCell>
-              <TableCell>{"kaskdasm"}</TableCell>
+              <StyledTableCell align="center">
+                {cplData[mahasiswa.NIM]}
+              </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>
               </StyledTableCell>
