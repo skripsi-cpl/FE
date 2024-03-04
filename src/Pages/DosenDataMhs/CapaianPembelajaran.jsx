@@ -27,7 +27,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 const PencapaianMhs = () => {
     const [semesters, setSemesters] = useState([]);
-    const [selectedSemester, setSelectedSemester] = useState('');
+    const [selectedSemester, setSelectedSemester] = useState('1');
     const [filteredData, setFilteredData] = useState([]);
     const [idCplData, setIdCplData] = useState([]);
     const [totalNilaiCPL, setTotalNilaiCPL] = useState([]);
@@ -56,19 +56,23 @@ const PencapaianMhs = () => {
     // console.log(nama)
     // console.log(nim)
 
-    const navigate = useNavigate();
     const handleSemesterChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedSemester(selectedValue);
-        setTotalBobotCpl({});
-
-        fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedValue}`)
-            .then(response => response.json())
-            .then(data => {
-                setFilteredData(data.data);
-            })
-            .catch(error => console.error('There was an error!', error));
+        // Anda mungkin juga perlu untuk memuat ulang data yang sesuai dengan semester yang baru dipilih di sini
     };
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (selectedSemester) {
+            fetch(`http://localhost:8000/api/dashboardmhs/pencapaian?NIM=${nim}&semester_mk=${selectedSemester}`)
+                .then(response => response.json())
+                .then(data => {
+                    setFilteredData(data.data);
+                    console.log(data.data);
+                })
+                .catch(error => console.error('There was an error!', error));
+        }
+    }, [selectedSemester]);
 
     useEffect(() => {
         fetch('http://localhost:8000/api/dashboardmhs/getIdCpl')
@@ -100,9 +104,13 @@ const PencapaianMhs = () => {
             .then(response => response.json())
             .then(data => {
                 setSemesters(data);
+                if (!selectedSemester || selectedSemester === '') {
+                    setSelectedSemester('1');
+                }
                 if (data.length > 0) {
                     setSelectedSemester(data[0].id_TA);
                 }
+                
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
@@ -126,7 +134,7 @@ const PencapaianMhs = () => {
 
                 // Hitung total nilai CPL per id_cpl
                 filteredData.forEach(row => {
-                    const bobotCpl = parseFloat(row.nilai_cpl || 0);
+                    const bobotCpl = parseFloat(row.nilai_cpl_skalar || 0);
                     if (!isNaN(bobotCpl)) {
                         totalNilaiCplPerIdCpl[row.id_cpl] += bobotCpl;
                     }
@@ -195,7 +203,7 @@ const PencapaianMhs = () => {
                                     {idCplData.length > 0 &&
                                         idCplData.map((item, index) => (
                                             <StyledTableCell align="center" key={index}>
-                                                ID CPL-{item.id_cpl.slice(-2)}
+                                                ID CPL-{item.id_cpl}
                                             </StyledTableCell>
                                         ))
                                     }
@@ -209,7 +217,8 @@ const PencapaianMhs = () => {
                                                 <TableCell>{row.nama_mk}</TableCell>
                                                 {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => {
                                                     const filteredRow = filteredData.find(item => item && item.nama_mk === row.nama_mk && item.id_cpl === cpl.id_cpl);
-                                                    const nilaiCpl = filteredRow ? filteredRow.nilai_cpl : '-';
+                                                    console.log(filteredRow)
+                                                    const nilaiCpl = filteredRow ? filteredRow.nilai_cpl_skalar : '-';
                                                     return (
                                                         <StyledTableCell align="center" key={idx}>
                                                             {nilaiCpl}

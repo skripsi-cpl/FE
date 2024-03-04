@@ -175,7 +175,7 @@ const UploadDataMhs = () => {
           draggable: true,
           progress: undefined,
         });
-      window.location.reload();
+      // window.location.reload();
     }
   };
 

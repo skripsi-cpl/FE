@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'; 
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 import { useEffect, useState } from "react";
 
@@ -171,12 +171,7 @@ const GeneratePDF = () => {
     const currentDate = format(new Date(), "dd MMMM yyyy"); // Format tanggal saat ini
     const currentDatePrintout = format(new Date(), 'dd/MM/yyyy HH:mm');
     // Array yang berisi 40 elemen dengan nilai sembarang
-    const cplData = [
-        { no: 1, kodeMk: 'PAIK827', mk: 'Metodologi Penelitian dan Penulisan Ilmiah', cpl: 'CPL-03', nilai: 0.15 },
-        // Tambahkan data CPL lainnya di sini
-    ];
-    const dummyData = Array.from({ length: 40 }, (_, index) => index);
-    const totalCpl = cplData.reduce((total, item) => total + item.nilai, 0);
+
     const nim = localStorage.getItem('loggedInNIM');
     const nama = localStorage.getItem('loggedInNama');
 
@@ -197,7 +192,7 @@ const GeneratePDF = () => {
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
-   
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>

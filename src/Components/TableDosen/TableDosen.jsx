@@ -36,7 +36,7 @@ export default function CustomizedTables({
   selectedSemester,
   loggedInkodeWali
 }) {
-  const [cplData, setCplData] = useState([]);
+  const [cplData, setCplData] = useState({});
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -55,7 +55,16 @@ export default function CustomizedTables({
         nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
       );
 
-      const cplData = cplResponses.map(response => response.data.data[0].total_cpl);
+      const cplData = {};
+      cplResponses.forEach((response, index) => {
+        const nim = nims[index];
+        const data = response.data.data[0];
+        if (data) {
+          cplData[nim] = data.total_cpl;
+        } else {
+          cplData[nim] = "-";
+        }
+      });
 
       setCplData(cplData);
     } catch (error) {
@@ -94,7 +103,7 @@ export default function CustomizedTables({
                 {mahasiswa.NIM}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {cplData[index] || "Loading Nilai CPL..."}
+                {cplData[mahasiswa.NIM]}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>
