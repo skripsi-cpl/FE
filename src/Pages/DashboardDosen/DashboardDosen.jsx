@@ -14,17 +14,22 @@ const DashboardDosen = () => {
     const [loggedInNama, setLoggedInNama] = useState('');
     const [loggedInNIP, setLoggedInNIP] = useState('');
     const [totalMahasiswa, setTotalMahasiswa] = useState('');
+    const [loggedInkodeWali, setLoggedInkodeWali] = useState('');
+    const [mahasiswaList, setMahasiswaList] = useState([]);
     const [redirect, setredirect] = useState('');
 
     useEffect(() => {
-
         const nama = localStorage.getItem('loggedInNama');
         const nip = localStorage.getItem('loggedInNIP');
         const total = localStorage.getItem('totalMahasiswa');
+        const kodeWali = localStorage.getItem('loggedInkodeWali');
         setLoggedInNama(nama);
         setLoggedInNIP(nip);
         setTotalMahasiswa(total);
+        setLoggedInkodeWali(kodeWali);
 
+        console.log(nama);
+        console.log(kodeWali);
 
         if (redirect) {
             toast.success("Login Berhasil", {
