@@ -174,7 +174,7 @@ const PencapaianMhs = () => {
             <NavbarDosenComponent />
             <div className="container-dosen-data-mhs">
                 <div className="content-pencapaian-mhs">
-                    <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa</h2>
+                    <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa NIM : {nim}</h2>
                     <hr style={
                         {
                             color: '#000000',

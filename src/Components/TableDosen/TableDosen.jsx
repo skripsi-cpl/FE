@@ -11,7 +11,6 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import './Table.css';
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -35,13 +34,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables({
   filteredMahasiswa,
   selectedSemester,
+  loggedInkodeWali
 }) {
   const [cplData, setCplData] = useState({});
   const navigateTo = useNavigate();
 
   useEffect(() => {
     fetchData();
-  }, [filteredMahasiswa, selectedSemester]);
+  }, [filteredMahasiswa, selectedSemester, loggedInkodeWali]);
 
   const fetchData = async () => {
     try {
