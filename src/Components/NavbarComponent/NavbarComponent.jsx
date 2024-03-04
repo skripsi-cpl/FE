@@ -19,10 +19,10 @@ const NavbarComponent = () => {
       <div className="menu">
         <ul>
           <li>
-            <NavLink to={"/dashboard"}>Beranda</NavLink>
+            <NavLink to={"/dashboard"}>Dashboard</NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/inputdata"} >Input Data</NavLink>
+            <NavLink to={"/dashboard/input-data"} >Input Data</NavLink>
           </li>
           <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
             <p className="logo-operator"><CoPresentIcon /> &nbsp; Operator</p>

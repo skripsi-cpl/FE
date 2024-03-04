@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FooterComponent, NavbarDosenComponent } from "../../Components";
+import { BackButton, FooterComponent, NavbarDosenComponent, BreadCrumbComponents } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
 import SchoolIcon from '@mui/icons-material/School';
@@ -192,6 +192,10 @@ const UploadDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
+        <div className="header-all-content">
+          <BackButton />
+          <BreadCrumbComponents />
+        </div>
         <div className="content-upload-mhs">
           <h2><SchoolIcon /> &nbsp; &nbsp;Dosen Pengampu</h2>
           <hr style={

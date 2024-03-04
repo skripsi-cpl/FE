@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavbarDosenComponent, FooterComponent, TableDosen } from '../../Components';
+import { NavbarDosenComponent, FooterComponent, TableDosen, BackButton, BreadCrumbComponents } from '../../Components';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import './dosendatamhs.css';
 import axios from 'axios';
@@ -66,6 +66,10 @@ const DosenDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-dosen-data-mhs">
+        <div className="header-all-content">
+          <BackButton />
+          <BreadCrumbComponents />
+        </div>
         <div className="content-dosen-data-mhs">
           <h2><DriveFolderUploadIcon />&nbsp; &nbsp;Dosen Wali</h2>
           <hr style={

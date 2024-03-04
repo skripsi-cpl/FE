@@ -19,4 +19,10 @@ import ModalInputCPMK from "./ModalnputObe/ModalInputCPMK";
 import ModalMataKuliah from "./ModalnputObe/ModalMataKuliah";
 import ModalInputTahunAjaran from "./ModalnputObe/ModalInputTahunAjaran";
 
-export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, TableDepartemen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah,ModalInputTahunAjaran, DataComponent  };
+//Breadcrumb
+import BreadCrumbComponents from "./BreadCrumbComponent/BreadCrumbComponents";
+
+//button
+import BackButton from "./BackButton/BackButton";
+
+export { NavbarComponent, NavbarDosenComponent, NavbarMhsComponent, NavbarDepartmentComponent, FooterComponent, TableDosen, TableDepartemen, ModalInputPL, ModalInputCPL, ModalInputCPMK, ModalMataKuliah, ModalInputTahunAjaran, DataComponent, BreadCrumbComponents, BackButton };

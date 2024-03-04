@@ -1,4 +1,4 @@
-import { NavbarMhsComponent, FooterComponent, DataComponent } from "../../Components";
+import { NavbarMhsComponent, FooterComponent, DataComponent, BreadCrumbComponents, BackButton } from "../../Components";
 import { ToastContainer, toast } from "react-toastify";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -39,7 +39,17 @@ const DashboardMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container">
-                <h1>Welcome back, {loggedInNama} 👋</h1>
+                <div className="header-all-content">
+                    <h3 style={
+                        {
+                            textAlign: 'center',
+                            padding: '20px',
+                            backgroundColor: 'white',
+                            borderRadius: '5px',
+                        }
+                    }>Welcome back, {loggedInNama} 👋</h3>
+                    <BreadCrumbComponents />
+                </div>
                 <div className="content-mhs">
                     <div className="content-profil-1">
                         <h3><AccountBoxIcon />&nbsp;&nbsp;Informasi Mahasiswa</h3>

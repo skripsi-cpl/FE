@@ -1,4 +1,4 @@
-import { NavbarMhsComponent, FooterComponent } from "../../Components";
+import { NavbarMhsComponent, FooterComponent, BackButton, BreadCrumbComponents } from "../../Components";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -44,7 +44,7 @@ const PencapaianMhs = () => {
 
     const handleGeneratePDF = () => {
         // Navigasi ke halaman Generate PDF saat tombol diklik
-        navigate('/dashboardmhs/pencapaian/generate-pdf');
+        navigate('/dashboard-mahasiswa/pencapaian/generate-pdf');
     };
     const navigate = useNavigate();
 
@@ -190,6 +190,10 @@ const PencapaianMhs = () => {
         <>
             <NavbarMhsComponent />
             <div className="container-dosen-data-mhs">
+                <div className="header-all-content">
+                    <BackButton />
+                    <BreadCrumbComponents />
+                </div>
                 <div className="content-pencapaian-mhs">
                     <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa</h2>
                     <hr style={
@@ -267,9 +271,9 @@ const PencapaianMhs = () => {
                     </div>
                     <div className="diagram-radar">
                         <div>
-                            <h3>Diagram Radar</h3>
+                            <h3>Diagram Pencapaian</h3>
                         </div>
-                        <div className='content'>
+                        <div className='content-diagram-radar'>
                             <Radar
                                 data={{
                                     labels: isDataCPLAvailable ? idCplData.map(item => 'ID-CPL' + item.id_cpl) : ['Not available'],

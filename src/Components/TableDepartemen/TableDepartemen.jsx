@@ -57,8 +57,8 @@ const TableDepartemen = ({ data }) => {
   };
   const handleClick = async (nim) => {
     try {
-      
-      navigateTo(`/dashboarddepartment/capaianpembelajaran/${nim}`);
+
+      navigateTo(`/dashboard-departemen/capaian-pembelajaran/${nim}`);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

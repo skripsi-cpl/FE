@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { NavbarComponent, FooterComponent, DataComponent } from "../../Components";
+import { NavbarComponent, FooterComponent, DataComponent, BreadCrumbComponents } from "../../Components";
 import { Pie } from 'react-chartjs-2';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Dashboard.css";
+
 
 const Dashboard = () => {
   const [redirect, setredirect] = useState('');
@@ -44,7 +45,17 @@ const Dashboard = () => {
     <>
       <NavbarComponent />
       <div className="container">
-        <h1>Welcome back, Operator! 👋</h1>
+        <div className="header-dashboard">
+          <h3 style={
+            {
+              textAlign: 'center',
+              padding: '20px',
+              backgroundColor: 'white',
+              borderRadius: '5px',
+            }
+          }>Welcome back, Operator! 👋</h3>
+          <BreadCrumbComponents />
+        </div>
         <div className="content-operator">
           <div className="operator-1">
             <h3><ApartmentIcon /> &nbsp; Informasi</h3>

@@ -41,7 +41,7 @@ const Login = () => {
         throw new Error('Network response was not ok.');
       })
       .then(data => {
-        if (data.redirectTo === 'dashboardmhs' || data.redirectTo === 'dashboarddosen' || data.redirectTo === 'dashboarddepartment' || data.redirectTo === 'dashboard') {
+        if (data.redirectTo === 'dashboard-mahasiswa' || data.redirectTo === 'dashboard-dosen' || data.redirectTo === 'dashboard-departemen' || data.redirectTo === 'dashboard') {
           navigateTo(`/${data.redirectTo}`);
           localStorage.setItem('loggedInNama', data.name);
           localStorage.setItem('loggedInNIM', data.nim || '');
@@ -54,7 +54,6 @@ const Login = () => {
           localStorage.setItem('totalCPL', data.totalCPL);
           localStorage.setItem('totalCPMK', data.totalCPMK);
           localStorage.setItem('totalMK', data.totalMK);
-          console.log(data.kode);
         } else {
           toast.error("Login Gagal",
             {
