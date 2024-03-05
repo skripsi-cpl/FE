@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import EmailIcon from '@mui/icons-material/Email';
-import HttpsIcon from '@mui/icons-material/Https';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Login.css";
 
@@ -17,14 +15,77 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigateTo = useNavigate();
 
-
   const handleLogin = () => {
     setLoading(true);
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Ekspresi reguler untuk memeriksa format email
+
+    if (email.trim() === "" && password.trim() === "") {
+      toast.error("Mohon masukkan email dan password",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      setLoading(false);
+      return; 
+    }
+
+    
+    if (email.trim() === "") {
+      toast.error("Mohon masukkan email",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      setLoading(false);
+      return; // Hentikan proses login jika email kosong
+    }
+
+    // Periksa apakah email sesuai dengan format yang diharapkan
+    if (!emailPattern.test(email)) {
+      toast.error("Format email tidak sesuai",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      setLoading(false);
+      return; // Hentikan proses login jika format email tidak sesuai
+    }
+
+    // Periksa apakah password kosong
+    if (password.trim() === "") {
+      toast.error("Mohon masukkan password",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      setLoading(false);
+      return; // Hentikan proses login jika password kosong
+    }
+
     const payload = {
       email: email,
       password: password,
     };
-
 
     // Panggil API menggunakan fetch
     fetch('http://localhost:8000/api/login', {
@@ -41,9 +102,11 @@ const Login = () => {
         throw new Error('Network response was not ok.');
       })
       .then(data => {
-        if (data.redirectTo === 'dashboard-mahasiswa' || data.redirectTo === 'dashboard-dosen' || data.redirectTo === 'dashboard-departemen' || data.redirectTo === 'dashboard') {
+        if (data.redirectTo) {
           navigateTo(`/${data.redirectTo}`);
           localStorage.setItem('loggedInNama', data.name);
+          localStorage.setItem('loggedInNama', data.name);
+          localStorage.setItem('loggedInAngkatan', data.angkatan);
           localStorage.setItem('loggedInNIM', data.nim || '');
           localStorage.setItem('loggedInNIP', data.nip);
           localStorage.setItem('loggedInkodeWali', data.kode)
@@ -55,7 +118,7 @@ const Login = () => {
           localStorage.setItem('totalCPMK', data.totalCPMK);
           localStorage.setItem('totalMK', data.totalMK);
         } else {
-          toast.error("Login Gagal",
+          toast.error("Email atau password salah",
             {
               position: "top-right",
               autoClose: 3000,
@@ -65,24 +128,11 @@ const Login = () => {
               draggable: true,
               progress: undefined,
             });
-          setErrorMessage("Format email tidak sesuai");
-          setemail("");
-          setPassword("");
+          setErrorMessage("");
           setLoading(false);
         }
       })
-
       .catch(error => {
-        toast.error("Login Gagal",
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
         console.error('There was an error!', error);
         setErrorMessage("Maaf, terjadi kesalahan. Silakan coba lagi.");
         setemail("");
@@ -92,7 +142,7 @@ const Login = () => {
   };
 
   const handleFormSubmit = (e) => {
-    e.preventDefault(); // Prevents the default form submission behavior
+    e.preventDefault();
     handleLogin();
   };
 
