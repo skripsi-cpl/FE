@@ -31,10 +31,10 @@ const Login = () => {
           progress: undefined,
         });
       setLoading(false);
-      return; 
+      return;
     }
 
-    
+
     if (email.trim() === "") {
       toast.error("Mohon masukkan email",
         {
@@ -117,6 +117,7 @@ const Login = () => {
           localStorage.setItem('totalCPL', data.totalCPL);
           localStorage.setItem('totalCPMK', data.totalCPMK);
           localStorage.setItem('totalMK', data.totalMK);
+          localStorage.setItem('loggedInAngkatan', data.angkatan);
         } else {
           toast.error("Email atau password salah",
             {

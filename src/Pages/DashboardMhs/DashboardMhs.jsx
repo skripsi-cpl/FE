@@ -11,16 +11,19 @@ import "./Dashboardmhs.css";
 const DashboardMhs = () => {
     const [loggedInNama, setLoggedInNama] = useState('');
     const [loggedInNim, setLoggedInNim] = useState('');
+    const [loggedInAngkatan, setLoggedInAngkatan] = useState('');
     const [redirect, setredirect] = useState('');
 
     useEffect(() => {
         const redirect = localStorage.getItem('redirect');
         const nama = localStorage.getItem('loggedInNama');
         const nim = localStorage.getItem('loggedInNIM');
-        
+        const angkatan = localStorage.getItem('loggedInAngkatan');
+
         setLoggedInNama(nama);
         setLoggedInNim(nim);
-        
+        setLoggedInAngkatan(angkatan);
+
 
         if (redirect) {
             toast.success("Login Berhasil", {
@@ -33,7 +36,7 @@ const DashboardMhs = () => {
                 progress: undefined,
             });
             setredirect(redirect);
-            localStorage.removeItem('redirect'); 
+            localStorage.removeItem('redirect');
         }
     }, []);
 
@@ -59,14 +62,8 @@ const DashboardMhs = () => {
                         <div className="detail-profil-1">
                             <h4>Nama     :   </h4> <p>{loggedInNama}</p>
                             <h4>NIM      :   </h4> <p>{loggedInNim}</p>
-                        </div>
-                    </div>
-                    <div className="content-profil-2">
-                        <h3><AccountBalanceIcon /> &nbsp;&nbsp;  Informasi Akademik Mahasiswa</h3>
-                        <hr />
-                        <div className="detail-profil-2">
-                            <DataComponent title="Angkatan" number={2020} />
-                            <DataComponent title="IP Kumulatif" number={3.64} />
+                            <h4>Angkatan      :   </h4> <p>{loggedInAngkatan}</p>
+                            <h4>Dosen Wali      :   </h4> <p>Dr. Aris Puji Widodo, S.Si, M.T.</p>
                         </div>
                     </div>
                 </div>
