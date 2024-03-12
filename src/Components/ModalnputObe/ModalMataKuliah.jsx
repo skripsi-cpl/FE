@@ -70,16 +70,16 @@ const ModalMataKuliah = () => {
         };
         fetchDataMK();
     }, []);
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
-        
+
         if (name === 'id_mk' && !formData.id_cpmk) {
-            
+
             // Atau tampilkan pesan error di tempat yang sesuai di halaman Anda
             // Misalnya, Anda bisa menetapkan error pada state 'error' dan menampilkannya dalam elemen JSX
             // setErrors({ ...errors, id_mk: 'Mohon untuk memilih kode CPMK terlebih dahulu' });
@@ -105,14 +105,13 @@ const ModalMataKuliah = () => {
         // }
 
         setError(validationError);
-
-        // if (Object.keys(validationError).length > 0) return;
+        if (Object.keys(validationError).length > 0) return;
         // const selectedCPMK = dataCPMK.find((item) => item.id_cpmk === formData.id_cpmk);
         // const selectedBobotCPMK = selectedCPMK ? parseFloat(selectedCPMK.bobot_cpmk || 0) : 0;
         // // // Hitung total bobot CPMK yang akan ditambahkan
         // const newBobotMK = parseFloat(formData.bobot_mk || 0);
-        
-        
+
+
         // if (newBobotMK > selectedBobotCPMK) {
         //     validationError.bobot_mk = "Bobot MK tidak boleh lebih besar dari bobot CPMK yang dipilih";
         //     setError(validationError);
@@ -124,7 +123,7 @@ const ModalMataKuliah = () => {
         //     }
         //     return total;
         // }, 0);
-        
+
         // const totalAllBobot = totalBobotMKForCPMK + newBobotMK
         // console.log(totalAllBobot)
         // if (totalAllBobot > selectedBobotCPMK) {
@@ -132,11 +131,6 @@ const ModalMataKuliah = () => {
         //     setError(validationError);
         //     return;
         // }
-       
-        
-
-
-        
 
         try {
             await Axios.post('http://localhost:8000/api/datapostmk', formData);
@@ -182,9 +176,9 @@ const ModalMataKuliah = () => {
                         <Button onClick={handleClose}>X</Button>
                     </div>
                     <form onSubmit={handleSubmit}>
-                    <div className="content-input">
+                        <div className="content-input">
                             <label>
-                                Kode Capaian Pembelajaran 
+                                Kode Capaian Pembelajaran
 
                                 <select
                                     disabled
@@ -232,7 +226,7 @@ const ModalMataKuliah = () => {
                                 </select>
                                 {error.id_mk && <p className="error">{error.id_mk}</p>}
                             </label>
-                            
+
                             <label>
                                 Bobot Mata Kuliah
                                 <input
@@ -243,7 +237,7 @@ const ModalMataKuliah = () => {
                                 />
                                 {error.bobot_mk && <p className="error">{error.bobot_mk}</p>}
                             </label>
-                            
+
                             <button type="submit">Submit</button>
                         </div>
                     </form>

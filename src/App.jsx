@@ -17,27 +17,27 @@ function App() {
             {/* Page operator */}
             <Route element={<FilterOperatorRoutes />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/inputdata" element={<InputData />} />
+              <Route path="/dashboard/input-data" element={<InputData />} />
             </Route>
             {/* Page dosen */}
             <Route element={<FilterDosenRoutes />}>
-              <Route path="/dashboarddosen" element={<DashboardDosen />} />
-              <Route path="/dashboarddosen/uploaddatamhs" element={<UploadDataMhs />} />
-              <Route path="/dashboarddosen/dosendatamhs" element={<DosenDataMhs />} />
-              <Route path="/dashboarddosen/capaianpembelajaran/:nim" element={<CapaianPembelajaran />} />
+              <Route path="/dashboard-dosen" element={<DashboardDosen />} />
+              <Route path="/dashboard-dosen/upload-data-mahasiswa" element={<UploadDataMhs />} />
+              <Route path="/dashboard-dosen/dosen-data-mahasiswa" element={<DosenDataMhs />} />
+              <Route path="/dashboard-dosen/capaian-pembelajaran/:nim" element={<CapaianPembelajaran />} />
             </Route>
             {/* Page mahasiswa */}
             <Route element={<FilterMahasiswaRoutes />}>
-              <Route path="/dashboardmhs" element={<DashboardMhs />} />
-              <Route path="/dashboardmhs/pencapaian" element={<PencapaianMhs />} />
+              <Route path="/dashboard-mahasiswa" element={<DashboardMhs />} />
+              <Route path="/dashboard-mahasiswa/pencapaian" element={<PencapaianMhs />} />
               {/* Tambahkan rute untuk halaman pembuatan PDF di sini */}
-              <Route path="/dashboardmhs/pencapaian/generate-pdf" element={<GeneratePDFPage />} />
+              <Route path="/dashboard-mahasiswa/pencapaian/generate-pdf" element={<GeneratePDFPage />} />
             </Route>
             {/* Page department */}
             <Route element={<FilterDepartemenRoutes />}>
-              <Route path="/dashboarddepartment" element={<DashboardDepartment />} />
-              <Route path="/dashboarddepartment/permahasiswaan" element={<PencapaianDepartment />} />
-              <Route path="/dashboarddepartment/capaianpembelajaran/:nim" element={<CapaianPembelajaranMhsAll />} />
+              <Route path="/dashboard-departemen" element={<DashboardDepartment />} />
+              <Route path="/dashboard-departemen/permahasiswaan" element={<PencapaianDepartment />} />
+              <Route path="/dashboard-departemen/capaian-pembelajaran/:nim" element={<CapaianPembelajaranMhsAll />} />
             </Route>
           </Route>
           {/* Not Found */}

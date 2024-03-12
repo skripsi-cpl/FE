@@ -1,0 +1,15 @@
+.back-button {
+    margin: auto 0;
+    background-color: #ffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background-color: #1976D2;
+    color: #ffff;
+    text-decoration: underline;
+}

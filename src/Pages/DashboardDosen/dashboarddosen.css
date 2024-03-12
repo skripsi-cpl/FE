@@ -8,6 +8,13 @@
     justify-content: space-between;
 }
 
+.header-dashboard-dosen {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
 .content-dosen-1 {
     height: 300px;
     width: 50%;

@@ -41,3 +41,8 @@
   grid-gap: 20px;
   font-size: 18px;
 }
+
+.header-dashboard {
+  display: flex;
+  justify-content: space-between;
+}

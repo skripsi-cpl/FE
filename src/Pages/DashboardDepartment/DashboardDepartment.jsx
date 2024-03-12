@@ -3,8 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import SchoolIcon from '@mui/icons-material/School';
 import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { NavbarComponent, FooterComponent, DataComponent, NavbarDepartmentComponent } from "../../Components";
+import { FooterComponent, DataComponent, NavbarDepartmentComponent, BreadCrumbComponents } from "../../Components";
 import "./Dashboarddepartment.css";
 
 
@@ -41,7 +40,17 @@ const DashboardDepartment = () => {
         <>
             <NavbarDepartmentComponent />
             <div className="container">
-                <h1>Dashboard Department Mahasiswa</h1>
+                <div className="header-dashboard-departemen">
+                    <h3 style={
+                        {
+                            textAlign: 'center',
+                            padding: '20px 40px 20px 20px',
+                            backgroundColor: 'white',
+                            borderRadius: '5px',
+                        }
+                    }>Dashboard Department Mahasiswa</h3>
+                    <BreadCrumbComponents />
+                </div>
                 <div className="content-department">
                     <div className="content-departemen-top">
                         <div className="content-department-1">

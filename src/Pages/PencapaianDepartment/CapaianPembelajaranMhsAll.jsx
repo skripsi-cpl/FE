@@ -1,4 +1,4 @@
-import { NavbarDosenComponent, FooterComponent, NavbarDepartmentComponent } from "../../Components";
+import { NavbarDosenComponent, FooterComponent, NavbarDepartmentComponent, BackButton, BreadCrumbComponents } from "../../Components";
 import "../../Pages/PencapaianMhs/PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
@@ -168,6 +168,10 @@ const CapaianPembelajaranMhsAll = () => {
         <>
             <NavbarDepartmentComponent />
             <div className="container-dosen-data-mhs">
+                <div className="header-all-content">
+                    <BackButton />
+                    <BreadCrumbComponents />
+                </div>
                 <div className="content-pencapaian-mhs">
                     <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa</h2>
                     <hr style={
@@ -244,7 +248,7 @@ const CapaianPembelajaranMhsAll = () => {
                         <div>
                             <h3>Diagram Radar</h3>
                         </div>
-                        <div className='content'>
+                        <div className='content-diagram-radar'>
                             <Radar
                                 data={{
                                     labels: isDataCPLAvailable ? idCplData.map(item => 'ID-CPL' + item.id_cpl) : ['Not available'],

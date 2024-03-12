@@ -24,14 +24,14 @@ const style = {
 const ModalInputCPMK = () => {
     const [open, setOpen] = React.useState(false);
     const [dataCPL, setDataCPL] = useState([]);
-    const [dataCPMK, setDataCPMK ] = useState([]);
+    const [dataCPMK, setDataCPMK] = useState([]);
     const [error, setError] = useState({});
     const [formData, setFormData] = useState({
         id_cpmk: '',
         nama_cpmk: '',
         bobot_cpmk: '',
         id_cpl: '',
-        bobot_cpl:'',
+        bobot_cpl: '',
     });
 
     const handleOpen = () => setOpen(true);
@@ -93,8 +93,7 @@ const ModalInputCPMK = () => {
         // }
 
         setError(validationError);
-
-        // if (Object.keys(validationError).length > 0) return;
+        if (Object.keys(validationError).length > 0) return;
         // const selectedCPL = dataCPL.find((item) => item.id_cpl === formData.id_cpl);
         // const selectedBobotCPL = selectedCPL ? parseFloat(selectedCPL.bobot_cpl || 0) : 0;
 
@@ -119,7 +118,7 @@ const ModalInputCPMK = () => {
         //     setError(validationError);
         //     return;
         // }
-        
+
         try {
             await Axios.post('http://localhost:8000/api/datapostcpmk', formData);
             toast.success("Data CPMK posted successfully", {
@@ -146,7 +145,7 @@ const ModalInputCPMK = () => {
             });
             console.log(error);
         }
-    }
+    };
 
 
     return (

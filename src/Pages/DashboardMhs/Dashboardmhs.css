@@ -16,9 +16,8 @@
     gap: 20px;
 }
 
-.content-profil-1,
-.content-profil-2 {
-    height: 300px;
+.content-profil-1 {
+    height: 320px;
     width: 50%;
     background-color: #fff;
     border-radius: 5px;

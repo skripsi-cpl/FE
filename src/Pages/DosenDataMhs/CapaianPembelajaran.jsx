@@ -1,4 +1,4 @@
-import { NavbarDosenComponent, FooterComponent } from "../../Components";
+import { NavbarDosenComponent, FooterComponent, BreadCrumbComponents, BackButton } from "../../Components";
 import "../../Pages/PencapaianMhs/PencapaianMhs.css";
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
@@ -110,7 +110,7 @@ const PencapaianMhs = () => {
                 if (data.length > 0) {
                     setSelectedSemester(data[0].id_TA);
                 }
-                
+
             })
             .catch(error => console.error('There was an error!', error));
     }, []);
@@ -173,6 +173,10 @@ const PencapaianMhs = () => {
         <>
             <NavbarDosenComponent />
             <div className="container-dosen-data-mhs">
+                <div className="header-all-content">
+                    <BackButton />
+                    <BreadCrumbComponents />
+                </div>
                 <div className="content-pencapaian-mhs">
                     <h2> <AccountBalanceIcon /> &nbsp;&nbsp; Pencapaian Mahasiswa NIM : {nim}</h2>
                     <hr style={
@@ -217,7 +221,6 @@ const PencapaianMhs = () => {
                                                 <TableCell>{row.nama_mk}</TableCell>
                                                 {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => {
                                                     const filteredRow = filteredData.find(item => item && item.nama_mk === row.nama_mk && item.id_cpl === cpl.id_cpl);
-                                                    console.log(filteredRow)
                                                     const nilaiCpl = filteredRow ? filteredRow.nilai_cpl_skalar : '-';
                                                     return (
                                                         <StyledTableCell align="center" key={idx}>
@@ -250,7 +253,7 @@ const PencapaianMhs = () => {
                         <div>
                             <h3>Diagram Radar</h3>
                         </div>
-                        <div className='content'>
+                        <div className='content-diagram-radar'>
                             <Radar
                                 data={{
                                     labels: isDataCPLAvailable ? idCplData.map(item => 'ID-CPL' + item.id_cpl) : ['Not available'],

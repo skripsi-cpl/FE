@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavbarDepartmentComponent, FooterComponent, TableDepartemen } from "../../Components";
+import { NavbarDepartmentComponent, FooterComponent, TableDepartemen, BreadCrumbComponents, BackButton } from "../../Components";
 import "./PencapaianDepartment.css";
 
 const PencapaianDepartment = () => {
@@ -45,6 +45,10 @@ const PencapaianDepartment = () => {
     <>
       <NavbarDepartmentComponent />
       <div className="container-dosen-pencapaian-mhs">
+        <div className="header-all-content">
+          <BackButton />
+          <BreadCrumbComponents />
+        </div>
         <div className="content-dosen-pencapaian-mhs">
           <h2>Pencapaian Mahasiswa</h2>
           <hr style={

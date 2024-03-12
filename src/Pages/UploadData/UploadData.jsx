@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FooterComponent, NavbarDosenComponent } from "../../Components";
+import { BackButton, FooterComponent, NavbarDosenComponent, BreadCrumbComponents } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
 import SchoolIcon from '@mui/icons-material/School';
@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import "./uploaddata.css";
 
+// import { localStorage } from 'localStorage';
 
 const UploadDataMhs = () => {
   const [mataKuliahOptions, setMataKuliahOptions] = useState([]);
@@ -19,6 +20,10 @@ const UploadDataMhs = () => {
   const [tahunAjaranOptions, setTahunAjaranOptions] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
 
+
+  // Mengambil informasi pengguna yang login dari localStorage
+  const loggedInNama = localStorage.getItem('loggedInNama');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,9 +32,6 @@ const UploadDataMhs = () => {
         );
         const sortedData = response.data.sort((a, b) => a.id_TA - b.id_TA);
         setTahunAjaranOptions(sortedData.reverse());
-        sortedData.reverse()
-        console.log(sortedData.reverse());
-
       } catch (error) {
         console.error("Error fetching tahun ajaran data:", error);
       }
@@ -84,16 +86,19 @@ const UploadDataMhs = () => {
   const handleMataKuliahChange = (event) => {
     const selectedMataKuliah = event.target.value;
     setSelectedMataKuliah(selectedMataKuliah);
-
+  
     const selectedOption = mataKuliahOptions.find(
       (option) => option.id_mk === selectedMataKuliah
     );
     setSelectedIdMk(selectedOption ? selectedOption.id_mk : "");
+    setIsMataKuliahSelected(true); 
   };
 
   const handleKelasChange = (event) => {
     setSelectedKelas(event.target.value);
+    setIsKelasSelected(true);
   };
+  
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -131,41 +136,79 @@ const UploadDataMhs = () => {
 
   useEffect(() => {
     console.log('Selected ID TA:', selectedTahunAjaran);
+    console.log('User Input:', selectedKelas);
   }, [selectedTahunAjaran]);
 
   const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("id_mk", selectedIdMk);
-    formData.append("id_TA", selectedTahunAjaran);
-    formData.append("nama_kelas", selectedKelas);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/upload",
-        formData,
+    if (!selectedTahunAjaran) {
+      toast.error("Tahun Ajaran Harus Dipilih!",
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.status === 200) {
-        toast.success("File uploaded successfully: " + response.data.message,
-          {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        window.location.reload();
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+    }
+    if (!selectedMataKuliah) {
+      toast.error("Mata Kuliah Harus Dipilih!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+    }
+    if (!selectedKelas) {
+      toast.error("Kelas Harus Dipilih!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+    }
+    if (!selectedFile) {
+      toast.error("File harus diunggah!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      return;
+    }
+    const formData = new FormData();
+  formData.append("file", selectedFile);
+  formData.append("id_mk", selectedIdMk);
+  formData.append("id_TA", selectedTahunAjaran);
+  formData.append("nama_kelas", selectedKelas);
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Error Uploading File",
+    );
+    if (response.status === 200) {
+      toast.success("File uploaded successfully: " + response.data.message,
         {
           position: "top-right",
           autoClose: 3000,
@@ -175,9 +218,23 @@ const UploadDataMhs = () => {
           draggable: true,
           progress: undefined,
         });
-      // window.location.reload();
+      window.location.reload();
     }
-  };
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    toast.error("Error Uploading File",
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    // window.location.reload();
+  }
+};
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -192,6 +249,10 @@ const UploadDataMhs = () => {
     <>
       <NavbarDosenComponent />
       <div className="container-upload-mhs">
+        <div className="header-all-content">
+          <BackButton />
+          <BreadCrumbComponents />
+        </div>
         <div className="content-upload-mhs">
           <h2><SchoolIcon /> &nbsp; &nbsp;Dosen Pengampu</h2>
           <hr style={
@@ -235,14 +296,18 @@ const UploadDataMhs = () => {
             </select>
 
             <h3>Kelas</h3>
-            <select value={selectedKelas} onChange={handleKelasChange}>
-              <option value="">Pilih Kelas</option>
-              {kelasOptions.map((kelas) => (
-                <option key={kelas.id_kelas} value={kelas.nama_kelas}>
-                  {`${kelas.nama_kelas} - ${kelas.status_upload}`}
-                </option>
-              ))}
-            </select>
+            {!selectedTahunAjaran || !selectedMataKuliah ? (
+              <p>Pilih tahun ajaran dan Mata Kuliah Terlebih dahulu!</p>
+            ) : (
+              <select value={selectedKelas} onChange={handleKelasChange}>
+                <option value="">Pilih Kelas</option>
+                {kelasOptions.map((kelas) => (
+                  <option key={kelas.id_kelas} value={kelas.nama_kelas}>
+                    {`${kelas.nama_kelas} - ${kelas.status_upload}`}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <h2>Upload File Nilai Berbasis OBE:</h2>
             <hr style={
@@ -255,7 +320,7 @@ const UploadDataMhs = () => {
               }
             } />
             <h3>
-              File template : <a href=""> &nbsp; OBE.xlsx</a>
+              Masukkan File sesuai template : <a href=""> &nbsp; OBE.xlsx</a>
             </h3>
             <input
               type="file"

@@ -18,7 +18,7 @@ const NavbarDosenComponent = () => {
             <div className="menu">
                 <ul>
                     <li>
-                        <NavLink to={"/dashboarddosen"}>Beranda</NavLink>
+                        <NavLink to={"/dashboard-dosen"}>Dashboard</NavLink>
                     </li>
                     <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
                         <p className="logo-operator"><PersonIcon /> &nbsp; Dosen</p>

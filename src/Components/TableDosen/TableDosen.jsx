@@ -74,7 +74,7 @@ export default function CustomizedTables({
 
   const handleClick = async (nim) => {
     try {
-      navigateTo(`/dashboarddosen/capaianpembelajaran/${nim}`);
+      navigateTo(`/dashboard-dosen/capaian-pembelajaran/${nim}`);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

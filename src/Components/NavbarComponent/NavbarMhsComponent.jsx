@@ -20,10 +20,10 @@ const NavbarMhsComponent = () => {
             <div className="menu">
                 <ul>
                     <li>
-                        <NavLink to={"/dashboardmhs"}>Beranda</NavLink>
+                        <NavLink to={"/dashboard-mahasiswa"}>Dashboard</NavLink>
                     </li>
                     <li>
-                        <NavLink to={"/dashboardmhs/pencapaian"} >Lihat Pencapaian</NavLink>
+                        <NavLink to={"/dashboard-mahasiswa/pencapaian"} >Lihat Pencapaian</NavLink>
 
                     </li>
                     <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>

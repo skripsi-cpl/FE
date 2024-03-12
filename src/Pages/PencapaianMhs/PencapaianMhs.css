@@ -28,22 +28,15 @@
     flex-wrap: wrap;
 }
 
-.diagram-lingkaran {
-    width: 50%;
-    height: 100%;
-    margin-top: 20px;
-}
-
-.diagram-garis {
-    width: 100%;
-    height: 100%;
-    margin-top: 20px;
-}
-
 .diagram-radar {
     width: 50%;
     height: 100%;
     margin-top: 20px;
+}
+
+.content-diagram-radar {
+    width: 80vw;
+    margin: auto;
 }
 
 .generatepdf {

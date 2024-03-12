@@ -24,24 +24,19 @@ const style = {
 const ModalInputTahunAjaran = () => {
     const [open, setOpen] = React.useState(false);
     const [tahunAjaranOptions, setTahunAjaranOptions] = useState([]);
+    const [error, setError] = useState({});
     const [formDataKurikulum, setFormDataKurikulum] = useState({
         id_kurikulum: '',
         nama_kurikulum: '',
     });
     const [formDataTahunAjaran, setFormDataTahunAjaran] = useState({
         keterangan: '',
-        tahun:'',
+        tahun: '',
     });
-
-
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    
 
-   
-   
-    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormDataKurikulum({
@@ -52,7 +47,7 @@ const ModalInputTahunAjaran = () => {
             ...formDataTahunAjaran,
             [name]: value,
         });
-        
+
     };
     useEffect(() => {
         const fetchTahunAjaranOptions = async () => {
@@ -70,11 +65,23 @@ const ModalInputTahunAjaran = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const validationError = {};
-        // if (!formDataKurikulum.id_kurikulum.trim()) {
-        //     validationError.id_kurikulum = 'ID cpmk harus diisi';
-        // }
-        
+        const validationError = {};
+        if (!formDataKurikulum.id_kurikulum) {
+            validationError.id_kurikulum = 'ID Kurikulum harus diisi';
+        }
+        if (!formDataKurikulum.nama_kurikulum) {
+            validationError.nama_kurikulum = 'Nama Kurikulum harus diisi';
+        }
+        if (!formDataTahunAjaran.keterangan) {
+            validationError.keterangan = 'Keterangan harus diisi';
+        }
+        if (!formDataTahunAjaran.tahun) {
+            validationError.tahun = 'Tahun harus diisi';
+        }
+
+        setError(validationError);
+        if (Object.keys(validationError).length > 0) return;
+
         try {
             // Format periode berdasarkan pilihan yang dipilih
             const semester = formDataTahunAjaran.keterangan === 'Genap' ? 'Genap' : 'Ganjil';
@@ -93,7 +100,7 @@ const ModalInputTahunAjaran = () => {
                 draggable: true,
                 progress: undefined,
             });
-        
+
             handleClose();
             window.location.reload();
         } catch (error) {
@@ -130,7 +137,7 @@ const ModalInputTahunAjaran = () => {
                         <Button onClick={handleClose}>X</Button>
                     </div>
                     <form onSubmit={handleSubmit}>
-                    <div className="content-input">
+                        <div className="content-input">
 
                             <label>
                                 Keterangan
@@ -138,6 +145,7 @@ const ModalInputTahunAjaran = () => {
                                     <option value="Genap">Genap</option>
                                     <option value="Ganjil">Ganjil</option>
                                 </select>
+                                {error.keterangan && <p className="error">{error.keterangan}</p>}
                             </label>
                             <label>
                                 Tahun
@@ -146,6 +154,7 @@ const ModalInputTahunAjaran = () => {
                                         <option key={tahun} value={tahun}>{tahun}</option>
                                     ))}
                                 </select>
+                                {error.tahun && <p className="error">{error.tahun}</p>}
                             </label>
                             <label>
                                 ID Kurikulum
@@ -155,6 +164,7 @@ const ModalInputTahunAjaran = () => {
                                     onChange={handleChange}
                                     name='id_kurikulum'
                                 />
+                                {error.id_kurikulum && <p className="error">{error.id_kurikulum}</p>}
                             </label>
                             <label>
                                 Nama Kurikulum
@@ -164,6 +174,7 @@ const ModalInputTahunAjaran = () => {
                                     onChange={handleChange}
                                     name='nama_kurikulum'
                                 />
+                                {error.nama_kurikulum && <p className="error">{error.nama_kurikulum}</p>}
                             </label>
                             <button type="submit">Submit</button>
                         </div>

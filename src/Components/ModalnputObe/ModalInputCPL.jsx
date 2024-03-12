@@ -66,8 +66,8 @@ const ModalInputCPL = () => {
         //     validationError.bobot_cpl = 'Bobot CPL tidak boleh lebih dari 1';
         // }
 
-        // setError(validationError);
-        // if (Object.keys(validationError).length > 0) return;
+        setError(validationError);
+        if (Object.keys(validationError).length > 0) return;
 
         // // Hitung total bobot CPL yang akan ditambahkan
         // const newBobotCPL = parseFloat(formData.bobot_cpl || 0);

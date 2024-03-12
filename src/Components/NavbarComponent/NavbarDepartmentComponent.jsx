@@ -19,10 +19,10 @@ const NavbarDepartmentComponent = () => {
             <div className="menu">
                 <ul>
                     <li>
-                        <NavLink to={"/dashboarddepartment"}>Beranda</NavLink>
+                        <NavLink to={"/dashboard-departemen"}>Dashboard</NavLink>
                     </li>
                     <li>
-                        <NavLink to={"/dashboarddepartment/permahasiswaan"} >Permahasiswaan</NavLink>
+                        <NavLink to={"/dashboard-departemen/permahasiswaan"} >Permahasiswaan</NavLink>
                     </li>
                     <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
                         <p className="logo-operator"><ApartmentIcon /> &nbsp; Departemen</p>
