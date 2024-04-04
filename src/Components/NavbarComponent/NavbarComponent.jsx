@@ -5,6 +5,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 const NavbarComponent = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdownOperator, setShowDropdownOperator] = useState(false);
 
   const logout = () => {
     localStorage.clear();
@@ -21,8 +22,18 @@ const NavbarComponent = () => {
           <li>
             <NavLink to={"/dashboard"}>Dashboard</NavLink>
           </li>
-          <li>
-            <NavLink to={"/dashboard/input-data"} >Input Data</NavLink>
+          <li className="dropdown" onMouseEnter={() => setShowDropdownOperator(true)} onMouseLeave={() => setShowDropdownOperator(false)}>
+            <p className="logo-operator"> Master Data</p>
+            {showDropdownOperator && (
+              <ul className="dropdown-menu">
+                <li className="dropdown-item">
+                  <NavLink to={"/dashboard/input-data"} >Input Data</NavLink>
+                </li>
+                <li className="dropdown-item">
+                  <NavLink to={"/dashboard/master-data"} >Master Data</NavLink>
+                </li>
+              </ul>
+            )}
           </li>
           <li className="dropdown" onMouseEnter={() => setShowDropdown(true)} onMouseLeave={() => setShowDropdown(false)}>
             <p className="logo-operator"><CoPresentIcon /> &nbsp; Operator</p>

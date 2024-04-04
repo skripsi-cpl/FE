@@ -51,22 +51,33 @@
 .upload-excel-wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-
+    margin-top: 50px;
 }
 
 .container-upload-excel {
     width: 600px;
     height: 400px;
-    background-color: #f5f5dc;
-    border: 2px dashed #ccc;
+    border: 3px dashed #000000;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url("./cloud.png");
+    background-image: url("../../assets/images/upload.png");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-position: center;
+}
+
+.container-upload-excel-on-drop {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../../assets/images/upload.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 3px dashed #3498db;
 }
 
 .container-upload-excel img {
