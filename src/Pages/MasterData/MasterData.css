@@ -1,0 +1,57 @@
+.container-master-data {
+    width: 80%;
+    margin: 40px auto 0;
+}
+
+.master-data-container {
+    background-color: white;
+    margin-top: 30px;
+    margin-bottom: 100px;
+    padding: 20px 30px 50px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 30px;
+    border-radius: 5px;
+}
+
+.master-data-tab-content {
+    padding: 0;
+}
+
+.button-action-operator {
+    display: flex;
+}
+
+.button-action-operator button {
+    margin-left: 10px;
+}
+
+.buttonedit {
+    padding: 10px 20px;
+    border: none;
+    background-color: #ffa825;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.buttonedit:hover {
+    background-color: #ffd391;
+}
+
+.buttondelete {
+    padding: 10px 20px;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.buttondelete:hover {
+    background-color: rgb(255, 141, 141);
+
+}

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDropzone } from 'react-dropzone'
 import { BackButton, FooterComponent, NavbarDosenComponent, BreadCrumbComponents } from "../../Components";
 import axios from "axios";
 import cloud from "./cloud.png";
@@ -19,7 +20,6 @@ const UploadDataMhs = () => {
   const [selectedMataKuliah, setSelectedMataKuliah] = useState("");
   const [tahunAjaranOptions, setTahunAjaranOptions] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
-
 
   // Mengambil informasi pengguna yang login dari localStorage
   const loggedInNama = localStorage.getItem('loggedInNama');
@@ -86,19 +86,19 @@ const UploadDataMhs = () => {
   const handleMataKuliahChange = (event) => {
     const selectedMataKuliah = event.target.value;
     setSelectedMataKuliah(selectedMataKuliah);
-  
+
     const selectedOption = mataKuliahOptions.find(
       (option) => option.id_mk === selectedMataKuliah
     );
     setSelectedIdMk(selectedOption ? selectedOption.id_mk : "");
-    setIsMataKuliahSelected(true); 
+    setIsMataKuliahSelected(true);
   };
 
   const handleKelasChange = (event) => {
     setSelectedKelas(event.target.value);
     setIsKelasSelected(true);
   };
-  
+
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -193,22 +193,36 @@ const UploadDataMhs = () => {
       return;
     }
     const formData = new FormData();
-  formData.append("file", selectedFile);
-  formData.append("id_mk", selectedIdMk);
-  formData.append("id_TA", selectedTahunAjaran);
-  formData.append("nama_kelas", selectedKelas);
-  try {
-    const response = await axios.post(
-      "http://localhost:8000/api/upload",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    formData.append("file", selectedFile);
+    formData.append("id_mk", selectedIdMk);
+    formData.append("id_TA", selectedTahunAjaran);
+    formData.append("nama_kelas", selectedKelas);
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success("File uploaded successfully: " + response.data.message,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        window.location.reload();
       }
-    );
-    if (response.status === 200) {
-      toast.success("File uploaded successfully: " + response.data.message,
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Error Uploading File",
         {
           position: "top-right",
           autoClose: 3000,
@@ -218,23 +232,9 @@ const UploadDataMhs = () => {
           draggable: true,
           progress: undefined,
         });
-      window.location.reload();
+      // window.location.reload();
     }
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    toast.error("Error Uploading File",
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    // window.location.reload();
-  }
-};
+  };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -244,6 +244,19 @@ const UploadDataMhs = () => {
     event.preventDefault();
     setSelectedFile(event.dataTransfer.files[0]);
   };
+
+
+  // Dropdown
+  const [file, setFile] = useState(null);
+
+  const onDrop = useCallback(acceptedFiles => {
+    setFile(acceptedFiles[0]);
+    file && console.log(file);
+    console.log(file.name);
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
 
   return (
     <>
@@ -328,14 +341,36 @@ const UploadDataMhs = () => {
               onChange={handleFileChange}
             />
 
-            <div className="upload-excel-wrapper">
-              <div
-                className="container-upload-excel"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-              >
-                <p>Drag and drop file here</p>
-              </div>
+            <div {...getRootProps()} className="dropzone">
+              <input {...getInputProps()} />
+              {
+                isDragActive ?
+                  <div className="upload-excel-wrapper">
+                    <div
+                      className="container-upload-excel-on-drop"
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                    >
+                      <br />
+                      <br />
+                      <br />
+                      <p>Drop file here</p>
+                    </div>
+                  </div> :
+                  <div className="upload-excel-wrapper">
+                    <div
+                      className="container-upload-excel"
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                    >
+                      <br />
+                      <br />
+                      <br />
+                      <p>Drag and drop file here</p>
+                    </div>
+                  </div>
+              }
+
             </div>
 
             <div className="button-excel-wrapper">

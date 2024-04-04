@@ -3,6 +3,7 @@ import Login from "./Login/Login";
 // dashboard admin
 import Dashboard from "./Dashboard/Dashboard";
 import InputData from "./InputData/InputData";
+import MasterDataPage from "./MasterData/MasterDataPage";
 
 // dashboard dosen
 import DashboardDosen from "./DashboardDosen/DashboardDosen";
@@ -21,4 +22,9 @@ import PencapaianDepartment from "./PencapaianDepartment/PencapaianDepartment";
 //Not Found
 import NotFound from "./NotFoundPage"
 
-export { Login, Dashboard, DashboardDosen, DashboardMhs, DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs, PencapaianMhs, PencapaianDepartment, NotFound,CapaianPembelajaran };
+export {
+    Login, Dashboard, DashboardDosen, DashboardMhs,
+    DashboardDepartment, InputData, UploadDataMhs, DosenDataMhs,
+    PencapaianMhs, PencapaianDepartment, NotFound, CapaianPembelajaran,
+    MasterDataPage
+};

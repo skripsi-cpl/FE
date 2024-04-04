@@ -5,6 +5,7 @@
 
 .content-input-data {
     background-color: white;
+    margin-bottom: 100px;
     padding: 20px 30px 50px;
     display: flex;
     flex-direction: column;
