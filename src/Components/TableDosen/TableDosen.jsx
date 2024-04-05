@@ -34,49 +34,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables({
   filteredMahasiswa,
   selectedSemester,
-  loggedInkodeWali
 }) {
-  const [cplData, setCplData] = useState({});
+  const [nilaiCplData, setNilaiCplData] = useState({});
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    fetchData();
-  }, [filteredMahasiswa, selectedSemester, loggedInkodeWali]);
-
-  const fetchData = async () => {
-    try {
-      const nims = filteredMahasiswa.map(mahasiswa => mahasiswa.NIM);
-
-      if (nims.length === 0) {
-        return;
-      }
-
-      const cplResponses = await Promise.all(
-        nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
-      );
-
-      const cplData = {};
-      cplResponses.forEach((response, index) => {
-        const nim = nims[index];
-        const data = response.data.data[0];
-        if (data) {
-          cplData[nim] = data.total_cpl;
-        } else {
-          cplData[nim] = "-";
+    const fetchCplData = async () => {
+      const nilaiCplObject = {};
+      for (const mahasiswa of filteredMahasiswa) {
+        try {
+          const response = await axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${mahasiswa.NIM}`);
+          const total_cpl = response.data.data.total_cpl;
+          setNilaiCplData(prevState => ({
+            ...prevState,
+            [mahasiswa.NIM]: total_cpl
+          }));
+        } catch (error) {
+          console.error(`Error fetching data for NIM ${mahasiswa.NIM}:`, error);
+          nilaiCplObject[mahasiswa.NIM] = "-";
         }
-      });
+      }
+    };
 
-      setCplData(cplData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+    fetchCplData();
+  }, [filteredMahasiswa]);
 
-  const handleClick = async (nim) => {
+
+  const handleClick = (nim) => {
     try {
       navigateTo(`/dashboard-dosen/capaian-pembelajaran/${nim}`);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error navigating:", error);
     }
   };
 
@@ -103,7 +91,7 @@ export default function CustomizedTables({
                 {mahasiswa.NIM}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {cplData[mahasiswa.NIM]}
+                {nilaiCplData[mahasiswa.NIM] !== undefined ? nilaiCplData[mahasiswa.NIM] : "-"}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavbarComponent, FooterComponent, BackButton, BreadCrumbComponents, ModalEditPL, ModalEditCPL, ModalEditCPMK } from "../../Components";
+import React, { useState, useEffect } from "react";
+import { NavbarComponent, FooterComponent, BackButton, BreadCrumbComponents, ModalEditPL, ModalEditCPL, ModalEditCPMK,ModalEditMK } from "../../Components";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
@@ -28,28 +28,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
-const contentData = [
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
 
-];
-const contentDatacpl = [
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-];
-const contentDatacpmk = [
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-];
-const contentDatamk = [
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-];
+
+
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -84,31 +65,226 @@ function a11yProps(index) {
     };
 }
 
-const deleteData = () => {
-    confirmAlert({
-        title: 'Confirm to submit',
-        message: 'Are you sure to do this.',
-        buttons: [
-            {
-                label: 'Yes',
-                onClick: () => alert('Click Yes')
-            },
-            {
-                label: 'No',
-                onClick: () => alert('Click No')
-            }
-        ]
-    });
-};
+
+
+
 
 
 const MasterDataPage = () => {
+
+    const deleteDataPL = (id_pl) => {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletepl/${id_pl.toString().padStart(2, '0')}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Memuat ulang data setelah penghapusan berhasil
+                                    fetch("http://localhost:8000/api/datapl")
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Memperbarui data yang ditampilkan
+                                            setPlData(data);
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching data:', error);
+                                        });
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
+
+    const deleteDataCPL = (id_cpl) => {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpl/${id_cpl.toString().padStart(5, '0')}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Memuat ulang data setelah penghapusan berhasil
+                                    fetch("http://localhost:8000/api/datacpl")
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Memperbarui data yang ditampilkan
+                                            setCplData(data);
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching data:', error);
+                                        });
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
+    const deleteDataCPMK = (id_cpmk) => {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpmk/${id_cpmk.toString().padStart(7, '0')}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Memuat ulang data setelah penghapusan berhasil
+                                    fetch("http://localhost:8000/api/datacpmk")
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Memperbarui data yang ditampilkan
+                                            setCpmkData(data);
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching data:', error);
+                                        });
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
+    const deleteDataCPMKMK = (id_cpmk_mk) => {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Are you sure to do this.',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpmkmk/${id_cpmk_mk.toString().padStart(10, '0')}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Memuat ulang data setelah penghapusan berhasil
+                                    fetch("http://localhost:8000/api/datamk")
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Memperbarui data yang ditampilkan
+                                            setCpmkMkData(data);
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching data:', error);
+                                        });
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
+    useEffect(() => {
+        // Lakukan pengambilan data dari API saat komponen dimuat
+        fetch("http://localhost:8000/api/datapl")
+            .then(response => response.json())
+            .then(data => {
+                // Simpan data yang diterima ke dalam state
+                setPlData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
+    useEffect(() => {
+        // Lakukan pengambilan data dari API saat komponen dimuat
+        fetch("http://localhost:8000/api/datacpl")
+            .then(response => response.json())
+            .then(data => {
+                // Simpan data yang diterima ke dalam state
+                setCplData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+    useEffect(() => {
+        // Lakukan pengambilan data dari API saat komponen dimuat
+        fetch("http://localhost:8000/api/datacpmk")
+            .then(response => response.json())
+            .then(data => {
+                // Simpan data yang diterima ke dalam state
+                setCpmkData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+    useEffect(() => {
+        // Lakukan pengambilan data dari API saat komponen dimuat
+        fetch("http://localhost:8000/api/datamk")
+            .then(response => response.json())
+            .then(data => {
+                // Simpan data yang diterima ke dalam state
+                setCpmkMkData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
 
     const [value, setValue] = React.useState(0);
     const [isModalOpenPL, setIsModalOpenPL] = useState(false);
     const [isModalOpenCPL, setIsModalOpenCPL] = useState(false);
     const [isModalOpenCPMK, setIsModalOpenCPMK] = useState(false);
     const [isModalOpenMK, setIsModalOpenMK] = useState(false);
+    const [plData, setPlData] = useState([]);
+    const [cplData, setCplData] = useState([]);
+    const [cpmkData, setCpmkData] = useState([]);
+    const [cpmkmkData, setCpmkMkData] = useState([]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -191,19 +367,21 @@ const MasterDataPage = () => {
                                             <TableRow>
                                                 <StyledTableCell>Kode Profil Lulusan</StyledTableCell>
                                                 <StyledTableCell>Nama Profil Lulusan</StyledTableCell>
-                                                <StyledTableCell>Botot Profil Lulusan</StyledTableCell>
+                                                <StyledTableCell>Bobot Profil Lulusan</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {contentData.map((row, index) => (
+                                            {/* Gunakan data dari API untuk mengisi baris tabel */}
+                                            {plData.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
+                                                    {/* Sesuaikan sel dengan properti yang ada pada data dari API */}
+                                                    <TableCell>{row.id_pl.toString().padStart(2, '0')}</TableCell>
+                                                    <TableCell>{row.nama_pl}</TableCell>
+                                                    <TableCell>{row.bobot_pl}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalPL}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataPL(row.id_pl.toString())}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -234,23 +412,23 @@ const MasterDataPage = () => {
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Profile Lulusan</StyledTableCell>
                                                 <StyledTableCell>Kode Capaian Pembelajaran Lulusan</StyledTableCell>
                                                 <StyledTableCell>Nama Capaian Pembelajaran Lulusan</StyledTableCell>
-                                                <StyledTableCell>Botot Capaian Pembelajaran Lulusan</StyledTableCell>
+                                                <StyledTableCell>Bobot Capaian Pembelajaran Lulusan</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {contentDatacpl.map((row, index) => (
+                                            {/* Gunakan data dari API untuk mengisi baris tabel */}
+                                            {cplData.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
+                                                    {/* Sesuaikan sel dengan properti yang ada pada data dari API */}
+                                                    <TableCell>{row.id_cpl.toString().padStart(5, '0')}</TableCell>
+                                                    <TableCell>{row.nama_cpl}</TableCell>
+                                                    <TableCell>{row.bobot_cpl}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalCPL}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataCPL(row.id_cpl.toString())}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -281,25 +459,23 @@ const MasterDataPage = () => {
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Profile Lulusan</StyledTableCell>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Lulusan</StyledTableCell>
                                                 <StyledTableCell>Kode Capaian Pembelajaran Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Nama Capaian Pembelajaran Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Botot Capaian Pembelajaran Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>Bobot Capaian Pembelajaran Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {contentDatacpmk.map((row, index) => (
+                                            {/* Gunakan data dari API untuk mengisi baris tabel */}
+                                            {cpmkData.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
-                                                    <TableCell>{row.field5}</TableCell>
+                                                    {/* Sesuaikan sel dengan properti yang ada pada data dari API */}
+                                                    <TableCell>{row.id_cpmk.toString().padStart(7, '0')}</TableCell>
+                                                    <TableCell>{row.nama_cpmk}</TableCell>
+                                                    <TableCell>{row.bobot_cpmk}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalCPMK}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataCPMK(row.id_cpmk.toString())}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -330,25 +506,25 @@ const MasterDataPage = () => {
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Capaian Pembelajaran</StyledTableCell>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>ID Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Kode Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Nama Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Botot Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>Bobot Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {contentDatamk.map((row, index) => (
+                                            {/* Gunakan data dari API untuk mengisi baris tabel */}
+                                            {cpmkmkData.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
-                                                    <TableCell>{row.field5}</TableCell>
+                                                    {/* Sesuaikan sel dengan properti yang ada pada data dari API */}
+                                                    <TableCell>{row.id_cpmk_mk.toString().padStart(10, '0')}</TableCell>
+                                                    <TableCell>{row.kode_mk}</TableCell>
+                                                    <TableCell>{row.nama_mk}</TableCell>
+                                                    <TableCell>{row.bobot_mk}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalMK}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataCPMKMK(row.id_cpmk_mk.toString())}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -362,7 +538,7 @@ const MasterDataPage = () => {
                 <ModalEditPL isOpen={isModalOpenPL} onClose={closeModalPL} />
                 <ModalEditCPL isOpen={isModalOpenCPL} onClose={closeModalCPL} />
                 <ModalEditCPMK isOpen={isModalOpenCPMK} onClose={closeModalCPMK} />
-                <ModalEditCPMK isOpen={isModalOpenMK} onClose={closeModalMK} />
+                <ModalEditMK isOpen={isModalOpenMK} onClose={closeModalMK} />
             </div>
             <FooterComponent />
             <ToastContainer />
