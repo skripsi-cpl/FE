@@ -233,7 +233,9 @@ const PencapaianMhs = () => {
                                     })
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={idCplData.length + 2}>No data available</TableCell>
+                                        <TableCell colSpan={idCplData.length + 2}>
+                                            {isDataCPLAvailable ? "No data available" : "No CPL data available"}
+                                        </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
