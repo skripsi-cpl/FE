@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { NavbarComponent, FooterComponent, BackButton, BreadCrumbComponents, ModalEditPL, ModalEditCPL, ModalEditCPMK } from "../../Components";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { NavbarComponent, FooterComponent, BackButton, BreadCrumbComponents, ModalEditPL, ModalEditCPL, ModalEditCPMK, ModalEditMK } from "../../Components";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
@@ -19,6 +20,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import "./MasterData.css";
 
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -28,17 +30,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
-const contentData = [
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
-    { field1: "312", field2: "Konten nama", field3: "Bobot " },
 
-];
-const contentDatacpl = [
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "Bobot ", field4: "Konten nama" },
-];
+
+
 const contentDatacpmk = [
     { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
     { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
@@ -109,6 +103,66 @@ const MasterDataPage = () => {
     const [isModalOpenCPL, setIsModalOpenCPL] = useState(false);
     const [isModalOpenCPMK, setIsModalOpenCPMK] = useState(false);
     const [isModalOpenMK, setIsModalOpenMK] = useState(false);
+
+    const [contentDataPL, setContentDataPL] = useState([]);
+    const [contentDatacpl, setContentDataCPL] = useState([]);
+    const [contentDatacpmk, setContentDataCPMK] = useState([]);
+    const [contentDatamk, setContentDataMK] = useState([]);
+
+    useEffect(() => {
+        const fetchDataPL = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/datapl');
+                // Assuming response.data is an array of objects with field1, field2, and field3 properties
+                setContentDataPL(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchDataPL();
+    }, []);
+
+    useEffect(() => {
+        const fetchDataPL = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/datacpl');
+                // Assuming response.data is an array of objects with field1, field2, and field3 properties
+                setContentDataCPL(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchDataPL();
+    }, []);
+
+    useEffect(() => {
+        const fetchDataPL = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/datacpmk');
+                // Assuming response.data is an array of objects with field1, field2, and field3 properties
+                setContentDataCPMK(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchDataPL();
+    }, []);
+
+    useEffect(() => {
+        const fetchDataPL = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/datamk');
+                // Assuming response.data is an array of objects with field1, field2, and field3 properties
+                setContentDataMK(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchDataPL();
+    }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -196,11 +250,11 @@ const MasterDataPage = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {contentData.map((row, index) => (
+                                            {contentDataPL.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
+                                                    <TableCell>{row.id_pl}</TableCell>
+                                                    <TableCell>{row.nama_pl}</TableCell>
+                                                    <TableCell>{row.bobot_pl}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalPL}>Edit</button>
                                                         <button className="buttondelete" onClick={deleteData}>Delete</button>
@@ -244,10 +298,10 @@ const MasterDataPage = () => {
                                         <TableBody>
                                             {contentDatacpl.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
+                                                    <TableCell>{row.id_pl}</TableCell>
+                                                    <TableCell>{row.id_cpl}</TableCell>
+                                                    <TableCell>{row.nama_cpl}</TableCell>
+                                                    <TableCell>{row.bobot_cpl}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalCPL}>Edit</button>
                                                         <button className="buttondelete" onClick={deleteData}>Delete</button>
@@ -281,9 +335,9 @@ const MasterDataPage = () => {
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Profile Lulusan</StyledTableCell>
                                                 <StyledTableCell>Kode Capaian Pembelajaran Lulusan</StyledTableCell>
                                                 <StyledTableCell>Kode Capaian Pembelajaran Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>Nama Capaian Pembelajaran Lulusan</StyledTableCell>
                                                 <StyledTableCell>Nama Capaian Pembelajaran Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Botot Capaian Pembelajaran Mata Kuliah</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
@@ -292,11 +346,11 @@ const MasterDataPage = () => {
                                         <TableBody>
                                             {contentDatacpmk.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
-                                                    <TableCell>{row.field5}</TableCell>
+                                                    <TableCell>{row.id_cpl}</TableCell>
+                                                    <TableCell>{row.id_cpmk}</TableCell>
+                                                    <TableCell>{row.nama_cpl}</TableCell>
+                                                    <TableCell>{row.nama_cpmk}</TableCell>
+                                                    <TableCell>{row.bobot_cpmk}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalCPMK}>Edit</button>
                                                         <button className="buttondelete" onClick={deleteData}>Delete</button>
@@ -341,11 +395,11 @@ const MasterDataPage = () => {
                                         <TableBody>
                                             {contentDatamk.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.field1}</TableCell>
-                                                    <TableCell>{row.field2}</TableCell>
-                                                    <TableCell>{row.field3}</TableCell>
-                                                    <TableCell>{row.field4}</TableCell>
-                                                    <TableCell>{row.field5}</TableCell>
+                                                    <TableCell>{row.id_cpmk_mk}</TableCell>
+                                                    <TableCell>{row.id_cpmk}</TableCell>
+                                                    <TableCell>{row.id_mk}</TableCell>
+                                                    <TableCell>{row.nama_mk}</TableCell>
+                                                    <TableCell>{row.bobot_mk}</TableCell>
                                                     <TableCell className="button-action-operator">
                                                         <button className="buttonedit" onClick={openModalMK}>Edit</button>
                                                         <button className="buttondelete" onClick={deleteData}>Delete</button>
@@ -362,7 +416,7 @@ const MasterDataPage = () => {
                 <ModalEditPL isOpen={isModalOpenPL} onClose={closeModalPL} />
                 <ModalEditCPL isOpen={isModalOpenCPL} onClose={closeModalCPL} />
                 <ModalEditCPMK isOpen={isModalOpenCPMK} onClose={closeModalCPMK} />
-                <ModalEditCPMK isOpen={isModalOpenMK} onClose={closeModalMK} />
+                <ModalEditMK isOpen={isModalOpenMK} onClose={closeModalMK} />
             </div>
             <FooterComponent />
             <ToastContainer />
