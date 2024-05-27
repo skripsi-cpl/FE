@@ -20,6 +20,7 @@ import { Pie, Line, Radar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { StyleSheet } from "@react-pdf/renderer";
 import "./PencapaianMhs.css";
+import { parse } from "date-fns";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,8 +56,11 @@ const PencapaianMhs = () => {
   const [semesters, setSemesters] = useState([]);
   const [selectedSemester, setSelectedSemester] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [getNilaiCPL, setGetNilaiCpl] = useState([]);
+
   const [idCplData, setIdCplData] = useState([]);
   const [totalNilaiCPL, setTotalNilaiCPL] = useState([]);
+  const [maxBobotCpl, setMaxBobotCpl] = useState([]);
   const [idBobotData, setIdBobotData] = useState([]);
   const [totalBobotCpl, setTotalBobotCpl] = useState({});
   const [totalAllSemesters, setTotalAllSemesters] = useState(0);
@@ -95,12 +99,20 @@ const PencapaianMhs = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          setFilteredData(data.data);
-          console.log(data.data);
+          if (data && data.data && data.data.length > 0) {
+            const firstData = data.data[0];
+            const maxCPL = firstData.bobot_cpl;
+            setMaxBobotCpl(maxCPL)
+            setFilteredData(data.data);
+          } else {
+            // Tidak ada data ditemukan, atur filteredData menjadi array kosong
+            setFilteredData([]);
+          }
         })
         .catch((error) => console.error("There was an error!", error));
     }
   }, [selectedSemester]);
+
 
   useEffect(() => {
     fetch("http://localhost:8000/api/dashboardmhs/getIdCpl")
@@ -115,8 +127,10 @@ const PencapaianMhs = () => {
       `http://localhost:8000/api/dashboardmhs/totalNilaiCplPerIdCpl?NIM=${nim}`
     )
       .then((response) => response.json())
+      .then((data) => console.log(data))
       .then((data) => {
         setTotalNilaiCPL(data.data);
+        console.log(data.data);
       })
       .catch((error) => console.error("There was an error!", error));
   }, []);
@@ -160,8 +174,9 @@ const PencapaianMhs = () => {
 
         // Hitung total nilai CPL per id_cpl
         filteredData.forEach((row) => {
-          const bobotCpl = parseFloat(row.nilai_cpl_skalar || 0);
+          const bobotCpl = parseFloat(row.nilai_cpl || 0);
           if (!isNaN(bobotCpl)) {
+            console.log(filteredData);
             totalNilaiCplPerIdCpl[row.id_cpl] += bobotCpl;
           }
         });
@@ -181,6 +196,7 @@ const PencapaianMhs = () => {
       .toFixed(2);
 
     // Update state total nilai CPL per id_cpl dan total nilai CPL semua mata kuliah
+    console.log(totalNilaiCplPerIdCpl);
     setTotalNilaiCplPerMataKuliah(totalNilaiCplPerIdCpl);
     setTotalAllNilaiCpl(totalAllNilaiCpl);
 
@@ -192,12 +208,15 @@ const PencapaianMhs = () => {
   useEffect(() => {
     const uniqueMkData = filteredData
       ? [
-          ...new Map(
-            filteredData.map((item) => [item["nama_mk"], item])
-          ).values(),
-        ]
+        ...new Map(
+          filteredData.map((item) => [item["nama_mk"], item])
+        ).values(),
+      ]
       : [];
-    setUniqueMkData(uniqueMkData); // Set uniqueMkData state
+    setUniqueMkData(uniqueMkData);
+    uniqueMkData.forEach((item) => {
+      setGetNilaiCpl(item.nilai_cpl);
+    });
   }, [filteredData]);
 
   return (
@@ -237,7 +256,6 @@ const PencapaianMhs = () => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Mata Kuliah</StyledTableCell>
                   {idCplData.length > 0 &&
                     idCplData.map((item, index) => (
                       <StyledTableCell align="center" key={index}>
@@ -246,50 +264,35 @@ const PencapaianMhs = () => {
                     ))}
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {Array.isArray(uniqueMkData) && uniqueMkData?.length > 0 ? (
                   uniqueMkData.map((row, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell>{row.nama_mk}</TableCell>
-                        {Array.isArray(filteredData) &&
-                          filteredData.length > 0 &&
-                          idCplData.map((cpl, idx) => {
-                            const filteredRow = filteredData.find(
-                              (item) =>
-                                item &&
-                                item.nama_mk === row.nama_mk &&
-                                item.id_cpl === cpl.id_cpl
-                            );
-                            const nilaiCpl = filteredRow
-                              ? filteredRow.nilai_cpl_skalar
-                              : "-";
-                            return (
-                              <StyledTableCell align="center" key={idx}>
-                                {nilaiCpl}
-                              </StyledTableCell>
-                            );
-                          })}
+                        {Array.isArray(filteredData) && filteredData.length > 0 && idCplData.map((cpl, idx) => {
+
+                          const filteredRow = filteredData.find(item => item && item.nama_mk === row.nama_mk && parseInt(item.id_cpl, 10) === parseInt(cpl.id_cpl, 10));
+                          const nilaiCpl = filteredRow ? filteredRow.nilai_cpl : '-';
+                          const nilaiMaxCpl = filteredRow ? filteredRow.bobot_cpl : '-';
+                          return (
+                            <StyledTableCell align="center" key={idx}>
+                              {nilaiCpl !== '-' && nilaiMaxCpl !== '-' ? `${nilaiCpl}/${nilaiMaxCpl}` : '-'}
+                            </StyledTableCell>
+                          );
+                        })}
                       </TableRow>
                     );
                   })
                 ) : (
                   <TableRow>
                     <TableCell colSpan={idCplData.length + 2}>
-                      No data available
+                      {isDataCPLAvailable ? "No data available" : "No CPL data available"}
                     </TableCell>
                   </TableRow>
                 )}
+
               </TableBody>
-              <TableRow>
-                <TableCell>Jumlah</TableCell>
-                {Array.isArray(idCplData) &&
-                  idCplData.map((cpl, idx) => (
-                    <StyledTableCell align="center" key={idx}>
-                      {totalNilaiCplPerMataKuliah[cpl.id_cpl] || 0}
-                    </StyledTableCell>
-                  ))}
-              </TableRow>
             </Table>
           </TableContainer>
           <div className="generatepdf">
@@ -327,11 +330,13 @@ const PencapaianMhs = () => {
                         display: false,
                       },
                       suggestedMin: 0,
-                      suggestedMax: 100,
+                      suggestedMax: maxBobotCpl,
                     },
                   },
                 }}
               />
+
+
             </div>
             <div className="keterangan">
               <h3>Keterangan :</h3>

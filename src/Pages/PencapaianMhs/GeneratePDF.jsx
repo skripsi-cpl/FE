@@ -229,42 +229,6 @@ const GeneratePDF = () => {
                         </View>
                     </View>
                     <Text style={[styles.title]}>Rekap Hasil Capaian Pembelajaran{'\n'}</Text>
-                    <View style={styles.tableRowCPL}>
-                        <View style={styles.tableCellCPLNo}>
-                            <Text>No</Text>
-                        </View>
-                        <View style={styles.tableCellCPLKodeMk}>
-                            <Text>Kode MK</Text>
-                        </View>
-                        <View style={styles.tableCellMK}>
-                            <Text>Mata Kuliah</Text>
-                        </View>
-                        <View style={styles.tableCellCPL}>
-                            <Text>CPL</Text>
-                        </View>
-                        <View style={styles.tableCellNilai}>
-                            <Text>Nilai</Text>
-                        </View>
-                    </View>
-                    {dataCPL.map((item, index) => (
-                        <View style={styles.tableRowCPL} key={index}>
-                            <View style={styles.tableCellCPLNo}>
-                                <Text>{index + 1}</Text>
-                            </View>
-                            <View style={styles.tableCellCPLKodeMk}>
-                                <Text>{item.kode_mk}</Text>
-                            </View>
-                            <View style={styles.tableCellMK}>
-                                <Text>{item.nama_mk}</Text>
-                            </View>
-                            <View style={styles.tableCellCPL}>
-                                <Text>{item.id_cpl}</Text>
-                            </View>
-                            <View style={styles.tableCellNilai}>
-                                <Text>{item.nilai_cpl}</Text>
-                            </View>
-                        </View>
-                    ))}
                     <View style={styles.totalRow}>
                         <View style={styles.tableCellCPLNo}>
                             <Text>No</Text>
