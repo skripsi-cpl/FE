@@ -11,26 +11,27 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-const TableDepartemen = ({ data }) => {
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
+const TableDepartemen = ({ data }) => {
   const [cplData, setCplData] = useState({});
+  const navigateTo = useNavigate();
+
   useEffect(() => {
     fetchData();
   }, [data]);
-  const navigateTo = useNavigate();
+
   const fetchData = async () => {
     try {
       const nims = data.map(mahasiswa => mahasiswa.NIM);
-
       if (nims.length === 0) {
         return;
       }
@@ -39,30 +40,27 @@ const TableDepartemen = ({ data }) => {
         nims.map(nim => axios.get(`http://localhost:8000/api/cpl-by-nim?nim=${nim}`))
       );
 
-      const cplData = {};
+      const fetchedCplData = {};
       cplResponses.forEach((response, index) => {
         const nim = nims[index];
-        const data = response.data.data[0];
-        if (data) {
-          cplData[nim] = data.total_cpl;
+        const responseData = response.data.data;
+        if (responseData && responseData.total_cpl !== undefined) {
+          fetchedCplData[nim] = responseData.total_cpl;
         } else {
-          cplData[nim] = "-";
+          fetchedCplData[nim] = "-";
         }
       });
 
-      setCplData(cplData);
+      setCplData(fetchedCplData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  const handleClick = async (nim) => {
-    try {
 
-      navigateTo(`/dashboard-departemen/capaian-pembelajaran/${nim}`);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const handleClick = (nim) => {
+    navigateTo(`/dashboard-departemen/capaian-pembelajaran/${nim}`);
   };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -72,8 +70,8 @@ const TableDepartemen = ({ data }) => {
             <StyledTableCell>Nama Mahasiswa</StyledTableCell>
             <StyledTableCell>Tahun Masuk</StyledTableCell>
             <StyledTableCell>Dosen Wali</StyledTableCell>
-            <StyledTableCell>CPL (%)</StyledTableCell>
-            <StyledTableCell>Action</StyledTableCell>
+            <StyledTableCell align="center">CPL (%)</StyledTableCell>
+            <StyledTableCell align="center">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -89,7 +87,7 @@ const TableDepartemen = ({ data }) => {
               <TableCell>{mahasiswa.tahun_masuk}</TableCell>
               <TableCell>{mahasiswa.nama_wali}</TableCell>
               <StyledTableCell align="center">
-                {cplData[mahasiswa.NIM]}
+                {cplData[mahasiswa.NIM] || "-"}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <button onClick={() => handleClick(mahasiswa.NIM)} className="button-table-dosen">Pilih Capaian</button>

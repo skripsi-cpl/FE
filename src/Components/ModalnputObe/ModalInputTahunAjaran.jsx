@@ -102,7 +102,6 @@ const ModalInputTahunAjaran = () => {
             });
 
             handleClose();
-            window.location.reload();
         } catch (error) {
             toast.error("Data Tahun Ajaran gagal disimpan", {
                 position: "top-center",

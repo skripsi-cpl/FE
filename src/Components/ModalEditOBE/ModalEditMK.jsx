@@ -1,13 +1,25 @@
 import "./ModalEditObe.css";
 import React, { useState, useEffect } from "react";
 
-const ModalEditMK = ({ isOpen, onClose }) => {
+const ModalEditMK = ({ isOpen, onClose, datamk }) => {
     const [updatedData, setUpdatedData] = useState({
-        kode_mk: "",
-        nama_mk: "",
-        bobot_mk: ""
+        id_mk: datamk?.id_mk || "",
+        kode_mk: datamk?.kode_mk || "",
+        nama_mk: datamk?.nama_mk || "",
+        bobot_mk: datamk?.bobot_mk || ""
     });
     const [isSubmitting, setIsSubmitting] = useState(false); // State untuk menandai proses submit
+
+    useEffect(() => {
+        if (datamk) {
+            setUpdatedData({
+                id_mk: datamk.id_mk,
+                kode_mk: datamk.kode_mk,
+                nama_mk: datamk.nama_mk,
+                bobot_mk: datamk.bobot_mk
+            });
+        }
+    }, [datamk]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +35,7 @@ const ModalEditMK = ({ isOpen, onClose }) => {
         setIsSubmitting(true); // Menandai bahwa proses submit telah dimulai
 
         // Lakukan proses update data dengan menggunakan API
-        fetch(`http://localhost:8000/api/dataupdatecpmkmk/${updatedData.id_cpmk_mk}`, {
+        fetch(`http://localhost:8000/api/dataupdatemk/${updatedData.id_mk}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,6 +48,7 @@ const ModalEditMK = ({ isOpen, onClose }) => {
                     onClose();
                     // Mengatur ulang updatedData jika respons berhasil diterima
                     setUpdatedData({
+                        id_mk: "",
                         kode_mk: "",
                         nama_mk: "",
                         bobot_mk: ""
@@ -56,8 +69,6 @@ const ModalEditMK = ({ isOpen, onClose }) => {
             });
     };
 
-
-    // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     useEffect(() => {
         if (!isSubmitting && !isOpen) {
@@ -76,20 +87,19 @@ const ModalEditMK = ({ isOpen, onClose }) => {
         }
     }, [isSubmitting, isOpen]);
 
-
     return (
         <>
             {isOpen && (
                 <div className="modal-edit-content">
                     <div className="modal-edit-warapper">
                         <div className="title-edit-modal">
-                            <h2>Edit Capaian Mata Kuliah</h2>
+                            <h2>Edit Mata Kuliah</h2>
                             <a onClick={onClose}>X</a>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div>
-                                <label htmlFor="id_cpmk_mk">ID Mata Kuliah:</label>
-                                <input type="text" id="id_cpmk_mk" name="id_cpmk_mk" value={updatedData.id_cpmk_mk} onChange={handleChange} />
+                                <label htmlFor="id_mk">ID Mata Kuliah:</label>
+                                <input type="text" id="id_mk" name="id_mk" value={updatedData.id_mk} onChange={handleChange} />
                             </div>
                             <div>
                                 <label htmlFor="kode_mk">Kode Mata Kuliah:</label>

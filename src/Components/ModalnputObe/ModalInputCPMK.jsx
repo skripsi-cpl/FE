@@ -131,7 +131,6 @@ const ModalInputCPMK = () => {
                 progress: undefined,
             });
             handleClose();
-            window.location.reload();
 
         } catch (error) {
             toast.error("Data CPMK failed to post", {

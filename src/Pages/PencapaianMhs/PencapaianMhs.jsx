@@ -192,10 +192,10 @@ const PencapaianMhs = () => {
   useEffect(() => {
     const uniqueMkData = filteredData
       ? [
-          ...new Map(
-            filteredData.map((item) => [item["nama_mk"], item])
-          ).values(),
-        ]
+        ...new Map(
+          filteredData.map((item) => [item["nama_mk"], item])
+        ).values(),
+      ]
       : [];
     setUniqueMkData(uniqueMkData); // Set uniqueMkData state
   }, [filteredData]);

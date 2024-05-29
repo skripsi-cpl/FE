@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Axios from 'axios';
@@ -22,9 +21,9 @@ const style = {
 };
 
 const ModalInputCPL = () => {
-    const [open, setOpen] = React.useState(false);
-    const [dataPL, setDataPL] = useState([])
-    const [dataCPL, setDataCPL] = useState([])
+    const [open, setOpen] = useState(false);
+    const [dataPL, setDataPL] = useState([]);
+    const [dataCPL, setDataCPL] = useState([]);
     const [error, setError] = useState({});
     const [getTotalBobotCPL, setGetTotalBobotCPL] = useState(0);
     const [formData, setFormData] = useState({
@@ -48,6 +47,7 @@ const ModalInputCPL = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationError = {};
+
         if (!formData.id_pl.trim()) {
             validationError.id_pl = 'ID PL harus diisi';
         }
@@ -56,28 +56,15 @@ const ModalInputCPL = () => {
         } else if (formData.id_cpl.length > 3) {
             validationError.id_cpl = 'ID CPL harus kurang dari 3 karakter';
         }
-        if (!formData.nama_cpl) {
+        if (!formData.nama_cpl.trim()) {
             validationError.nama_cpl = 'Nama CPL harus diisi';
         }
-        if (!formData.bobot_cpl) {
+        if (!formData.bobot_cpl.trim()) {
             validationError.bobot_cpl = 'Bobot CPL harus diisi';
         }
-        //  else if (formData.bobot_cpl > 100) {
-        //     validationError.bobot_cpl = 'Bobot CPL tidak boleh lebih dari 1';
-        // }
 
         setError(validationError);
         if (Object.keys(validationError).length > 0) return;
-
-        // // Hitung total bobot CPL yang akan ditambahkan
-        // const newBobotCPL = parseFloat(formData.bobot_cpl || 0);
-
-        // Jika jumlah total melebihi 1, tampilkan pesan error
-        // if (getTotalBobotCPL + newBobotCPL > 100) {
-        //     validationError.bobot_cpl = 'Jumlah bobot CPL maksimal 1';
-        //     setError(validationError);
-        //     return;
-        // }
 
         try {
             await Axios.post('http://localhost:8000/api/datapostcpl', formData);
@@ -111,7 +98,6 @@ const ModalInputCPL = () => {
         }
     };
 
-
     useEffect(() => {
         const fetchDataPL = async () => {
             try {
@@ -123,28 +109,26 @@ const ModalInputCPL = () => {
         };
         fetchDataPL();
     }, []);
+
     useEffect(() => {
-        const fetchdataCPL = async () => {
+        const fetchDataCPL = async () => {
             try {
                 const response = await Axios.get("http://localhost:8000/api/datacpl");
-                setDataCPL(response.data.bobot_cpl);
-                // Menampilkan nilai bobot_cpl saja
-
+                setDataCPL(response.data);
                 const totalBobotCPL = response.data.reduce((total, item) => {
                     return total + parseFloat(item.bobot_cpl || 0);
                 }, 0);
-                setGetTotalBobotCPL(totalBobotCPL)
+                setGetTotalBobotCPL(totalBobotCPL);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-        fetchdataCPL();
+        fetchDataCPL();
     }, []);
-
 
     return (
         <div className='modal-box'>
-            <Button onClick={handleOpen}>Isi Data Capaian Pembelajaran Lulusan (CPL) </Button>
+            <Button onClick={handleOpen}>Isi Data Capaian Pembelajaran Lulusan (CPL)</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -161,7 +145,7 @@ const ModalInputCPL = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="content-input">
                             <label>
-                                Kode Profile Lulusan
+                                Kode Profil Lulusan
                                 <select
                                     value={formData.id_pl}
                                     onChange={handleChange}
@@ -210,7 +194,6 @@ const ModalInputCPL = () => {
                             </label>
                             <button type="submit">Submit</button>
                         </div>
-
                     </form>
                 </Box>
             </Modal>

@@ -1,13 +1,25 @@
 import "./ModalEditObe.css";
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const ModalEditCPMK = ({ isOpen, onClose }) => {
+const ModalEditCPMK = ({ isOpen, onClose, datacpmk }) => {
     const [updatedData, setUpdatedData] = useState({
-        id_cpmk: "",
-        nama_cpmk: "",
-        bobot_cpmk: ""
+        id_cpmk: datacpmk?.id_cpmk || "",
+        nama_cpmk: datacpmk?.nama_cpmk || "",
+        bobot_cpmk: datacpmk?.bobot_cpmk || ""
     });
     const [isSubmitting, setIsSubmitting] = useState(false); // State untuk menandai proses submit
+
+    useEffect(() => {
+        if (datacpmk) {
+            setUpdatedData({
+                id_cpmk: datacpmk.id_cpmk,
+                nama_cpmk: datacpmk.nama_cpmk,
+                bobot_cpmk: datacpmk.bobot_cpmk
+            });
+        }
+    }, [datacpmk]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,8 +31,9 @@ const ModalEditCPMK = ({ isOpen, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Mencegah pengiriman formulir bawaan browser
-
         setIsSubmitting(true); // Menandai bahwa proses submit telah dimulai
+
+        console.log(updatedData.id_cpmk, updatedData.nama_cpmk, updatedData.bobot_cpmk);
 
         // Lakukan proses update data dengan menggunakan API
         fetch(`http://localhost:8000/api/dataupdatecpmk/${updatedData.id_cpmk}`, {
@@ -41,7 +54,7 @@ const ModalEditCPMK = ({ isOpen, onClose }) => {
                         bobot_cpmk: ""
                     });
                     // Memberikan pemberitahuan bahwa data berhasil diperbarui
-                    alert('Data berhasil diperbarui');
+                    toast.success('Data updated successfully');
                     // Merefresh halaman
                     window.location.reload();
                 } else {
@@ -49,6 +62,7 @@ const ModalEditCPMK = ({ isOpen, onClose }) => {
                 }
             })
             .catch(error => {
+                toast.error('Failed to update data');
                 console.error('Error updating data:', error);
             })
             .finally(() => {
@@ -56,8 +70,6 @@ const ModalEditCPMK = ({ isOpen, onClose }) => {
             });
     };
 
-
-    // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     useEffect(() => {
         if (!isSubmitting && !isOpen) {
@@ -75,7 +87,6 @@ const ModalEditCPMK = ({ isOpen, onClose }) => {
                 });
         }
     }, [isSubmitting, isOpen]);
-
 
     return (
         <>

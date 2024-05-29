@@ -18,8 +18,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./MasterData.css";
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -30,20 +31,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
-
-
-
-const contentDatacpmk = [
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "Konten nama", field5: "Konten nama" },
-];
-const contentDatamk = [
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-    { field1: "312", field2: "12332", field3: "21312 ", field4: "312312", field5: "Konten nama" },
-];
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -78,22 +65,6 @@ function a11yProps(index) {
     };
 }
 
-const deleteData = () => {
-    confirmAlert({
-        title: 'Confirm to submit',
-        message: 'Are you sure to do this.',
-        buttons: [
-            {
-                label: 'Yes',
-                onClick: () => alert('Click Yes')
-            },
-            {
-                label: 'No',
-                onClick: () => alert('Click No')
-            }
-        ]
-    });
-};
 
 
 const MasterDataPage = () => {
@@ -109,11 +80,15 @@ const MasterDataPage = () => {
     const [contentDatacpmk, setContentDataCPMK] = useState([]);
     const [contentDatamk, setContentDataMK] = useState([]);
 
+    const [selectedPL, setSelectedPL] = useState(null);
+    const [selectedCPL, setSelectedCPL] = useState(null);
+    const [selectedCPMK, setSelectedCPMK] = useState(null);
+    const [selectedMK, setSelectedMK] = useState(null);
+
     useEffect(() => {
         const fetchDataPL = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/datapl');
-                // Assuming response.data is an array of objects with field1, field2, and field3 properties
                 setContentDataPL(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -124,51 +99,49 @@ const MasterDataPage = () => {
     }, []);
 
     useEffect(() => {
-        const fetchDataPL = async () => {
+        const fetchDataCPL = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/datacpl');
-                // Assuming response.data is an array of objects with field1, field2, and field3 properties
                 setContentDataCPL(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
 
-        fetchDataPL();
+        fetchDataCPL();
     }, []);
 
     useEffect(() => {
-        const fetchDataPL = async () => {
+        const fetchDataCPMK = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/datacpmk');
-                // Assuming response.data is an array of objects with field1, field2, and field3 properties
                 setContentDataCPMK(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
 
-        fetchDataPL();
+        fetchDataCPMK();
     }, []);
 
     useEffect(() => {
-        const fetchDataPL = async () => {
+        const fetchDataMK = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/datamk');
-                // Assuming response.data is an array of objects with field1, field2, and field3 properties
                 setContentDataMK(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
-        fetchDataPL();
+        fetchDataMK();
     }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const openModalPL = () => {
+    const openModalPL = (pl) => {
+        setSelectedPL(pl);
         setIsModalOpenPL(true);
     };
 
@@ -176,7 +149,8 @@ const MasterDataPage = () => {
         setIsModalOpenPL(false);
     };
 
-    const openModalCPL = () => {
+    const openModalCPL = (cpl) => {
+        setSelectedCPL(cpl);
         setIsModalOpenCPL(true);
     }
 
@@ -184,7 +158,8 @@ const MasterDataPage = () => {
         setIsModalOpenCPL(false);
     }
 
-    const openModalCPMK = () => {
+    const openModalCPMK = (cpmk) => {
+        setSelectedCPMK(cpmk);
         setIsModalOpenCPMK(true);
     }
 
@@ -192,7 +167,8 @@ const MasterDataPage = () => {
         setIsModalOpenCPMK(false);
     }
 
-    const openModalMK = () => {
+    const openModalMK = (mk) => {
+        setSelectedMK(mk);
         setIsModalOpenMK(true);
     }
 
@@ -200,11 +176,143 @@ const MasterDataPage = () => {
         setIsModalOpenMK(false);
     }
 
+    const deleteDataPL = (datapl) => {
+        const { id_pl } = datapl;
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this data?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletepl/${id_pl}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    toast.success('Data berhasil dihapus');
+                                    window.location.reload();
+                                    onClose();
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => alert('Data tidak dihapus')
+                }
+            ]
+        });
+    };
+    const deleteDataCPL = (datacpl) => {
+        const { id_cpl } = datacpl;
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this data?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpl/${id_cpl}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    toast.success('Data berhasil dihapus');
+                                    window.location.reload();
+                                    onClose();
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => alert('Data tidak dihapus')
+                }
+            ]
+        });
+    };
+    const deleteDataCPMK = (datacpmk) => {
+        const { id_cpmk } = datacpmk;
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this data?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpmk/${id_cpmk}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    toast.success('Data berhasil dihapus');
+                                    window.location.reload();
+                                    onClose();
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => alert('Data tidak dihapus')
+                }
+            ]
+        });
+    };
+    const deleteDataMK = (datamk) => {
+        const { id_mk } = datamk;
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this data?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        fetch(`http://localhost:8000/api/datadeletecpmkmk/${id_mk}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    toast.success('Data berhasil dihapus');
+                                    window.location.reload();
+                                    onClose();
+                                } else {
+                                    throw new Error('Failed to delete data');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting data:', error);
+                            });
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => alert('Data tidak dihapus')
+                }
+            ]
+        });
+    };
+
 
     return (
         <>
             <NavbarComponent />
-
             <div className="container-master-data">
                 <div className="header-all-content">
                     <BackButton />
@@ -232,11 +340,6 @@ const MasterDataPage = () => {
                                             height: 1
                                         }}
                                     />
-
-                                    <form action="">
-                                        <h3>Cari Profil Lulusan</h3>
-                                        <input type="text" />
-                                    </form>
                                 </div>
 
                                 <TableContainer component={Paper}>
@@ -245,7 +348,7 @@ const MasterDataPage = () => {
                                             <TableRow>
                                                 <StyledTableCell>Kode Profil Lulusan</StyledTableCell>
                                                 <StyledTableCell>Nama Profil Lulusan</StyledTableCell>
-                                                <StyledTableCell>Botot Profil Lulusan</StyledTableCell>
+                                                <StyledTableCell>Bobot Profil Lulusan</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
@@ -256,8 +359,8 @@ const MasterDataPage = () => {
                                                     <TableCell>{row.nama_pl}</TableCell>
                                                     <TableCell>{row.bobot_pl}</TableCell>
                                                     <TableCell className="button-action-operator">
-                                                        <button className="buttonedit" onClick={openModalPL}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttonedit" onClick={() => openModalPL(row)}>Edit</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataPL(row)}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -277,34 +380,27 @@ const MasterDataPage = () => {
                                             height: 1
                                         }}
                                     />
-
-                                    <form action="">
-                                        <h3>Cari Capaian Pembelajaran Lulusan</h3>
-                                        <input type="text" />
-                                    </form>
                                 </div>
 
                                 <TableContainer component={Paper}>
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Profile Lulusan</StyledTableCell>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Lulusan</StyledTableCell>
-                                                <StyledTableCell>Nama Capaian Pembelajaran Lulusan</StyledTableCell>
-                                                <StyledTableCell>Botot Capaian Pembelajaran Lulusan</StyledTableCell>
+                                                <StyledTableCell>Kode CPL</StyledTableCell>
+                                                <StyledTableCell>Nama CPL</StyledTableCell>
+                                                <StyledTableCell>Bobot CPL</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {contentDatacpl.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.id_pl}</TableCell>
                                                     <TableCell>{row.id_cpl}</TableCell>
                                                     <TableCell>{row.nama_cpl}</TableCell>
                                                     <TableCell>{row.bobot_cpl}</TableCell>
                                                     <TableCell className="button-action-operator">
-                                                        <button className="buttonedit" onClick={openModalCPL}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttonedit" onClick={() => openModalCPL(row)}>Edit</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataCPL(row)}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -316,7 +412,7 @@ const MasterDataPage = () => {
                         <CustomTabPanel value={value} index={2}>
                             <div className="master-data-tab-content">
                                 <div className="master-data-tab-content-left">
-                                    <h2>Capaian Pembelajaran Mata Kuliah</h2>
+                                    <h2>Capaian Pembelajaran Matakuliah</h2>
                                     <hr
                                         style={{
                                             color: '#000000',
@@ -324,36 +420,27 @@ const MasterDataPage = () => {
                                             height: 1
                                         }}
                                     />
-
-                                    <form action="">
-                                        <h3>Cari Capaian Pembelajaran Mata Kuliah</h3>
-                                        <input type="text" />
-                                    </form>
                                 </div>
 
                                 <TableContainer component={Paper}>
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Lulusan</StyledTableCell>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Nama Capaian Pembelajaran Lulusan</StyledTableCell>
-                                                <StyledTableCell>Nama Capaian Pembelajaran Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Botot Capaian Pembelajaran Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>Kode CPMK</StyledTableCell>
+                                                <StyledTableCell>Nama CPMK</StyledTableCell>
+                                                <StyledTableCell>Bobot CPMK</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {contentDatacpmk.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.id_cpl}</TableCell>
                                                     <TableCell>{row.id_cpmk}</TableCell>
-                                                    <TableCell>{row.nama_cpl}</TableCell>
                                                     <TableCell>{row.nama_cpmk}</TableCell>
                                                     <TableCell>{row.bobot_cpmk}</TableCell>
                                                     <TableCell className="button-action-operator">
-                                                        <button className="buttonedit" onClick={openModalCPMK}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttonedit" onClick={() => openModalCPMK(row)}>Edit</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataCPMK(row)}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -373,36 +460,27 @@ const MasterDataPage = () => {
                                             height: 1
                                         }}
                                     />
-
-                                    <form action="">
-                                        <h3>Cari Mata Kuliah</h3>
-                                        <input type="text" />
-                                    </form>
                                 </div>
 
                                 <TableContainer component={Paper}>
                                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Kode Capaian Pembelajaran</StyledTableCell>
-                                                <StyledTableCell>Kode Capaian Pembelajaran Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Kode Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Nama Mata Kuliah</StyledTableCell>
-                                                <StyledTableCell>Botot Mata Kuliah</StyledTableCell>
+                                                <StyledTableCell>Kode MK</StyledTableCell>
+                                                <StyledTableCell>Nama MK</StyledTableCell>
+                                                <StyledTableCell>Bobot MK</StyledTableCell>
                                                 <StyledTableCell>Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {contentDatamk.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{row.id_cpmk_mk}</TableCell>
-                                                    <TableCell>{row.id_cpmk}</TableCell>
                                                     <TableCell>{row.id_mk}</TableCell>
                                                     <TableCell>{row.nama_mk}</TableCell>
                                                     <TableCell>{row.bobot_mk}</TableCell>
                                                     <TableCell className="button-action-operator">
-                                                        <button className="buttonedit" onClick={openModalMK}>Edit</button>
-                                                        <button className="buttondelete" onClick={deleteData}>Delete</button>
+                                                        <button className="buttonedit" onClick={() => openModalMK(row)}>Edit</button>
+                                                        <button className="buttondelete" onClick={() => deleteDataMK(row)}>Delete</button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -413,15 +491,33 @@ const MasterDataPage = () => {
                         </CustomTabPanel>
                     </div>
                 </div>
-                <ModalEditPL isOpen={isModalOpenPL} onClose={closeModalPL} />
-                <ModalEditCPL isOpen={isModalOpenCPL} onClose={closeModalCPL} />
-                <ModalEditCPMK isOpen={isModalOpenCPMK} onClose={closeModalCPMK} />
-                <ModalEditMK isOpen={isModalOpenMK} onClose={closeModalMK} />
             </div>
-            <FooterComponent />
+            {selectedPL && (
+                <ModalEditPL
+                    isOpen={isModalOpenPL}
+                    onClose={closeModalPL}
+                    datapl={selectedPL}
+                />
+            )}
+            <ModalEditCPL
+                isOpen={isModalOpenCPL}
+                onClose={closeModalCPL}
+                datacpl={selectedCPL}
+            />
+            <ModalEditCPMK
+                isOpen={isModalOpenCPMK}
+                onClose={closeModalCPMK}
+                datacpmk={selectedCPMK}
+            />
+            <ModalEditMK
+                isOpen={isModalOpenMK}
+                onClose={closeModalMK}
+                datamk={selectedMK}
+            />
             <ToastContainer />
+            <FooterComponent />
         </>
     );
-}
+};
 
 export default MasterDataPage;

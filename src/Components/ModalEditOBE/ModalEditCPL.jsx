@@ -1,13 +1,25 @@
 import "./ModalEditObe.css";
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const ModalEditCPL = ({ isOpen, onClose }) => {
+const ModalEditCPL = ({ isOpen, onClose, datacpl }) => {
     const [updatedData, setUpdatedData] = useState({
-        id_cpl: "",
-        nama_cpl: "",
-        bobot_cpl: ""
+        id_cpl: datacpl?.id_cpl || "",
+        nama_cpl: datacpl?.nama_cpl || "",
+        bobot_cpl: datacpl?.bobot_cpl || ""
     });
     const [isSubmitting, setIsSubmitting] = useState(false); // State untuk menandai proses submit
+
+    useEffect(() => {
+        if (datacpl) {
+            setUpdatedData({
+                id_cpl: datacpl.id_cpl,
+                nama_cpl: datacpl.nama_cpl,
+                bobot_cpl: datacpl.bobot_cpl
+            });
+        }
+    }, [datacpl]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,7 +53,7 @@ const ModalEditCPL = ({ isOpen, onClose }) => {
                         bobot_cpl: ""
                     });
                     // Memberikan pemberitahuan bahwa data berhasil diperbarui
-                    alert('Data berhasil diperbarui');
+                    toast.success('Data updated successfully');
                     // Merefresh halaman
                     window.location.reload();
                 } else {
@@ -49,6 +61,7 @@ const ModalEditCPL = ({ isOpen, onClose }) => {
                 }
             })
             .catch(error => {
+                toast.error('Failed to update data');
                 console.error('Error updating data:', error);
             })
             .finally(() => {
@@ -56,8 +69,6 @@ const ModalEditCPL = ({ isOpen, onClose }) => {
             });
     };
 
-
-    // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
     useEffect(() => {
         if (!isSubmitting && !isOpen) {
@@ -76,14 +87,13 @@ const ModalEditCPL = ({ isOpen, onClose }) => {
         }
     }, [isSubmitting, isOpen]);
 
-
     return (
         <>
             {isOpen && (
                 <div className="modal-edit-content">
                     <div className="modal-edit-warapper">
                         <div className="title-edit-modal">
-                            <h2>Edit Profil Lulusan</h2>
+                            <h2>Edit Capaian Pembelajaran Lulusan</h2>
                             <a onClick={onClose}>X</a>
                         </div>
                         <form onSubmit={handleSubmit}>

@@ -1,13 +1,25 @@
 import "./ModalEditObe.css";
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const ModalEditPL = ({ isOpen, onClose }) => {
+const ModalEditPL = ({ isOpen, onClose, datapl }) => {
     const [updatedData, setUpdatedData] = useState({
-        id_pl: "",
-        nama_pl: "",
-        bobot_pl: ""
+        id_pl: datapl?.id_pl || "",
+        nama_pl: datapl?.nama_pl || "",
+        bobot_pl: datapl?.bobot_pl || ""
     });
-    const [isSubmitting, setIsSubmitting] = useState(false); // State untuk menandai proses submit
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        if (datapl) {
+            setUpdatedData({
+                id_pl: datapl.id_pl,
+                nama_pl: datapl.nama_pl,
+                bobot_pl: datapl.bobot_pl
+            });
+        }
+    }, [datapl]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,11 +30,9 @@ const ModalEditPL = ({ isOpen, onClose }) => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Mencegah pengiriman formulir bawaan browser
+        e.preventDefault();
+        setIsSubmitting(true);
 
-        setIsSubmitting(true); // Menandai bahwa proses submit telah dimulai
-
-        // Lakukan proses update data dengan menggunakan API
         fetch(`http://localhost:8000/api/dataupdatepl/${updatedData.id_pl}`, {
             method: 'PUT',
             headers: {
@@ -32,50 +42,21 @@ const ModalEditPL = ({ isOpen, onClose }) => {
         })
             .then(response => {
                 if (response.ok) {
-                    // Jika update berhasil, tutup modal
+                    toast.success('Data updated successfully');
                     onClose();
-                    // Mengatur ulang updatedData jika respons berhasil diterima
-                    setUpdatedData({
-                        id_pl: "",
-                        nama_pl: "",
-                        bobot_pl: ""
-                    });
-                    // Memberikan pemberitahuan bahwa data berhasil diperbarui
-                    alert('Data berhasil diperbarui');
-                    // Merefresh halaman
                     window.location.reload();
                 } else {
                     throw new Error('Failed to update data');
                 }
             })
             .catch(error => {
+                toast.error('Failed to update data');
                 console.error('Error updating data:', error);
             })
             .finally(() => {
-                setIsSubmitting(false); // Menandai bahwa proses submit telah selesai
+                setIsSubmitting(false);
             });
     };
-
-
-    // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
-    // Menggunakan useEffect untuk merender ulang halaman setelah proses submit selesai
-    useEffect(() => {
-        if (!isSubmitting && !isOpen) {
-            // Memuat ulang data setelah berhasil submit
-            fetch("http://localhost:8000/api/datapl")
-                .then(response => response.json())
-                .then(data => {
-                    // Memperbarui data yang ditampilkan
-                    // Misalnya, menyimpan data yang diperbarui ke dalam state di komponen induk
-                    // atau melakukan operasi lain yang diperlukan
-                    setUpdatedData(data); // Memperbarui state data dengan data yang diperbarui dari API
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        }
-    }, [isSubmitting, isOpen]);
-
 
     return (
         <>
